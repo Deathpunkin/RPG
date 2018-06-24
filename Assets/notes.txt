@@ -1,0 +1,17 @@
+Something that multiple things need to be aware of?
+~~~
+public delegate void OnLayerChange(); // OnLayerChange - name of thing to be watched, achievements and quest steps that are the same?
+public event OnLayerChange layerChangeObservers; // name of oberservers
+
+if (layerhit != layer) // if layer hit does not match current layer
+{
+layerhit = layer;
+layerChangeObservers(); // broadcast to oberservers
+}
+void start()
+{
+cameraRaycaster = GetComponent<CameraRaycaster>(); // get component required for observing
+cameraRaycaster.layerChangeObservers += OnLayerChanged; //  add to observer list
+}
+
+~~
