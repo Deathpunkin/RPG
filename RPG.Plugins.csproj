@@ -139,8 +139,8 @@
     <None Include="Assets\Standard Assets\Characters\RollerBall\RollerBallGuidelines.txt" />
     <None Include="Assets\Standard Assets\Characters\ThirdPersonCharacter\ThirdPersonCharacterGuidelines.txt" />
     <None Include="Assets\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
-    <None Include="Assets\World Objects\Village\FXWaterPro.shader" />
-    <None Include="Assets\World Objects\Water\Shaders\FXWaterPro.shader" />
+    <None Include="Assets\_World Objects\Village\FXWaterPro.shader" />
+    <None Include="Assets\_World Objects\Water\Shaders\FXWaterPro.shader" />
     <None Include="Assets\notes.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

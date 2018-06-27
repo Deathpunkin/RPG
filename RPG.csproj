@@ -13,13 +13,11 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2017.1.0f3</UnityVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -86,33 +84,36 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\CameraUI\CameraFollow.cs" />
-    <Compile Include="Assets\CameraUI\CameraRaycaster.cs" />
-    <Compile Include="Assets\CameraUI\CameraRotate.cs" />
-    <Compile Include="Assets\CameraUI\Console.cs" />
-    <Compile Include="Assets\CameraUI\CursorAffordance.cs" />
-    <Compile Include="Assets\CameraUI\FPSCounter.cs" />
-    <Compile Include="Assets\CameraUI\PlayerHealthBar.cs" />
-    <Compile Include="Assets\Characters\Enemies\Enemy.cs" />
-    <Compile Include="Assets\Characters\Enemies\EnemyAICharacterControl.cs" />
-    <Compile Include="Assets\Characters\Enemies\EnemyHealthBar.cs" />
-    <Compile Include="Assets\Characters\Enemies\EnemyUI.cs" />
-    <Compile Include="Assets\Characters\Player\Player.cs" />
-    <Compile Include="Assets\Characters\Player\PlayerInput.cs" />
-    <Compile Include="Assets\Characters\Player\PlayerMovement.cs" />
+    <Compile Include="Assets\_CameraUI\CameraFollow.cs" />
+    <Compile Include="Assets\_CameraUI\CameraRaycaster.cs" />
+    <Compile Include="Assets\_CameraUI\CameraRotate.cs" />
+    <Compile Include="Assets\_CameraUI\Console.cs" />
+    <Compile Include="Assets\_CameraUI\CursorAffordance.cs" />
+    <Compile Include="Assets\_CameraUI\FPSCounter.cs" />
+    <Compile Include="Assets\_Characters\Enemies\Enemy.cs" />
+    <Compile Include="Assets\_Characters\Enemies\EnemyAICharacterControl.cs" />
+    <Compile Include="Assets\_Characters\Enemies\EnemyHealthBar.cs" />
+    <Compile Include="Assets\_Characters\Enemies\EnemyUI.cs" />
+    <Compile Include="Assets\_Characters\MainHand.cs" />
+    <Compile Include="Assets\_Characters\OffHand.cs" />
+    <Compile Include="Assets\_Characters\Player\Player.cs" />
+    <Compile Include="Assets\_Characters\Player\PlayerHealthBar.cs" />
+    <Compile Include="Assets\_Characters\Player\PlayerInput.cs" />
+    <Compile Include="Assets\_Characters\Player\PlayerMovement.cs" />
+    <Compile Include="Assets\_Core\IDamageable.cs" />
+    <Compile Include="Assets\_Core\SpinMe.cs" />
+    <Compile Include="Assets\_Weapons\Projectile.cs" />
+    <Compile Include="Assets\_Weapons\Weapon.cs" />
+    <Compile Include="Assets\_World Objects\Water\Scripts\Displace.cs" />
+    <Compile Include="Assets\_World Objects\Water\Scripts\GerstnerDisplace.cs" />
+    <Compile Include="Assets\_World Objects\Water\Scripts\MeshContainer.cs" />
+    <Compile Include="Assets\_World Objects\Water\Scripts\PlanarReflection.cs" />
+    <Compile Include="Assets\_World Objects\Water\Scripts\SpecularLighting.cs" />
+    <Compile Include="Assets\_World Objects\Water\Scripts\Water.cs" />
+    <Compile Include="Assets\_World Objects\Water\Scripts\WaterBase.cs" />
+    <Compile Include="Assets\_World Objects\Water\Scripts\WaterTile.cs" />
     <Compile Include="Assets\Huge Mocap Library\demo\scripts\demo.cs" />
     <Compile Include="Assets\Huge Mocap Library\demo\scripts\smoothFollow.cs" />
-    <Compile Include="Assets\Utility\IDamageable.cs" />
-    <Compile Include="Assets\Utility\SpinMe.cs" />
-    <Compile Include="Assets\Weapons\Projectile.cs" />
-    <Compile Include="Assets\World Objects\Water\Scripts\Displace.cs" />
-    <Compile Include="Assets\World Objects\Water\Scripts\GerstnerDisplace.cs" />
-    <Compile Include="Assets\World Objects\Water\Scripts\MeshContainer.cs" />
-    <Compile Include="Assets\World Objects\Water\Scripts\PlanarReflection.cs" />
-    <Compile Include="Assets\World Objects\Water\Scripts\SpecularLighting.cs" />
-    <Compile Include="Assets\World Objects\Water\Scripts\Water.cs" />
-    <Compile Include="Assets\World Objects\Water\Scripts\WaterBase.cs" />
-    <Compile Include="Assets\World Objects\Water\Scripts\WaterTile.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Huge Mocap Library\READTHIS.txt" />
@@ -122,8 +123,8 @@
     <None Include="Assets\Standard Assets\Characters\RollerBall\RollerBallGuidelines.txt" />
     <None Include="Assets\Standard Assets\Characters\ThirdPersonCharacter\ThirdPersonCharacterGuidelines.txt" />
     <None Include="Assets\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
-    <None Include="Assets\World Objects\Village\FXWaterPro.shader" />
-    <None Include="Assets\World Objects\Water\Shaders\FXWaterPro.shader" />
+    <None Include="Assets\_World Objects\Village\FXWaterPro.shader" />
+    <None Include="Assets\_World Objects\Water\Shaders\FXWaterPro.shader" />
     <None Include="Assets\notes.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
