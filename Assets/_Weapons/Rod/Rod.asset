@@ -13,7 +13,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponPrefab: {fileID: 1439295745031824, guid: fa95abe66dca1e74b9a0efc80d0ae099,
     type: 2}
-  attackAnimationMainHand: {fileID: 7400000, guid: fcd5d479f75a6b44595e56fa981bdda4,
+  attackAnimationMainHand: {fileID: 7400000, guid: 9a30e1d5a08198046b998ff084ada9d3,
     type: 3}
   attackAnimationOffHand: {fileID: 0}
   blockAnimationMainHand: {fileID: 0}
@@ -21,3 +21,6 @@ MonoBehaviour:
   gripMainHandTransform: {fileID: 4406109345298960, guid: ea935b4da7dc9134e8482ed074195b1e,
     type: 2}
   gripOffHandTransform: {fileID: 0}
+  attackSpeed: 0.5
+  maxAttackRange: 5
+  damagePerHit: 50

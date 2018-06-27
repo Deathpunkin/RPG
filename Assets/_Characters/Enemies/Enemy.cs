@@ -11,6 +11,9 @@ namespace RPG.Characters
     {
 
         public float maxHealthPoints = 100f;
+        float currentHealthPoints;
+        float regenHealthspeed = 1f;
+
         [SerializeField] float chaseRadius = 6f;
 
         [SerializeField] float attackRadius = 4f;
@@ -21,10 +24,11 @@ namespace RPG.Characters
         [SerializeField] Vector3 aimOffset = new Vector3(0, 1f, 0);
 
         bool isAttacking = false;
-        float currentHealthPoints;
         AICharacterControl aiCharacterControl = null;
         GameObject player = null;
         Player players;
+
+        [SerializeField] bool isProp = false;
 
         public float healthAsPercentage
         {
@@ -33,6 +37,8 @@ namespace RPG.Characters
                 return currentHealthPoints / maxHealthPoints;
             }
         }
+
+        
 
         public void TakeDamage(float damage)
         {
@@ -51,6 +57,14 @@ namespace RPG.Characters
             // players.experiencePoints = players.experiencePoints + experienceAwarded;
             yield return null;
         }
+        IEnumerator regenHealth()
+        {
+            currentHealthPoints = currentHealthPoints + regenHealthspeed;
+            //        regenHealthSpeed = regenHealthSpeed +1 ;
+            print("Enemy Regen!");
+            yield return new WaitForSeconds(1);
+        }
+
         void Start()
         {
             player = GameObject.FindGameObjectWithTag("Player");
@@ -81,6 +95,14 @@ namespace RPG.Characters
             {
                 aiCharacterControl.SetTarget(transform);
             }
+            if(isProp)
+            {
+                if (currentHealthPoints < maxHealthPoints)
+                {
+                    StartCoroutine("regenHealth", 5f);
+                }
+            }
+
         }
 
         void SpawnProjectile()

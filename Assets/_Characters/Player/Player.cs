@@ -19,9 +19,6 @@ namespace RPG.Characters
 
 
         public float maxHealthPoints = 100f;
-        public float damagePerHit = 10f;
-        public float attackSpeed = .5f;
-        public float maxAttackRange = 2f;
 
         public float currentHealthPoints;
         CameraRaycaster cameraRaycaster;
@@ -32,6 +29,7 @@ namespace RPG.Characters
         float lastDamaged;
 
         [SerializeField] AnimatorOverrideController animatorOverrideController;
+        Animator animator;
 
         public float healthAsPercentage
         {
@@ -48,12 +46,12 @@ namespace RPG.Characters
             currentHealthPoints = maxHealthPoints;
             PutWeaponInMainHand();
             PutWeaponInOffHand();
-            OverrideAnimatorController();
+            SetupRuntimeAnimator();
         }
 
-        private void OverrideAnimatorController()
+        private void SetupRuntimeAnimator()
         {
-            var animator = GetComponent<Animator>();
+            animator = GetComponent<Animator>();
             animator.runtimeAnimatorController = animatorOverrideController;
 
             //TODO Get OFFHAND and Block working
@@ -132,20 +130,31 @@ namespace RPG.Characters
                 var enemy = raycastHit.collider.gameObject;
 
                 // Check enemy is in range
-                if ((enemy.transform.position - transform.position).magnitude > maxAttackRange)
+                if(IsTargetInRange(enemy))
                 {
-                    return;
-                }
-
-                var enemyComponent = enemy.GetComponent<Enemy>();
-                if (Time.time - lastHitTime > attackSpeed)
-                {
-                    enemyComponent.TakeDamage(damagePerHit);
-                    lastHitTime = Time.time;
+                    AttackTarget(enemy);
                 }
             }
         }
 
+
+        private bool IsTargetInRange(GameObject target)
+        {
+            float distanceToTaret = (target.transform.position - transform.position).magnitude;
+            return distanceToTaret <= mainHandWeapon.GetMaxAttackRange();
+        }
+
+        private void AttackTarget(GameObject target)
+        {
+            var enemyComponent = target.GetComponent<Enemy>();
+            if (Time.time - lastHitTime > mainHandWeapon.GetAttackSpeed())
+            {
+                transform.LookAt(target.transform);
+                animator.SetTrigger("Attack");
+                enemyComponent.TakeDamage(mainHandWeapon.GetDamagePerHit());
+                lastHitTime = Time.time;
+            }
+        }
         public void TakeDamage(float damage)
         {
             currentHealthPoints = Mathf.Clamp(currentHealthPoints - damage, 0f, maxHealthPoints);

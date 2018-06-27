@@ -124,10 +124,6 @@
       <Project>{47D170A3-4E94-791E-E30B-499A4F3BC047}</Project>
       <Name>RPG</Name>
     </ProjectReference>
-    <ProjectReference Include="RPG.Plugins.csproj">
-      <Project>{D96DA320-22F7-390E-F703-034DB0A85C09}</Project>
-      <Name>RPG.Plugins</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Standard Assets\Editor\CrossPlatformInput\CrossPlatformInputInitialize.cs" />
@@ -135,11 +131,8 @@
   <ItemGroup>
     <None Include="Assets\Huge Mocap Library\READTHIS.txt" />
     <None Include="Assets\Huge Mocap Library\mocap animations\cmu-mocap-index-text.txt" />
-    <None Include="Assets\Standard Assets\Cameras\CameraGuidelines.txt" />
-    <None Include="Assets\Standard Assets\Characters\FirstPersonCharacter\FirstPersonCharacterGuidelines.txt" />
-    <None Include="Assets\Standard Assets\Characters\RollerBall\RollerBallGuidelines.txt" />
-    <None Include="Assets\Standard Assets\Characters\ThirdPersonCharacter\ThirdPersonCharacterGuidelines.txt" />
-    <None Include="Assets\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
+    <None Include="Assets\_Characters\ThirdPersonCharacter\ThirdPersonCharacterGuidelines.txt" />
+    <None Include="Assets\_Weapons\Ball Gun\RollerBall\RollerBallGuidelines.txt" />
     <None Include="Assets\_World Objects\Village\FXWaterPro.shader" />
     <None Include="Assets\_World Objects\Water\Shaders\FXWaterPro.shader" />
     <None Include="Assets\notes.txt" />

@@ -78,18 +78,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="RPG.Plugins.csproj">
-      <Project>{D96DA320-22F7-390E-F703-034DB0A85C09}</Project>
-      <Name>RPG.Plugins</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Assets\_CameraUI\CameraFollow.cs" />
     <Compile Include="Assets\_CameraUI\CameraRaycaster.cs" />
     <Compile Include="Assets\_CameraUI\CameraRotate.cs" />
     <Compile Include="Assets\_CameraUI\Console.cs" />
     <Compile Include="Assets\_CameraUI\CursorAffordance.cs" />
     <Compile Include="Assets\_CameraUI\FPSCounter.cs" />
+    <Compile Include="Assets\_Characters\AICharacterControl.cs" />
     <Compile Include="Assets\_Characters\Enemies\Enemy.cs" />
     <Compile Include="Assets\_Characters\Enemies\EnemyAICharacterControl.cs" />
     <Compile Include="Assets\_Characters\Enemies\EnemyHealthBar.cs" />
@@ -100,9 +95,12 @@
     <Compile Include="Assets\_Characters\Player\PlayerHealthBar.cs" />
     <Compile Include="Assets\_Characters\Player\PlayerInput.cs" />
     <Compile Include="Assets\_Characters\Player\PlayerMovement.cs" />
+    <Compile Include="Assets\_Characters\ThirdPersonCharacter.cs" />
+    <Compile Include="Assets\_Characters\ThirdPersonCharacter\Scripts\ThirdPersonUserControl.cs" />
+    <Compile Include="Assets\_Core\AudioTrigger.cs" />
     <Compile Include="Assets\_Core\IDamageable.cs" />
     <Compile Include="Assets\_Core\SpinMe.cs" />
-    <Compile Include="Assets\_Weapons\Projectile.cs" />
+    <Compile Include="Assets\_Weapons\Ball Gun\Projectile.cs" />
     <Compile Include="Assets\_Weapons\Weapon.cs" />
     <Compile Include="Assets\_World Objects\Water\Scripts\Displace.cs" />
     <Compile Include="Assets\_World Objects\Water\Scripts\GerstnerDisplace.cs" />
@@ -118,11 +116,8 @@
   <ItemGroup>
     <None Include="Assets\Huge Mocap Library\READTHIS.txt" />
     <None Include="Assets\Huge Mocap Library\mocap animations\cmu-mocap-index-text.txt" />
-    <None Include="Assets\Standard Assets\Cameras\CameraGuidelines.txt" />
-    <None Include="Assets\Standard Assets\Characters\FirstPersonCharacter\FirstPersonCharacterGuidelines.txt" />
-    <None Include="Assets\Standard Assets\Characters\RollerBall\RollerBallGuidelines.txt" />
-    <None Include="Assets\Standard Assets\Characters\ThirdPersonCharacter\ThirdPersonCharacterGuidelines.txt" />
-    <None Include="Assets\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
+    <None Include="Assets\_Characters\ThirdPersonCharacter\ThirdPersonCharacterGuidelines.txt" />
+    <None Include="Assets\_Weapons\Ball Gun\RollerBall\RollerBallGuidelines.txt" />
     <None Include="Assets\_World Objects\Village\FXWaterPro.shader" />
     <None Include="Assets\_World Objects\Water\Shaders\FXWaterPro.shader" />
     <None Include="Assets\notes.txt" />

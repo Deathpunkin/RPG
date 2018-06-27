@@ -52,13 +52,15 @@ namespace RPG.CameraUI
             {/*0 mouse btn izq, 1 mouse btn der*/
                 rightClick = true;
                 Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked; // Moves cursor to middle of screen on Right click
                 x += Input.GetAxis("Mouse X") * mouseXSpeedMod;
                 y += Input.GetAxis("Mouse Y") * mouseYSpeedMod;
             }
-            else if (Input.GetAxis("Vertical") != 0 || Input.GetAxis("Horizontal") != 0)
+            else //if (Input.GetAxis("Vertical") != 0 || Input.GetAxis("Horizontal") != 0)
             {
                 rightClick = false;
                 Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None; //unlocks cursor from middle of screen on Right click release
                 float targetRotantionAngle = CameraArm.eulerAngles.y;
                 float cameraRotationAngle = transform.eulerAngles.y;
                 x = Mathf.LerpAngle(cameraRotationAngle, targetRotantionAngle, lerpRate * Time.deltaTime);
@@ -124,19 +126,6 @@ namespace RPG.CameraUI
             }
 
         }
-        //TODO uncomment/remove
-        //private void Update()
-        //{
-        //    if (rightClick)
-        //    {
-        //        Cursor.visible = false;
-        //    } 
-        //    else
-        //    {
-        //        Cursor.visible = true;
-        //    }
-        //}
-
         private static float ClampAngle(float angle, float min, float max)
         {
             if (angle < -360)

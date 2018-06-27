@@ -8,16 +8,33 @@ namespace RPG.Weapons
     [CreateAssetMenu(menuName = ("RPG/Weapon"))]
     public class Weapon : ScriptableObject
     {
-        
+
         [SerializeField] GameObject weaponPrefab;
         [SerializeField] AnimationClip attackAnimationMainHand;
         [SerializeField] AnimationClip attackAnimationOffHand;
         [SerializeField] AnimationClip blockAnimationMainHand;
         [SerializeField] AnimationClip blockAnimationOffHand;
         Player player;
-
         public Transform gripMainHandTransform; //Where to hold if Mainhand.
         public Transform gripOffHandTransform; //Where to hold if Offhand
+        [SerializeField] float attackSpeed = .5f;
+        [SerializeField] float maxAttackRange = 2f;
+        [SerializeField] float damagePerHit = 10f;
+
+        public float GetAttackSpeed()
+        {
+            return attackSpeed;
+        }
+
+        public float GetMaxAttackRange()
+        {
+            return maxAttackRange;
+        }
+
+        public float GetDamagePerHit() // TODO consider removing "PerHit"
+        {
+            return damagePerHit;
+        }
 
         public GameObject GetWeaponPrefab()
         {
