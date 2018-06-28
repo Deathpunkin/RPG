@@ -20,6 +20,21 @@ namespace RPG.Weapons
         [SerializeField] float attackSpeed = .5f;
         [SerializeField] float maxAttackRange = 2f;
         [SerializeField] float damagePerHit = 10f;
+        [SerializeField] AudioSource audioSource;
+        [SerializeField] AudioClip hitSound;
+        [SerializeField] AudioClip missSound;
+        [SerializeField] AudioClip blockSound;
+
+        void start()
+        {
+            audioSource = weaponPrefab.AddComponent<AudioSource>();
+            audioSource.playOnAwake = false;
+        }
+
+        public AudioSource GetWeaponAudioSouce()
+        {
+            return audioSource; 
+        }
 
         public float GetAttackSpeed()
         {
@@ -39,6 +54,21 @@ namespace RPG.Weapons
         public GameObject GetWeaponPrefab()
         {
             return weaponPrefab;
+        }
+
+        public AudioClip GetWeaponHitSound()
+        {
+            return hitSound;
+        }
+
+        public AudioClip GetWeaponMissSound()
+        {
+            return missSound;
+        }
+
+        public AudioClip GetWeaponBlockSound()
+        {
+            return blockSound;
         }
 
         public AnimationClip GetMainHandAttackAnimClip()

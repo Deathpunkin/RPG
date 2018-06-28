@@ -125,6 +125,7 @@ namespace RPG.Characters
 
         void OnMouseClick(RaycastHit raycastHit, int layerHit)
         {
+            
             if (layerHit == enemyLayer)
             {
                 var enemy = raycastHit.collider.gameObject;
@@ -151,6 +152,8 @@ namespace RPG.Characters
             {
                 transform.LookAt(target.transform);
                 animator.SetTrigger("Attack");
+                //mainHandWeapon.GetWeaponHitSound();
+                //mainHandWeapon.GetWeaponAudioSouce().Play();
                 enemyComponent.TakeDamage(mainHandWeapon.GetDamagePerHit());
                 lastHitTime = Time.time;
             }

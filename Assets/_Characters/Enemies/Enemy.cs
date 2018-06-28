@@ -45,8 +45,13 @@ namespace RPG.Characters
             currentHealthPoints = Mathf.Clamp(currentHealthPoints - damage, 0f, maxHealthPoints);
             if (currentHealthPoints <= 0)
             {
+                if(isProp)
+                {
+                    return;
+                }
                 Destroy(gameObject, 0.1f);
                 StartCoroutine("awardExp");
+
             }
         }
 
