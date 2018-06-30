@@ -12,6 +12,7 @@ public class DamageFloatText : MonoBehaviour {
         Debug.Log("FloatTextStart");
         AnimatorClipInfo[] clipInfo = animator.GetCurrentAnimatorClipInfo(0);
         Destroy(gameObject, clipInfo[0].clip.length);
+        print("Number Position - " + gameObject.transform.position.ToString());
         damageText = animator.GetComponent<Text>();
     }
 

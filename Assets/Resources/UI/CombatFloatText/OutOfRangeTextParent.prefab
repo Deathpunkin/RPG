@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 224413272222060800}
   - component: {fileID: 114290923673225530}
   m_Layer: 5
-  m_Name: DodgeextParent
+  m_Name: OutOfRangeTextParent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -40,7 +40,7 @@ GameObject:
   - component: {fileID: 114828034991244242}
   - component: {fileID: 95369030962353272}
   m_Layer: 5
-  m_Name: DodgeText
+  m_Name: OutOfRangeText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -55,7 +55,7 @@ Animator:
   m_GameObject: {fileID: 1551882247645138}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: d183b6d800d584a4c8f4fd48cd66821c, type: 2}
+  m_Controller: {fileID: 9100000, guid: 6f2e1bcf393689c40a08b49dd85d25f2, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -107,7 +107,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 42
+  m_Text: Out of range.
 --- !u!114 &114828034991244242
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -143,8 +143,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100.16, y: 30}
+  m_AnchoredPosition: {x: -6.25, y: 0}
+  m_SizeDelta: {x: 300.54, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224413272222060800
 RectTransform:
@@ -162,6 +162,6 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchoredPosition: {x: 94.02, y: 0}
+  m_SizeDelta: {x: 288.04, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}

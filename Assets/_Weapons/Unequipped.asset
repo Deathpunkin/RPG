@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 699238ea31342554ab32cd695386c7c5, type: 3}
+  m_Name: Unequipped
+  m_EditorClassIdentifier: 
+  weaponPrefab: {fileID: 1249984476662756, guid: 36702a6c5fc11a0458ff2566fac6f44c,
+    type: 2}
+  attackAnimationMainHand: {fileID: 0}
+  attackAnimationOffHand: {fileID: 0}
+  blockAnimationMainHand: {fileID: 0}
+  blockAnimationOffHand: {fileID: 0}
+  gripMainHandTransform: {fileID: 4094976569207070, guid: 9602524783ca49e429b7584dedcff92b,
+    type: 2}
+  gripOffHandTransform: {fileID: 4094976569207070, guid: 9602524783ca49e429b7584dedcff92b,
+    type: 2}
+  attackSpeed: 0.5
+  maxAttackRange: 2
+  minDamagePerHit: 10
+  maxDamagePerHit: 20
+  audioSource: {fileID: 0}
+  hitSound: {fileID: 0}
+  missSound: {fileID: 0}
+  blockSound: {fileID: 0}

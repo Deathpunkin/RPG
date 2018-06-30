@@ -5,7 +5,7 @@ AnimatorController:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: DodgeText
+  m_Name: OutOfRangeText
   serializedVersion: 5
   m_AnimatorParameters: []
   m_AnimatorLayers:
@@ -39,7 +39,7 @@ AnimatorState:
   m_SpeedParameterActive: 0
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 729d49efd698e6346af943031d32ec4e, type: 2}
+  m_Motion: {fileID: 7400000, guid: 34c1fdd746cf6724ba3f61eabce1ff41, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 

@@ -22,7 +22,7 @@ MonoBehaviour:
     type: 2}
   gripOffHandTransform: {fileID: 0}
   attackSpeed: 2
-  maxAttackRange: 5
+  maxAttackRange: 6.02
   minDamagePerHit: 40
   maxDamagePerHit: 50
   audioSource: {fileID: 0}

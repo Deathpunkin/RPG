@@ -9,7 +9,6 @@ namespace RPG.CameraUI
     {
         // INSPECTOR PROPERTIES RENDERED BY CUSTOM EDITOR SCRIPT
         [SerializeField] int[] layerPriorities;
-
         float maxRaycastDepth = 100f; // Hard coded value
         int topPriorityLayerLastFrame = -1; // So get ? from start with Default layer terrain
 
@@ -19,7 +18,6 @@ namespace RPG.CameraUI
 
         public delegate void OnClickPriorityLayer(RaycastHit raycastHit, int layerHit); // declare new delegate type
         public event OnClickPriorityLayer notifyMouseClickObservers; // instantiate an observer set
-
 
         void Update()
         {
@@ -51,7 +49,6 @@ namespace RPG.CameraUI
                 notifyMouseClickObservers(priorityHit.Value, layerHit);
             }
         }
-
         void NotifyObserversIfLayerChanged(int newLayer)
         {
             if (newLayer != topPriorityLayerLastFrame)
@@ -60,7 +57,6 @@ namespace RPG.CameraUI
                 notifyLayerChangeObservers(newLayer);
             }
         }
-
         RaycastHit? FindTopPriorityHit(RaycastHit[] raycastHits)
         {
             // Form list of layer numbers hit

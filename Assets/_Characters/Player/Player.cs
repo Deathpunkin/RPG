@@ -8,7 +8,7 @@ using RPG.Core;
 using RPG.Weapons;
 
 namespace RPG.Characters
-{
+{   
     public class Player : MonoBehaviour, IDamageable
     {
 
@@ -22,11 +22,10 @@ namespace RPG.Characters
 
         public float currentHealthPoints;
         CameraRaycaster cameraRaycaster;
-        float lastAttackTime = 0f;
-        public float timeSinceLastDamaged;
+        [SerializeField] float lastAttackTime = 0f;
+        public float timeSinceLastDamaged; //TODO remove public after debugging done
         float regenHealthDelay = 5f;
         float regenHealthspeed = 1f;
-        float lastDamaged;
 
         float damage;
         [SerializeField] float critChance = 10f;
@@ -37,7 +36,6 @@ namespace RPG.Characters
 
         [SerializeField] AnimatorOverrideController animatorOverrideController;
         Animator animator;
-        float enemylocal;
 
         public float healthAsPercentage
         {
@@ -52,9 +50,11 @@ namespace RPG.Characters
             cameraRaycaster = FindObjectOfType<CameraRaycaster>();
             cameraRaycaster.notifyMouseClickObservers += OnMouseClick;
             currentHealthPoints = maxHealthPoints;
+
             PutWeaponInMainHand();
             if(!offHandWeapon)
-            { return;
+            {
+                return;
             }
             PutWeaponInOffHand();
             SetupRuntimeAnimator();
@@ -116,12 +116,12 @@ namespace RPG.Characters
             if ((Time.time - timeSinceLastDamaged) >= regenHealthDelay && currentHealthPoints != maxHealthPoints)
             {
                 print("regenerating!");
-                StartCoroutine("regenHealth");
+                StartCoroutine(regenHealth());
             }
             if (currentHealthPoints == maxHealthPoints & (Time.time - timeSinceLastDamaged) <= regenHealthDelay)
             {
                 //CancelInvoke();
-                StopCoroutine("regenHealth");
+                StopCoroutine(regenHealth());
             }
             //Damage Math
             damage = Mathf.Round(UnityEngine.Random.Range(mainHandWeapon.GetMinDamagePerHit(), mainHandWeapon.GetMaxDamagePerHit()));
@@ -139,24 +139,35 @@ namespace RPG.Characters
 
         void OnMouseClick(RaycastHit raycastHit, int layerHit)
         {
-            
+
             if (layerHit == enemyLayer)
             {
-                var enemy = raycastHit.collider.gameObject;
+               var enemy = raycastHit.collider.gameObject;
 
                 // Check enemy is in range
                 if(IsTargetInRange(enemy))
                 {
                     AttackTarget(enemy);
+                    StopCoroutine(moveIntoRange());
+                }
+                else
+                {
+                    DamageTextController.CreateFloatingOutOfRangeText("Target out of reach.", enemy.transform);
+                    //StartCoroutine(moveIntoRange());
                 }
             }
         }
 
+        IEnumerator moveIntoRange()
+        {
+            print("Make me Move to Target");
+            yield return new WaitForSeconds(0);
+        }
 
         private bool IsTargetInRange(GameObject target)
         {
-            float distanceToTaret = (target.transform.position - transform.position).magnitude;
-            return distanceToTaret <= mainHandWeapon.GetMaxAttackRange();
+            float distanceToTarget = (target.transform.position - transform.position).magnitude;
+            return distanceToTarget <= mainHandWeapon.GetMaxAttackRange();
         }
 
         private void AttackTarget(GameObject target)
@@ -186,9 +197,10 @@ namespace RPG.Characters
                             highestDamage = damage;
                             Debug.Log(enemyComponent.transform);
                         }
-                        DamageTextController.CreateFloatingDamageText(damage.ToString(), enemyComponent.transform);
+                        DamageTextController.CreateFloatingDamageText(damage.ToString(), target.transform);
                         enemyComponent.TakeDamage(damage);
                         print("Dealt " + damage);
+                    print("Target position - " + target.transform.position.ToString());
                     }
                 else
                 {

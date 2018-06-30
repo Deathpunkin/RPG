@@ -47,7 +47,6 @@ namespace RPG.CameraUI
         // Update is called once per frame
         void LateUpdate()
         {
-            //TODO get cursor visablity switch working for rotate.
             if (Input.GetMouseButton(1))
             {/*0 mouse btn izq, 1 mouse btn der*/
                 rightClick = true;

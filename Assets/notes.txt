@@ -15,3 +15,8 @@ cameraRaycaster.layerChangeObservers += OnLayerChanged; //  add to observer list
 }
 
 ~~
+
+Count lines
+CTRL+SHIFT+F
+Search for ^(?!(\s*\*))(?!(\s*\-\-\>))(?!(\s*\<\!\-\-))(?!(\s*\n))(?!(\s*\*\/))(?!(\s*\/\*))(?!(\s*\/\/\/))(?!(\s*\/\/))(?!(\s*\}))(?!(\s*\{))(?!(\s(using))).*$
+and turn on Regular Expressions option
