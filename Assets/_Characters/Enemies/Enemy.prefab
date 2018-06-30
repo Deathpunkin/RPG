@@ -2792,6 +2792,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac46da830b7bf0443b928b3e59950ae5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  level: 1
   maxHealthPoints: 100
   chaseRadius: 6
   attackRadius: 4
@@ -2801,6 +2802,8 @@ MonoBehaviour:
     type: 2}
   projectileSocket: {fileID: 1889241560012306}
   aimOffset: {x: 0, y: 1, z: 0}
+  dodgechance: 10
+  isProp: 0
 --- !u!195 &195613560213886756
 NavMeshAgent:
   m_ObjectHideFlags: 1

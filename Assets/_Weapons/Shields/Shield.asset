@@ -22,3 +22,11 @@ MonoBehaviour:
     type: 2}
   gripOffHandTransform: {fileID: 4335788245546900, guid: 7fd56dc113fc2ad459fc4fc629da0944,
     type: 2}
+  attackSpeed: 0.5
+  maxAttackRange: 2
+  minDamagePerHit: 10
+  maxDamagePerHit: 20
+  audioSource: {fileID: 0}
+  hitSound: {fileID: 0}
+  missSound: {fileID: 0}
+  blockSound: {fileID: 0}

@@ -132,9 +132,9 @@
     <None Include="Assets\Huge Mocap Library\READTHIS.txt" />
     <None Include="Assets\Huge Mocap Library\mocap animations\cmu-mocap-index-text.txt" />
     <None Include="Assets\_Characters\ThirdPersonCharacter\ThirdPersonCharacterGuidelines.txt" />
+    <None Include="Assets\_Environment\Village\FXWaterPro.shader" />
+    <None Include="Assets\_Environment\Water\Shaders\FXWaterPro.shader" />
     <None Include="Assets\_Weapons\Ball Gun\RollerBall\RollerBallGuidelines.txt" />
-    <None Include="Assets\_World Objects\Village\FXWaterPro.shader" />
-    <None Include="Assets\_World Objects\Water\Shaders\FXWaterPro.shader" />
     <None Include="Assets\notes.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

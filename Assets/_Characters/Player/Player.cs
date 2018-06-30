@@ -179,7 +179,7 @@ namespace RPG.Characters
                 animator.SetTrigger("Attack");
                 //mainHandWeapon.GetWeaponHitSound();
                 //mainHandWeapon.GetWeaponAudioSouce().Play
-                if (UnityEngine.Random.Range(1, 100) < critChance && UnityEngine.Random.Range(1, 100) > enemyComponent.dodgechance)
+                if (UnityEngine.Random.Range(1.0f, 100.0f) < critChance && UnityEngine.Random.Range(1, 100) > enemyComponent.dodgechance)
                 {
                     enemyComponent.TakeDamage(critDamage);
                     print("CRIT! Dealt " + critDamage);

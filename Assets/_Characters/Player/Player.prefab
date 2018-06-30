@@ -755,12 +755,16 @@ MonoBehaviour:
   enemyLayer: 9
   mainHandWeapon: {fileID: 11400000, guid: 7ac64f07787a94f40bd85f364fbf6136, type: 2}
   offHandWeapon: {fileID: 11400000, guid: 7ac64f07787a94f40bd85f364fbf6136, type: 2}
+  level: 1
   maxHealthPoints: 500
-  damagePerHit: 10
-  attackSpeed: 0.5
-  maxAttackRange: 2
   currentHealthPoints: 0
+  lastAttackTime: 0
   timeSinceLastDamaged: 0
+  critChance: 10
+  critDamage: 0
+  critMultiplyer: 1.5
+  highestDamage: 0
+  highestCrit: 0
   animatorOverrideController: {fileID: 22100000, guid: d1b9a8af17d213e4a9fb354eba229bd0,
     type: 2}
 --- !u!114 &114240902899738762

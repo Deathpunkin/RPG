@@ -20,7 +20,8 @@ MonoBehaviour:
   blockAnimationOffHand: {fileID: 0}
   gripMainHandTransform: {fileID: 4982853940190884, guid: d00b32e1add9fb3438633b7b46c8136f,
     type: 2}
-  gripOffHandTransform: {fileID: 0}
+  gripOffHandTransform: {fileID: 4982853940190884, guid: 2114e7f4a1db19c4f88c4a50bc1d070e,
+    type: 2}
   attackSpeed: 0.5
   maxAttackRange: 2
   minDamagePerHit: 10
