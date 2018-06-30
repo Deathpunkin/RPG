@@ -21,9 +21,10 @@ MonoBehaviour:
   gripMainHandTransform: {fileID: 4406109345298960, guid: ea935b4da7dc9134e8482ed074195b1e,
     type: 2}
   gripOffHandTransform: {fileID: 0}
-  attackSpeed: 0.5
+  attackSpeed: 2
   maxAttackRange: 5
-  damagePerHit: 10
+  minDamagePerHit: 40
+  maxDamagePerHit: 50
   audioSource: {fileID: 0}
   hitSound: {fileID: 8300000, guid: 0ecf18972377e4652ab7377a0993f14a, type: 3}
   missSound: {fileID: 0}

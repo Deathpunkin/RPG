@@ -112,6 +112,8 @@
     <Compile Include="Assets\_World Objects\Water\Scripts\WaterTile.cs" />
     <Compile Include="Assets\Huge Mocap Library\demo\scripts\demo.cs" />
     <Compile Include="Assets\Huge Mocap Library\demo\scripts\smoothFollow.cs" />
+    <Compile Include="Assets\Resources\UI\DamageText\DamageFloatText.cs" />
+    <Compile Include="Assets\Resources\UI\DamageText\DamageTextController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Huge Mocap Library\READTHIS.txt" />

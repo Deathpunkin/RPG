@@ -16,20 +16,28 @@ namespace RPG.Characters
         //Gear Slots Setup Here
         public Weapon mainHandWeapon;
         public Weapon offHandWeapon;
-
+        public float level = 1f;
 
         public float maxHealthPoints = 100f;
 
         public float currentHealthPoints;
         CameraRaycaster cameraRaycaster;
-        float lastHitTime = 0f;
+        float lastAttackTime = 0f;
         public float timeSinceLastDamaged;
         float regenHealthDelay = 5f;
         float regenHealthspeed = 1f;
         float lastDamaged;
 
+        float damage;
+        [SerializeField] float critChance = 10f;
+        [SerializeField] float critDamage;
+        [SerializeField] float critMultiplyer = 1.5f; // 1.5 extra dmg
+        [SerializeField] float highestDamage;
+        [SerializeField] float highestCrit;
+
         [SerializeField] AnimatorOverrideController animatorOverrideController;
         Animator animator;
+        float enemylocal;
 
         public float healthAsPercentage
         {
@@ -45,8 +53,12 @@ namespace RPG.Characters
             cameraRaycaster.notifyMouseClickObservers += OnMouseClick;
             currentHealthPoints = maxHealthPoints;
             PutWeaponInMainHand();
+            if(!offHandWeapon)
+            { return;
+            }
             PutWeaponInOffHand();
             SetupRuntimeAnimator();
+            DamageTextController.Initialize();
         }
 
         private void SetupRuntimeAnimator()
@@ -58,7 +70,7 @@ namespace RPG.Characters
             animatorOverrideController["DEFAULT MAINHAND ATTACK"] = mainHandWeapon.GetMainHandAttackAnimClip();
             //animatorOverrideController["DEFAULT OFFHAND ATTACK"] = offHandWeapon.GetOffHandAttackAnimClip();
             //animatorOverrideController["DEFAULT MAINHAND BLOCK"] = mainHandWeapon.GetMainHandBlockAnimClip();
-            animatorOverrideController["DEFAULT OFFHAND BLOCK"] = offHandWeapon.GetOffHandBlockAnimClip();
+            //animatorOverrideController["DEFAULT OFFHAND BLOCK"] = offHandWeapon.GetOffHandBlockAnimClip();
 
         }
         //Weapon/Hand setup
@@ -110,8 +122,10 @@ namespace RPG.Characters
             {
                 //CancelInvoke();
                 StopCoroutine("regenHealth");
-                print("Done Regen!");
             }
+            //Damage Math
+            damage = Mathf.Round(UnityEngine.Random.Range(mainHandWeapon.GetMinDamagePerHit(), mainHandWeapon.GetMaxDamagePerHit()));
+            critDamage = Mathf.Round(damage * critMultiplyer);
         }
 
         IEnumerator regenHealth()
@@ -148,14 +162,41 @@ namespace RPG.Characters
         private void AttackTarget(GameObject target)
         {
             var enemyComponent = target.GetComponent<Enemy>();
-            if (Time.time - lastHitTime > mainHandWeapon.GetAttackSpeed())
+            if (Time.time - lastAttackTime > mainHandWeapon.GetAttackSpeed())
             {
                 transform.LookAt(target.transform);
                 animator.SetTrigger("Attack");
                 //mainHandWeapon.GetWeaponHitSound();
-                //mainHandWeapon.GetWeaponAudioSouce().Play();
-                enemyComponent.TakeDamage(mainHandWeapon.GetDamagePerHit());
-                lastHitTime = Time.time;
+                //mainHandWeapon.GetWeaponAudioSouce().Play
+                if (UnityEngine.Random.Range(1, 100) < critChance && UnityEngine.Random.Range(1, 100) > enemyComponent.dodgechance)
+                {
+                    enemyComponent.TakeDamage(critDamage);
+                    print("CRIT! Dealt " + critDamage);
+                    if (critDamage >= highestCrit && enemyComponent.level >= level)
+                    {
+                        highestCrit = critDamage;
+                    }
+                    DamageTextController.CreateFloatingCritDamageText(critDamage.ToString(), target.transform);
+
+                }
+                else if (UnityEngine.Random.Range(1, 100) > enemyComponent.dodgechance)
+                    {
+                        if (damage >= highestDamage && enemyComponent.level >= level)
+                        {
+                            highestDamage = damage;
+                            Debug.Log(enemyComponent.transform);
+                        }
+                        DamageTextController.CreateFloatingDamageText(damage.ToString(), enemyComponent.transform);
+                        enemyComponent.TakeDamage(damage);
+                        print("Dealt " + damage);
+                    }
+                else
+                {
+                    print("DODGED!");
+                    DamageTextController.CreateFloatingDodgeText("Dodged!", target.transform);
+
+                }
+                lastAttackTime = Time.time;
             }
         }
         public void TakeDamage(float damage)

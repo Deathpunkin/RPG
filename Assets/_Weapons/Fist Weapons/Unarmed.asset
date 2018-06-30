@@ -15,12 +15,17 @@ MonoBehaviour:
     type: 2}
   attackAnimationMainHand: {fileID: 7400000, guid: 3414c515c6a2f334da03b4ab3d547691,
     type: 3}
-  attackAnimationOffHand: {fileID: 7400000, guid: 1315bcd7509173f44bc6655b2673dd4d,
-    type: 3}
+  attackAnimationOffHand: {fileID: 0}
   blockAnimationMainHand: {fileID: 0}
-  blockAnimationOffHand: {fileID: 7400000, guid: 884ca423a24fb5541b2c91f9986642a5,
-    type: 3}
+  blockAnimationOffHand: {fileID: 0}
   gripMainHandTransform: {fileID: 4982853940190884, guid: d00b32e1add9fb3438633b7b46c8136f,
     type: 2}
-  gripOffHandTransform: {fileID: 4982853940190884, guid: 2114e7f4a1db19c4f88c4a50bc1d070e,
-    type: 2}
+  gripOffHandTransform: {fileID: 0}
+  attackSpeed: 0.5
+  maxAttackRange: 2
+  minDamagePerHit: 10
+  maxDamagePerHit: 50
+  audioSource: {fileID: 0}
+  hitSound: {fileID: 0}
+  missSound: {fileID: 0}
+  blockSound: {fileID: 0}

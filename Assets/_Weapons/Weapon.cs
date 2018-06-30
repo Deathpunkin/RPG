@@ -19,7 +19,8 @@ namespace RPG.Weapons
         public Transform gripOffHandTransform; //Where to hold if Offhand
         [SerializeField] float attackSpeed = .5f;
         [SerializeField] float maxAttackRange = 2f;
-        [SerializeField] float damagePerHit = 10f;
+        [SerializeField] float minDamagePerHit = 10f;
+        [SerializeField] float maxDamagePerHit = 20f;
         [SerializeField] AudioSource audioSource;
         [SerializeField] AudioClip hitSound;
         [SerializeField] AudioClip missSound;
@@ -46,9 +47,14 @@ namespace RPG.Weapons
             return maxAttackRange;
         }
 
-        public float GetDamagePerHit() // TODO consider removing "PerHit"
+        public float GetMinDamagePerHit() // TODO consider removing "PerHit"
         {
-            return damagePerHit;
+            return minDamagePerHit;
+        }
+
+        public float GetMaxDamagePerHit()
+        {
+            return maxDamagePerHit;
         }
 
         public GameObject GetWeaponPrefab()

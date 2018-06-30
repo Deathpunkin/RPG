@@ -10,6 +10,7 @@ namespace RPG.Characters
     public class Enemy : MonoBehaviour, IDamageable
     {
 
+        public float level = 1;
         public float maxHealthPoints = 100f;
         float currentHealthPoints;
         float regenHealthspeed = 1f;
@@ -27,6 +28,8 @@ namespace RPG.Characters
         AICharacterControl aiCharacterControl = null;
         GameObject player = null;
         Player players;
+        float damageTaken;
+        public float dodgechance = 10f;
 
         [SerializeField] bool isProp = false;
 
@@ -43,6 +46,9 @@ namespace RPG.Characters
         public void TakeDamage(float damage)
         {
             currentHealthPoints = Mathf.Clamp(currentHealthPoints - damage, 0f, maxHealthPoints);
+            damageTaken = damage;
+            //DamageTextController.CreateFloatingDamageText(damageTaken.ToString(), gameObject.transform);
+
             if (currentHealthPoints <= 0)
             {
                 if(isProp)
@@ -75,6 +81,7 @@ namespace RPG.Characters
             player = GameObject.FindGameObjectWithTag("Player");
             aiCharacterControl = GetComponent<AICharacterControl>();
             currentHealthPoints = maxHealthPoints;
+            DamageTextController.Initialize();
         }
 
         void Update()

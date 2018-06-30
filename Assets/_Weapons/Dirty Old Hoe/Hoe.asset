@@ -13,6 +13,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponPrefab: {fileID: 1274797246840802, guid: cc0dbe33ee8adbe4eb124e2d95d37fe4,
     type: 2}
-  attackAnimation: {fileID: 0}
-  gripTransform: {fileID: 4268107031505578, guid: 7cd792a3c5cb9b54f83d97b76cc98e76,
+  attackAnimationMainHand: {fileID: 7400000, guid: 475796453e56ae447b098689c94bcfb5,
+    type: 3}
+  attackAnimationOffHand: {fileID: 0}
+  blockAnimationMainHand: {fileID: 0}
+  blockAnimationOffHand: {fileID: 0}
+  gripMainHandTransform: {fileID: 4268107031505578, guid: 7cd792a3c5cb9b54f83d97b76cc98e76,
     type: 2}
+  gripOffHandTransform: {fileID: 0}
+  attackSpeed: 0.5
+  maxAttackRange: 2
+  minDamagePerHit: 10
+  maxDamagePerHit: 20
+  audioSource: {fileID: 0}
+  hitSound: {fileID: 0}
+  missSound: {fileID: 0}
+  blockSound: {fileID: 0}
