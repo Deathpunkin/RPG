@@ -32,7 +32,7 @@ namespace RPG.Characters
         [SerializeField] float critDamage;
         [SerializeField] float critMultiplyer = 1.5f; // 1.5 extra dmg
         [SerializeField] float highestDamage;
-        [SerializeField] float highestCrit;
+        [SerializeField] float highestCrit; 
 
         [SerializeField] AnimatorOverrideController animatorOverrideController;
         Animator animator;
@@ -48,7 +48,7 @@ namespace RPG.Characters
         void Start()
         {
             cameraRaycaster = FindObjectOfType<CameraRaycaster>();
-            cameraRaycaster.notifyMouseClickObservers += OnMouseClick;
+            cameraRaycaster.onMouseOverEnemy += OnMouseOverEnemy;
             currentHealthPoints = maxHealthPoints;
 
             PutWeaponInMainHand();
@@ -136,21 +136,15 @@ namespace RPG.Characters
             yield return new WaitForSeconds(1);
         }
 
-
-        void OnMouseClick(RaycastHit raycastHit, int layerHit)
+        void OnMouseOverEnemy(Enemy enemy)
         {
-
-            if (layerHit == enemyLayer)
+            if (Input.GetMouseButton(0) && IsTargetInRange(enemy.gameObject))
             {
-               var enemy = raycastHit.collider.gameObject;
-
-                // Check enemy is in range
-                if(IsTargetInRange(enemy))
-                {
-                    AttackTarget(enemy);
-                    StopCoroutine(moveIntoRange());
-                }
-                else
+                AttackTarget(enemy);
+            }
+            else
+            {
+                if(Input.GetMouseButtonDown(0))
                 {
                     DamageTextController.CreateFloatingOutOfRangeText("Target out of reach.", enemy.transform);
                     //StartCoroutine(moveIntoRange());
@@ -170,42 +164,41 @@ namespace RPG.Characters
             return distanceToTarget <= mainHandWeapon.GetMaxAttackRange();
         }
 
-        private void AttackTarget(GameObject target)
+        private void AttackTarget(Enemy enemy)
         {
-            var enemyComponent = target.GetComponent<Enemy>();
             if (Time.time - lastAttackTime > mainHandWeapon.GetAttackSpeed())
             {
-                transform.LookAt(target.transform);
+                transform.LookAt(enemy.transform);
                 animator.SetTrigger("Attack");
                 //mainHandWeapon.GetWeaponHitSound();
                 //mainHandWeapon.GetWeaponAudioSouce().Play
-                if (UnityEngine.Random.Range(1.0f, 100.0f) < critChance && UnityEngine.Random.Range(1, 100) > enemyComponent.dodgechance)
+                if (UnityEngine.Random.Range(1.0f, 100.0f) < critChance && UnityEngine.Random.Range(1, 100) > enemy.dodgechance)
                 {
-                    enemyComponent.TakeDamage(critDamage);
+                    enemy.TakeDamage(critDamage);
                     print("CRIT! Dealt " + critDamage);
-                    if (critDamage >= highestCrit && enemyComponent.level >= level)
+                    if (critDamage >= highestCrit && enemy.level >= level)
                     {
                         highestCrit = critDamage;
                     }
-                    DamageTextController.CreateFloatingCritDamageText(critDamage.ToString(), target.transform);
+                    DamageTextController.CreateFloatingCritDamageText(critDamage.ToString(), enemy.transform);
 
                 }
-                else if (UnityEngine.Random.Range(1, 100) > enemyComponent.dodgechance)
+                else if (UnityEngine.Random.Range(1, 100) > enemy.dodgechance)
                     {
-                        if (damage >= highestDamage && enemyComponent.level >= level)
+                        if (damage >= highestDamage && enemy.level >= level)
                         {
                             highestDamage = damage;
-                            Debug.Log(enemyComponent.transform);
+                            Debug.Log(enemy.transform);
                         }
-                        DamageTextController.CreateFloatingDamageText(damage.ToString(), target.transform);
-                        enemyComponent.TakeDamage(damage);
+                        DamageTextController.CreateFloatingDamageText(damage.ToString(), enemy.transform);
+                        enemy.TakeDamage(damage);
                         print("Dealt " + damage);
-                    print("Target position - " + target.transform.position.ToString());
+                    print("Target position - " + enemy.transform.position.ToString());
                     }
                 else
                 {
                     print("DODGED!");
-                    DamageTextController.CreateFloatingDodgeText("Dodged!", target.transform);
+                    DamageTextController.CreateFloatingDodgeText("Dodged!", enemy.transform);
 
                 }
                 lastAttackTime = Time.time;

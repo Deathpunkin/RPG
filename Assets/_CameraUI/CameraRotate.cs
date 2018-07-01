@@ -26,6 +26,7 @@ namespace RPG.CameraUI
         public float cameraTargetHeight = 1.0f;
 
         public bool rightClick = false;
+        private Vector2 mousePosition;
 
         //checks if first person mode is on
         private bool click = false;
@@ -51,7 +52,7 @@ namespace RPG.CameraUI
             {/*0 mouse btn izq, 1 mouse btn der*/
                 rightClick = true;
                 Cursor.visible = false;
-                Cursor.lockState = CursorLockMode.Locked; // Moves cursor to middle of screen on Right click
+                Cursor.lockState = CursorLockMode.Locked; //TODO keep cursor in last location
                 x += Input.GetAxis("Mouse X") * mouseXSpeedMod;
                 y += Input.GetAxis("Mouse Y") * mouseYSpeedMod;
             }

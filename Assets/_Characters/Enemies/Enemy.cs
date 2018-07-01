@@ -86,10 +86,12 @@ namespace RPG.Characters
 
         void Update()
         {
+            Transform chasestop;
             float distanceToPlayer = Vector3.Distance(player.transform.position, transform.position);
             if (distanceToPlayer <= attackRadius && !isAttacking)
             {
                 isAttacking = true;
+                aiCharacterControl.SetTarget(transform);
                 InvokeRepeating("SpawnProjectile", 0f, attackSpeed); // TODO switch to coroutines
             }
 
@@ -99,7 +101,7 @@ namespace RPG.Characters
                 CancelInvoke();
             }
 
-            if (distanceToPlayer <= chaseRadius)
+            if (distanceToPlayer <= chaseRadius && distanceToPlayer >= attackRadius)
             {
                 aiCharacterControl.SetTarget(player.transform);
             }

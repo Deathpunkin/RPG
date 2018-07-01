@@ -19,6 +19,7 @@ namespace RPG.Characters //consider changing to core
         public KeyCode Crouch = KeyCode.Z;
         public KeyCode SelfDamage = KeyCode.H;
         public KeyCode Exp = KeyCode.K;
+        public KeyCode SkillBar1 = KeyCode.Alpha1;
 
         // Use this for initialization
         void Start()

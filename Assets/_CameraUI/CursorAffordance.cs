@@ -8,9 +8,7 @@ namespace RPG.CameraUI
     public class CursorAffordance : MonoBehaviour
     {
 
-        [SerializeField] Texture2D walkCursor = null;
         [SerializeField] Texture2D unknownCursor = null;
-        [SerializeField] Texture2D targetCursor = null;
         [SerializeField] Vector2 cursorHotspot = new Vector2(0, 0);
 
         // TODO solve fight between serialize and const
@@ -30,12 +28,6 @@ namespace RPG.CameraUI
         {
             switch (newLayer)
             {
-                case walkableLayerNumber:
-                    Cursor.SetCursor(walkCursor, cursorHotspot, CursorMode.Auto);
-                    break;
-                case enemyLayerNumber:
-                    Cursor.SetCursor(targetCursor, cursorHotspot, CursorMode.Auto);
-                    break;
                 default:
                     Cursor.SetCursor(unknownCursor, cursorHotspot, CursorMode.Auto);
                     return;
