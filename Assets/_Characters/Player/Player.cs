@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.UI;
 using RPG.CameraUI;
 using RPG.Core;
 using RPG.Weapons;
@@ -10,10 +11,14 @@ using RPG.Weapons;
 namespace RPG.Characters
 {   
     public class Player : MonoBehaviour, IDamageable
-    {
+    { 
+        //TODO sort and clean all this
         CameraRaycaster cameraRaycaster;
         [SerializeField] AnimatorOverrideController animatorOverrideController;
         Animator animator;
+        AudioSource audioSource;
+        [SerializeField] AudioClip[] hurtSounds;
+        [SerializeField] AudioClip[] deathSounds;
 
         // Temporarily serialized for debugging
         [SerializeField] SpecialAbility[] abilities;
@@ -29,14 +34,20 @@ namespace RPG.Characters
 
         public float maxHealthPoints = 100f;
         public float currentHealthPoints;
+        public float respawnHealth;
         float regenHealthDelay = 5.5f;
         float baseRegenHealthSpeed = 0.5f;
+        public bool isDead = false;
+        public Button respawnButton;
+        float respawnInvuln = 5f;
+        public float respawnInvulnTimer;
+
         [SerializeField] float regenHealthSpeed;
         [SerializeField] float critChance = 10f;
         [SerializeField] float critDamage;
         [SerializeField] float critMultiplyer = 1.5f; // 150% extra dmg
 
-        float damage; //damage to deal
+        [SerializeField] float damage; //damage to deal
         [SerializeField] float lastAttackTime = 0f;
         public float timeSinceLastDamaged; //TODO remove public after debugging 
         [SerializeField] float highestDamage;
@@ -57,12 +68,14 @@ namespace RPG.Characters
             cameraRaycaster.onMouseOverEnemy += OnMouseOverEnemy;
             currentHealthPoints = maxHealthPoints;
             regenHealthSpeed = baseRegenHealthSpeed;
-
+            audioSource = GetComponent<AudioSource>();
             PutWeaponInMainHand();
             PutWeaponInOffHand();
             SetupRuntimeAnimator();
             DamageTextController.Initialize();
             abilities[0].AttachComponent(gameObject);
+            Button respawn = respawnButton.GetComponent<Button>();
+            respawnHealth = Mathf.Round(currentHealthPoints / 3);
         }
 
         private void SetupRuntimeAnimator()
@@ -75,6 +88,8 @@ namespace RPG.Characters
             //animatorOverrideController["DEFAULT OFFHAND ATTACK"] = offHandWeapon.GetOffHandAttackAnimClip();
             //animatorOverrideController["DEFAULT MAINHAND BLOCK"] = mainHandWeapon.GetMainHandBlockAnimClip();
             //animatorOverrideController["DEFAULT OFFHAND BLOCK"] = offHandWeapon.GetOffHandBlockAnimClip();
+            animatorOverrideController["DEFAULT DEATH"] = mainHandWeapon.GetDeathAnimClip();
+            animatorOverrideController["DEFAULT REVIVE"] = mainHandWeapon.GetReviveAnimClip();
 
         }
         //Weapon/Hand setup
@@ -117,7 +132,7 @@ namespace RPG.Characters
 
         void Update()
         {
-            if ((Time.time - timeSinceLastDamaged) >= regenHealthDelay && currentHealthPoints != maxHealthPoints)
+            if ((Time.time - timeSinceLastDamaged) >= regenHealthDelay && currentHealthPoints != maxHealthPoints && !isDead)
             {
                 print("regenerating!");
                 StartCoroutine(regenHealth());
@@ -131,9 +146,21 @@ namespace RPG.Characters
             //Damage Math
             damage = Mathf.Round(UnityEngine.Random.Range(mainHandWeapon.GetMinDamagePerHit(), mainHandWeapon.GetMaxDamagePerHit()));
             critDamage = Mathf.Round(damage * critMultiplyer);
-        }
+            if(isDead)
+            {
+                animator.SetTrigger("Dead");
+                StopCoroutine(regenHealth());
+                this.GetComponent<ThirdPersonUserControl>().enabled = false;
+            }
+            else
+            {
+                animator.ResetTrigger("Dead");
+                this.GetComponent<ThirdPersonUserControl>().enabled = true;
+            }
+           respawnInvulnTimer = Mathf.Clamp(respawnInvuln - Time.time, 0, respawnInvuln);
+    }
 
-        IEnumerator regenHealth()
+    IEnumerator regenHealth()
         {
             currentHealthPoints = currentHealthPoints + regenHealthSpeed;
             //regenHealthSpeed = regenHealthSpeed + 0.5f;
@@ -249,8 +276,46 @@ namespace RPG.Characters
         }
         public void TakeDamage(float damage)
         {
-            currentHealthPoints = Mathf.Clamp(currentHealthPoints - damage, 0f, maxHealthPoints);
+            if(respawnInvulnTimer != 0)
+            {
+                damage = 0;
+            }
+            bool playerDies = (currentHealthPoints - damage <= 0); //Must ask before dealing damage
+            ReduceHealth(damage);
             timeSinceLastDamaged = Time.time;
+            //Trigger Death
+            if (playerDies)
+            {
+                StartCoroutine(TriggerDeath());
+            }
+        }
+
+        public IEnumerator TriggerDeath()
+        {
+            var energyComponent = GetComponent<Energy>();
+            //Kill
+            audioSource.clip = deathSounds[UnityEngine.Random.Range(0, deathSounds.Length)];
+            audioSource.Play();
+            isDead = true;
+            //Drain Energy
+            respawnButton.onClick.AddListener(Respawn);
+            //TODO get button to Respawn, or wait for revive working
+            yield return new WaitForSecondsRealtime(audioSource.clip.length);
+
+        }
+
+        public void Respawn()
+        {
+            isDead = false;
+            currentHealthPoints = respawnHealth;
+            timeSinceLastDamaged = Time.time;
+            respawnInvuln =+ 5f;
+        }
+        private void ReduceHealth(float damage)
+        {
+            currentHealthPoints = Mathf.Clamp(currentHealthPoints - damage, 0f, maxHealthPoints);
+            audioSource.clip = hurtSounds[UnityEngine.Random.Range(0, hurtSounds.Length)];
+            audioSource.Play();
         }
 
         //TODO Uncomment this after fixing exp system.

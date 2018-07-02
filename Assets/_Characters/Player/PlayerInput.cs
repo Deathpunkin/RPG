@@ -19,6 +19,7 @@ namespace RPG.Characters //consider changing to core
         public KeyCode SelfDamage = KeyCode.H;
         public KeyCode Exp = KeyCode.K;
         public KeyCode SkillBar1 = KeyCode.Alpha1;
+        public KeyCode Revive = KeyCode.J;
 
         // Use this for initialization
         void Start()
@@ -60,8 +61,12 @@ namespace RPG.Characters //consider changing to core
                 print("Dealt 10dmg to Self!");
                 if (player.currentHealthPoints <= 0)
                 {
-                    Destroy(gameObject);
+                    StartCoroutine(player.TriggerDeath());
                 }
+            }
+            if(Input.GetKeyDown(Revive))
+            {
+                player.Respawn();
             }
             //TODO uncomment after fix EXP
             //if (Input.GetKeyDown(Exp))

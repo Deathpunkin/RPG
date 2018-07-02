@@ -14,6 +14,8 @@ namespace RPG.Weapons
         [SerializeField] AnimationClip attackAnimationOffHand;
         [SerializeField] AnimationClip blockAnimationMainHand;
         [SerializeField] AnimationClip blockAnimationOffHand;
+        [SerializeField] AnimationClip deathAnimation;
+        [SerializeField] AnimationClip reviveAnimation;
         Player player;
         public Transform gripMainHandTransform; //Where to hold if Mainhand.
         public Transform gripOffHandTransform; //Where to hold if Offhand
@@ -100,5 +102,14 @@ namespace RPG.Weapons
             return blockAnimationOffHand;
         }
 
+        public AnimationClip GetDeathAnimClip()
+        {
+            return deathAnimation;
+        }
+
+        public AnimationClip GetReviveAnimClip()
+        {
+            return reviveAnimation;
+        }
     }
 }

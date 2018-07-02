@@ -13,10 +13,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponPrefab: {fileID: 1249984476662756, guid: 36702a6c5fc11a0458ff2566fac6f44c,
     type: 2}
-  attackAnimationMainHand: {fileID: 0}
+  attackAnimationMainHand: {fileID: 7400000, guid: 372d59adc97d7ee4fbc4ad381ca46edf,
+    type: 3}
   attackAnimationOffHand: {fileID: 0}
   blockAnimationMainHand: {fileID: 0}
   blockAnimationOffHand: {fileID: 0}
+  deathAnimation: {fileID: 7400000, guid: 589a11892e95f834dbf23f9e1cc1f090, type: 3}
+  reviveAnimation: {fileID: 7400000, guid: af86a4047db46444fa59cbc506cc4689, type: 3}
   gripMainHandTransform: {fileID: 4094976569207070, guid: 9602524783ca49e429b7584dedcff92b,
     type: 2}
   gripOffHandTransform: {fileID: 4094976569207070, guid: 9602524783ca49e429b7584dedcff92b,

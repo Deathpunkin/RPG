@@ -19,14 +19,14 @@ namespace RPG.Characters
         [SerializeField] float attackRadius = 4f;
         public float damagePerShot = 9f;
         public float attackSpeed = 0.5f;
+        [SerializeField] float attackSpeedVariation = 0.1f;
         [SerializeField] GameObject projectileToUse;
         [SerializeField] GameObject projectileSocket;
         [SerializeField] Vector3 aimOffset = new Vector3(0, 1f, 0);
 
         bool isAttacking = false;
         AICharacterControl aiCharacterControl = null;
-        GameObject player = null;
-        Player players;
+        Player player = null;
         float damageTaken;
         public float dodgechance = 10f;
 
@@ -77,7 +77,7 @@ namespace RPG.Characters
 
         void Start()
         {
-            player = GameObject.FindGameObjectWithTag("Player");
+            player = FindObjectOfType<Player>();
             aiCharacterControl = GetComponent<AICharacterControl>();
             currentHealthPoints = maxHealthPoints;
             DamageTextController.Initialize();
@@ -90,8 +90,9 @@ namespace RPG.Characters
             if (distanceToPlayer <= attackRadius && !isAttacking)
             {
                 isAttacking = true;
+                float randomizedAttackSpeed = Random.Range(attackSpeed - attackSpeedVariation, attackSpeed + attackSpeedVariation);
                 aiCharacterControl.SetTarget(transform);
-                InvokeRepeating("SpawnProjectile", 0f, attackSpeed); // TODO switch to coroutines
+                InvokeRepeating("SpawnProjectile", 0f, randomizedAttackSpeed); // TODO switch to Coroutine
             }
 
             if (distanceToPlayer > attackRadius)
@@ -108,7 +109,11 @@ namespace RPG.Characters
             {
                 aiCharacterControl.SetTarget(transform);
             }
-            if(isProp)
+            if (player.healthAsPercentage <= Mathf.Epsilon)
+            {
+                StopAllCoroutines();
+            }
+            if (isProp)
             {
                 if (currentHealthPoints < maxHealthPoints)
                 {
@@ -118,8 +123,10 @@ namespace RPG.Characters
 
         }
 
+
         void SpawnProjectile()
         {
+            print("EnemyFire!");
             GameObject newProjectile = Instantiate(projectileToUse, projectileSocket.transform.position, Quaternion.identity);
             Projectile projectileComponent = newProjectile.GetComponent<Projectile>();
             projectileComponent.SetDamage(damagePerShot);

@@ -9,6 +9,7 @@ namespace RPG.Characters //TODO consider making Core
 
     public class Energy : MonoBehaviour
     {
+        Player player;
         [SerializeField] RawImage energyBar = null;
         [SerializeField] float maxEnergyPoints = 100f;
         [SerializeField] float energyCost = 10;
@@ -28,14 +29,6 @@ namespace RPG.Characters //TODO consider making Core
                 AddEnergy();
                 UpdateEnergyBar();
             }
-            //if (currentEnergyPoints < maxEnergyPoints)
-            //{
-            //    StartCoroutine(energyRegen());
-            //}
-            //if (currentEnergyPoints == maxEnergyPoints)
-            //{
-            //    StopCoroutine(energyRegen());
-            //}
         }
 
         private void AddEnergy()

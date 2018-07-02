@@ -20,6 +20,8 @@ namespace RPG.CameraUI
         public delegate void OnMouseOverEnemy(Enemy enemy);
         public event OnMouseOverEnemy onMouseOverEnemy;
 
+        Rect screenRect = new Rect(0, 0, Screen.width, Screen.height);  //TODO Move inside update to support screen resizing
+
         public delegate void OnMouseOverWalkable(Vector3 destination);
         public event OnMouseOverWalkable onMouseOverWalkable;
 
@@ -41,16 +43,19 @@ namespace RPG.CameraUI
 
         void PerformRaycasts()
         {
-            //Specify Layer Priorities, order matters
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if(screenRect.Contains(Input.mousePosition))
+            {
+                //Specify Layer Priorities, order matters
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            if (RaycastForEnemy(ray))
-            {
-                return;
-            }
-            if (RaycastForWalkable(ray))
-            {
-                return;
+                if (RaycastForEnemy(ray))
+                {
+                    return;
+                }
+                if (RaycastForWalkable(ray))
+                {
+                    return;
+                }
             }
         }
         bool RaycastForEnemy(Ray ray)
