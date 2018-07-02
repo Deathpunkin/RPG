@@ -19,7 +19,7 @@ GameObject:
   - component: {fileID: 114603564377330586}
   - component: {fileID: 195462940592665216}
   - component: {fileID: 114300374448275058}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -102,6 +102,7 @@ MonoBehaviour:
   m_MoveSpeedMultiplier: 2
   m_AnimSpeedMultiplier: 1.2
   m_GroundCheckDistance: 1
+  m_Crouching: 0
 --- !u!136 &13615390
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -142,7 +143,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4485086922140834}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Lower_Leg_l
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -157,7 +158,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4881656192239246}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Upper_Arm_L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -172,7 +173,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4957648328666760}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Upper_Arm_R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -187,7 +188,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4336364869359184}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Foot_R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -202,7 +203,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4464880331753222}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Neck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -217,7 +218,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4815714861820452}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Lower_Arm_L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -232,7 +233,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4555115643969918}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Shoulder_L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -248,7 +249,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4713150427860738}
   - component: {fileID: 114652183667459234}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Hand_L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -263,7 +264,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4623574837030976}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Shoulder_R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -279,7 +280,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4622403472555936}
   - component: {fileID: 137760096085224596}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Hero
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -294,7 +295,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4654193953683202}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Upper_Leg_L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -309,7 +310,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4609321172118512}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -324,7 +325,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4508387459198212}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Lower_Arm_R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -339,7 +340,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4260799308934198}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Armature
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -355,7 +356,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4687411172284512}
   - component: {fileID: 95107009822207530}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Hero
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -370,7 +371,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4752800092658358}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Spine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -386,7 +387,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4654836102603398}
   - component: {fileID: 114504999859524862}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Hand_R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -401,7 +402,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4731148195535604}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Lower_Leg_r
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -416,7 +417,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4281823233292010}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Upper_Leg_R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -431,7 +432,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4157950297958144}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Hips
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -446,7 +447,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4561775255587404}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Foot_L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -778,6 +779,7 @@ MonoBehaviour:
   Crouch: 122
   SelfDamage: 104
   Exp: 107
+  SkillBar1: 49
 --- !u!114 &114056948249611540
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -789,6 +791,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: beb75cb33cc6f884db40fe6cec105d9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  walkStopDistance: 1
 --- !u!114 &114157548728675290
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -800,21 +803,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9268856d129aa64a8ab4590ce181c5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyLayer: 9
+  animatorOverrideController: {fileID: 22100000, guid: d1b9a8af17d213e4a9fb354eba229bd0,
+    type: 2}
+  ability1: {fileID: 11400000, guid: 5bf4fafb42404684a87750adbf4ff8a1, type: 2}
   mainHandWeapon: {fileID: 11400000, guid: 7ac64f07787a94f40bd85f364fbf6136, type: 2}
   offHandWeapon: {fileID: 11400000, guid: 7ac64f07787a94f40bd85f364fbf6136, type: 2}
   level: 1
+  experiencePoints: 0
+  experienceToNextLevel: 0
   maxHealthPoints: 500
   currentHealthPoints: 0
-  lastAttackTime: 0
-  timeSinceLastDamaged: 0
+  regenHealthSpeed: 0
   critChance: 10
   critDamage: 0
   critMultiplyer: 1.5
+  lastAttackTime: 0
+  timeSinceLastDamaged: 0
   highestDamage: 0
   highestCrit: 0
-  animatorOverrideController: {fileID: 22100000, guid: d1b9a8af17d213e4a9fb354eba229bd0,
-    type: 2}
 --- !u!114 &114300374448275058
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -828,6 +834,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   energyBar: {fileID: 0}
   maxEnergyPoints: 100
+  energyCost: 10
+  energyRegenSpeed: 0.005
+  currentEnergyPoints: 0
 --- !u!114 &114504999859524862
 MonoBehaviour:
   m_ObjectHideFlags: 1

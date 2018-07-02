@@ -8,6 +8,8 @@ public class DamageTextController : MonoBehaviour {
     private static DamageFloatText critText;
     private static DamageFloatText dodgeText;
     private static DamageFloatText outOfRangeText;
+    private static DamageFloatText highestCritText;
+    private static DamageFloatText notEnoughEnergyText;
     private static GameObject canvas;
 
 
@@ -30,6 +32,15 @@ public class DamageTextController : MonoBehaviour {
         {
             outOfRangeText = Resources.Load<DamageFloatText>("UI/CombatFloatText/OutOfRangeTextParent");
         }
+        if (!highestCritText)
+        {
+            highestCritText = Resources.Load<DamageFloatText>("UI/CombatFloatText/HighestCritTextParent");
+        }
+        if (!notEnoughEnergyText)
+        {
+            notEnoughEnergyText = Resources.Load<DamageFloatText>("UI/CombatFloatText/NotEnoughEnergyTextParent");
+        }
+
 
     }
     //TODO Fix Floating Number location.
@@ -54,6 +65,18 @@ public class DamageTextController : MonoBehaviour {
     public static void CreateFloatingOutOfRangeText(string text, Transform location)
     {
         DamageFloatText instance = Instantiate(outOfRangeText);
+        instance.transform.SetParent(canvas.transform, false);
+        instance.SetText(text);
+    }
+    public static void CreateFloatingHighestCritDamageText(string text, Transform location)
+    {
+        DamageFloatText instance = Instantiate(highestCritText);
+        instance.transform.SetParent(canvas.transform, false);
+        instance.SetText(text);
+    }
+    public static void CreateFloatingNotEnoughEnergyText(string text, Transform location)
+    {
+        DamageFloatText instance = Instantiate(notEnoughEnergyText);
         instance.transform.SetParent(canvas.transform, false);
         instance.SetText(text);
     }

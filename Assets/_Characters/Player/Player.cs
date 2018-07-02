@@ -11,31 +11,37 @@ namespace RPG.Characters
 {   
     public class Player : MonoBehaviour, IDamageable
     {
+        CameraRaycaster cameraRaycaster;
+        [SerializeField] AnimatorOverrideController animatorOverrideController;
+        Animator animator;
 
-        [SerializeField] int enemyLayer = 9;
+        // Temporarily serialized for debugging
+        [SerializeField] SpecialAbility[] abilities;
+
         //Gear Slots Setup Here
         public Weapon mainHandWeapon;
         public Weapon offHandWeapon;
+
+        //Stat Setup
         public float level = 1f;
+        public float experiencePoints;
+        public float experienceToNextLevel;
 
         public float maxHealthPoints = 100f;
-
         public float currentHealthPoints;
-        CameraRaycaster cameraRaycaster;
-        [SerializeField] float lastAttackTime = 0f;
-        public float timeSinceLastDamaged; //TODO remove public after debugging done
-        float regenHealthDelay = 5f;
-        float regenHealthspeed = 1f;
-
-        float damage;
+        float regenHealthDelay = 5.5f;
+        float baseRegenHealthSpeed = 0.5f;
+        [SerializeField] float regenHealthSpeed;
         [SerializeField] float critChance = 10f;
         [SerializeField] float critDamage;
-        [SerializeField] float critMultiplyer = 1.5f; // 1.5 extra dmg
+        [SerializeField] float critMultiplyer = 1.5f; // 150% extra dmg
+
+        float damage; //damage to deal
+        [SerializeField] float lastAttackTime = 0f;
+        public float timeSinceLastDamaged; //TODO remove public after debugging 
         [SerializeField] float highestDamage;
         [SerializeField] float highestCrit; 
 
-        [SerializeField] AnimatorOverrideController animatorOverrideController;
-        Animator animator;
 
         public float healthAsPercentage
         {
@@ -50,15 +56,13 @@ namespace RPG.Characters
             cameraRaycaster = FindObjectOfType<CameraRaycaster>();
             cameraRaycaster.onMouseOverEnemy += OnMouseOverEnemy;
             currentHealthPoints = maxHealthPoints;
+            regenHealthSpeed = baseRegenHealthSpeed;
 
             PutWeaponInMainHand();
-            if(!offHandWeapon)
-            {
-                return;
-            }
             PutWeaponInOffHand();
             SetupRuntimeAnimator();
             DamageTextController.Initialize();
+            abilities[0].AttachComponent(gameObject);
         }
 
         private void SetupRuntimeAnimator()
@@ -118,10 +122,11 @@ namespace RPG.Characters
                 print("regenerating!");
                 StartCoroutine(regenHealth());
             }
-            if (currentHealthPoints == maxHealthPoints & (Time.time - timeSinceLastDamaged) <= regenHealthDelay)
+            if (currentHealthPoints == maxHealthPoints && (Time.time - timeSinceLastDamaged) <= regenHealthDelay)
             {
                 //CancelInvoke();
                 StopCoroutine(regenHealth());
+                regenHealthSpeed = baseRegenHealthSpeed;
             }
             //Damage Math
             damage = Mathf.Round(UnityEngine.Random.Range(mainHandWeapon.GetMinDamagePerHit(), mainHandWeapon.GetMaxDamagePerHit()));
@@ -130,8 +135,8 @@ namespace RPG.Characters
 
         IEnumerator regenHealth()
         {
-            currentHealthPoints = currentHealthPoints + regenHealthspeed;
-            //        regenHealthSpeed = regenHealthSpeed +1 ;
+            currentHealthPoints = currentHealthPoints + regenHealthSpeed;
+            //regenHealthSpeed = regenHealthSpeed + 0.5f;
             print("Still Regen!");
             yield return new WaitForSeconds(1);
         }
@@ -141,6 +146,14 @@ namespace RPG.Characters
             if (Input.GetMouseButton(0) && IsTargetInRange(enemy.gameObject))
             {
                 AttackTarget(enemy);
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                UseAbility(0, enemy);
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                UseAbility(1, enemy);
             }
             else
             {
@@ -156,6 +169,31 @@ namespace RPG.Characters
         {
             print("Make me Move to Target");
             yield return new WaitForSeconds(0);
+        }
+
+        private void UseAbility(int abilityIndex, Enemy enemy)
+        {
+            var energyComponent = GetComponent<Energy>();
+            var energyCost = abilities[abilityIndex].GetEnergyCost();
+            if(energyComponent.IsEnergyAvailable(energyCost))
+            {
+                energyComponent.ConsumeEnergy(energyCost);
+                if(UnityEngine.Random.Range(1.0f, 100.0f) < critChance && UnityEngine.Random.Range(1, 100) > enemy.dodgechance)
+                {
+                    var abilityParams = new AbilityUseParams(enemy, critDamage);
+                    abilities[abilityIndex].Use(abilityParams);
+                }
+                else if (UnityEngine.Random.Range(1, 100) > enemy.dodgechance)
+                {
+                    var abilityParams = new AbilityUseParams(enemy, damage);
+                    abilities[abilityIndex].Use(abilityParams);
+                }
+            }
+            else
+            {
+                DamageTextController.CreateFloatingNotEnoughEnergyText("Not Enough Energy.", transform);
+            }
+
         }
 
         private bool IsTargetInRange(GameObject target)
@@ -179,8 +217,13 @@ namespace RPG.Characters
                     if (critDamage >= highestCrit && enemy.level >= level)
                     {
                         highestCrit = critDamage;
+                        DamageTextController.CreateFloatingHighestCritDamageText(critDamage.ToString(), enemy.transform);
+
                     }
-                    DamageTextController.CreateFloatingCritDamageText(critDamage.ToString(), enemy.transform);
+                    if(critDamage <= highestCrit && enemy.level <= level)
+                    {
+                       DamageTextController.CreateFloatingCritDamageText(critDamage.ToString(), enemy.transform);
+                    }
 
                 }
                 else if (UnityEngine.Random.Range(1, 100) > enemy.dodgechance)
@@ -213,7 +256,7 @@ namespace RPG.Characters
         //TODO Uncomment this after fixing exp system.
         public void OnGUI()
         {
-            string currentHealth = currentHealthPoints.ToString();
+            string currentHealth = currentHealthPoints.ToString("F0");
             string maxHealth = maxHealthPoints.ToString();
             //    string lvl = level.ToString();
             //    string exp = experiencePoints.ToString();

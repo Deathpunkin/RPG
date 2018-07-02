@@ -8,7 +8,6 @@ namespace RPG.CameraUI
 {
     public class CameraRaycaster : MonoBehaviour
     {
-        [SerializeField] int[] layerPriorities;
         float maxRaycastDepth = 100f; // Hard coded value
         int topPriorityLayerLastFrame = -1; // So get ? from start with Default layer 
         [SerializeField] Texture2D walkCursor = null;
@@ -16,6 +15,7 @@ namespace RPG.CameraUI
         [SerializeField] Vector2 cursorHotspot = new Vector2(0, 0);
 
         const int WALKABLE_LAYER = 8;
+
         //New delegates
         public delegate void OnMouseOverEnemy(Enemy enemy);
         public event OnMouseOverEnemy onMouseOverEnemy;
@@ -23,19 +23,8 @@ namespace RPG.CameraUI
         public delegate void OnMouseOverWalkable(Vector3 destination);
         public event OnMouseOverWalkable onMouseOverWalkable;
 
-        PlayerInput input;
-
         //OnMouseOverInteractable(??) //TODO Set Up Interactables
 
-        // Setup delegates for broadcasting layer changes to other classes
-        public delegate void OnCursorLayerChange(int newLayer); // declare new delegate type
-        public event OnCursorLayerChange notifyLayerChangeObservers; // instantiate an observer set
-
-        public delegate void OnClickPriorityLayer(RaycastHit raycastHit, int layerHit); // declare new delegate type
-        public event OnClickPriorityLayer notifyMouseClickObservers; // instantiate an observer set
-
-        public delegate void OnNumBar1(RaycastHit raycastHit, int layerHit); // TODO See if still needed for numberbar skills. declare new delegate type
-        public event OnNumBar1 notifyNumBar1Observers; // instantiate an observer set
 
         void Update()
         {
@@ -52,7 +41,7 @@ namespace RPG.CameraUI
 
         void PerformRaycasts()
         {
-            //Specify Layer Priorities
+            //Specify Layer Priorities, order matters
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
             if (RaycastForEnemy(ray))

@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityStandardAssets.Characters.ThirdPerson;
 using UnityEngine.AI;
 using RPG.CameraUI;
 
@@ -15,6 +14,8 @@ namespace RPG.Characters
         CameraRaycaster cameraRaycaster = null;
         AICharacterControl aiCharacterControl = null;
         GameObject walkTarget = null;
+        [SerializeField] float walkStopDistance = 0.2f;
+        Vector3 movePoint;
 
         // TODO solve fight between serialize and const
         [SerializeField] const int walkableLayerNumber = 8;
@@ -40,17 +41,23 @@ namespace RPG.Characters
             {
                 aiCharacterControl.SetTarget(enemy.transform);
                 thirdPersonCharacter.Move(enemy.transform.position, false, false);
-
+                movePoint = transform.position;
             }
         }
 
         void OnMouseOverWalkable(Vector3 destination)
         {
-            if(Input.GetMouseButton(0))
+            //TODO figure out why destination is mouse cursor
+            movePoint = destination;
+            if (Input.GetMouseButton(0) && destination.magnitude > walkStopDistance)
             {
                 //walkTarget.transform.position = destination;
-                thirdPersonCharacter.Move(walkTarget.transform.position, false, false);
+               // thirdPersonCharacter.Move(destination, false, false);
                 aiCharacterControl.SetTarget(walkTarget.transform);
+            }
+            if(destination.magnitude <= walkStopDistance)
+            {
+                thirdPersonCharacter.Move(Vector3.zero, false, false);
             }
         }
 
@@ -77,5 +84,13 @@ namespace RPG.Characters
 
             thirdPersonCharacter.Move(movement, false, Jump);
         }
+
+        void OnDrawGizmos()
+        {
+            // Draw attack sphere 
+            Gizmos.color = Color.white;
+            Gizmos.DrawLine(transform.position, movePoint);
+        }
+
     }
 }

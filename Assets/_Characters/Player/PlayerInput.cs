@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityStandardAssets.Characters.ThirdPerson;
 using UnityEngine;
 using RPG.Core;
 
@@ -37,19 +36,19 @@ namespace RPG.Characters //consider changing to core
         void Update()
         {
             ////crouching
-            //if (Input.GetKey(Crouch))
-            //{
-            //    thirdPersonCharacter.m_Crouching = true;
-            //}
-            //else
-            //{
-            //    thirdPersonCharacter.m_Crouching = false;
-            //}
+            if (Input.GetKey(Crouch))
+            {
+                thirdPersonCharacter.m_Crouching = true;
+            }
+            else
+            {
+                thirdPersonCharacter.m_Crouching = false;
+            }
 
-            //if (thirdPersonCharacter.m_Crouching)
-            //{
-            //    print("Crouching!");
-            //}
+            if (thirdPersonCharacter.m_Crouching)
+            {
+                print("Crouching!");
+            }
 
             if (Input.GetKeyDown(SelfDamage))
             {

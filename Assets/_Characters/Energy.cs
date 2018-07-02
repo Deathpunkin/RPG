@@ -9,39 +9,66 @@ namespace RPG.Characters //TODO consider making Core
 
     public class Energy : MonoBehaviour
     {
-        [SerializeField] RawImage energyBar;
+        [SerializeField] RawImage energyBar = null;
         [SerializeField] float maxEnergyPoints = 100f;
         [SerializeField] float energyCost = 10;
-        [SerializeField] float energyRegenSpeed = 0.5f;
-        CameraRaycaster cameraRaycaster;
-        
+        [SerializeField] float regenPerSecond = 1f;
         public float currentEnergyPoints;
+
         // Use this for initialization
         void Start()
         {
             currentEnergyPoints = maxEnergyPoints;
-            cameraRaycaster = Camera.main.GetComponent<CameraRaycaster>();
-            cameraRaycaster.notifyNumBar1Observers += ProcessNumBar1;
         }
 
-        void ProcessNumBar1(RaycastHit raycastHit, int layerHit)
+        private void Update()
         {
-            print("Numbar 1!");
-            currentEnergyPoints = Mathf.Clamp(currentEnergyPoints - energyCost, 0, maxEnergyPoints);
+            if (currentEnergyPoints < maxEnergyPoints)
+            {
+                AddEnergy();
+                UpdateEnergyBar();
+            }
+            //if (currentEnergyPoints < maxEnergyPoints)
+            //{
+            //    StartCoroutine(energyRegen());
+            //}
+            //if (currentEnergyPoints == maxEnergyPoints)
+            //{
+            //    StopCoroutine(energyRegen());
+            //}
         }
 
-        // Update is called once per frame
-        void Update()
+        private void AddEnergy()
+        {
+            var pointsToAdd = regenPerSecond * Time.deltaTime;
+            currentEnergyPoints = Mathf.Clamp(currentEnergyPoints + pointsToAdd, 0, maxEnergyPoints);
+        }
+
+        public bool IsEnergyAvailable(float amount)
+        {
+            return amount <= currentEnergyPoints;
+        }
+
+        public void ConsumeEnergy(float amount)
+        {
+            float newEnergyPoints = currentEnergyPoints - amount;
+            currentEnergyPoints = Mathf.Clamp(newEnergyPoints, 0, maxEnergyPoints);
+            UpdateEnergyBar();
+        }
+
+        private void UpdateEnergyBar()
         {
             float xValue = -(energyAsPercent() / 2f) - 0.5f;
             energyBar.uvRect = new Rect(xValue, 0f, 0.5f, 1f);
         }
 
-        IEnumerator energyRegen()
-        {
-            currentEnergyPoints = currentEnergyPoints + energyRegenSpeed;
-            yield return new WaitForSeconds(1);
-        }
+        //TODO fix bar not updating proper with regen
+        //IEnumerator energyRegen()
+        //{
+        //    print("regen energy!");
+        //    currentEnergyPoints = currentEnergyPoints + energyRegenSpeed;
+        //    yield return new WaitForSeconds(1);
+        //}
 
         float energyAsPercent()
         {
@@ -50,8 +77,9 @@ namespace RPG.Characters //TODO consider making Core
 
         public void OnGUI()
         {
-            string currentEnergy = currentEnergyPoints.ToString();
-            string maxEnergy = maxEnergyPoints.ToString();
+            //TODO fix strange energy numbers showing up on bar
+            string currentEnergy = currentEnergyPoints.ToString("F0");
+            string maxEnergy = maxEnergyPoints.ToString("F0");
             GUI.Label(new Rect(Screen.width / 2, Screen.height - 90, 100, 20), currentEnergy + "/" + maxEnergy);
 
         }
