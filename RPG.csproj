@@ -96,11 +96,6 @@
     <Compile Include="Assets\_Characters\Player\PlayerHealthBar.cs" />
     <Compile Include="Assets\_Characters\Player\PlayerInput.cs" />
     <Compile Include="Assets\_Characters\Player\PlayerMovement.cs" />
-    <Compile Include="Assets\_Characters\Skills\Area of Effect\AreaofEffectBehaviour.cs" />
-    <Compile Include="Assets\_Characters\Skills\Area of Effect\AreaofEffectConfig.cs" />
-    <Compile Include="Assets\_Characters\Skills\PowerAttack\PowerAttackBehaviour.cs" />
-    <Compile Include="Assets\_Characters\Skills\PowerAttack\PowerAttackConfig.cs" />
-    <Compile Include="Assets\_Characters\Skills\SpecialAbility.cs" />
     <Compile Include="Assets\_Characters\ThirdPersonCharacter.cs" />
     <Compile Include="Assets\_Characters\ThirdPersonCharacter\Scripts\ThirdPersonUserControl.cs" />
     <Compile Include="Assets\_Core\AudioTrigger.cs" />
@@ -114,6 +109,13 @@
     <Compile Include="Assets\_Environment\Water\Scripts\Water.cs" />
     <Compile Include="Assets\_Environment\Water\Scripts\WaterBase.cs" />
     <Compile Include="Assets\_Environment\Water\Scripts\WaterTile.cs" />
+    <Compile Include="Assets\_Skills\Area of Effect\AreaofEffectBehaviour.cs" />
+    <Compile Include="Assets\_Skills\Area of Effect\AreaofEffectConfig.cs" />
+    <Compile Include="Assets\_Skills\Healing\HealingBehaviour1.cs" />
+    <Compile Include="Assets\_Skills\Healing\HealingConfig.cs" />
+    <Compile Include="Assets\_Skills\PowerAttack\PowerAttackBehaviour.cs" />
+    <Compile Include="Assets\_Skills\PowerAttack\PowerAttackConfig.cs" />
+    <Compile Include="Assets\_Skills\SpecialAbility.cs" />
     <Compile Include="Assets\_Weapons\Ball Gun\Projectile.cs" />
     <Compile Include="Assets\_Weapons\Weapon.cs" />
     <Compile Include="Assets\Huge Mocap Library\demo\scripts\demo.cs" />

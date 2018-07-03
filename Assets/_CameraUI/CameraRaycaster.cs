@@ -20,7 +20,7 @@ namespace RPG.CameraUI
         public delegate void OnMouseOverEnemy(Enemy enemy);
         public event OnMouseOverEnemy onMouseOverEnemy;
 
-        Rect screenRect = new Rect(0, 0, Screen.width, Screen.height);  //TODO Move inside update to support screen resizing
+        Rect screenRect;
 
         public delegate void OnMouseOverWalkable(Vector3 destination);
         public event OnMouseOverWalkable onMouseOverWalkable;
@@ -30,6 +30,7 @@ namespace RPG.CameraUI
 
         void Update()
         {
+            screenRect = new Rect(0, 0, Screen.width, Screen.height);
             // Check if pointer is over an interactable UI element
             if (EventSystem.current.IsPointerOverGameObject())
             {

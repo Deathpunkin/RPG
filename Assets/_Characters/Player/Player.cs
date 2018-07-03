@@ -37,6 +37,7 @@ namespace RPG.Characters
         public float respawnHealth;
         float regenHealthDelay = 5.5f;
         float baseRegenHealthSpeed = 0.5f;
+        float healthNumberLocation = 540;
         public bool isDead = false;
         public Button respawnButton;
         float respawnInvuln = 5f;
@@ -158,6 +159,16 @@ namespace RPG.Characters
                 this.GetComponent<ThirdPersonUserControl>().enabled = true;
             }
            respawnInvulnTimer = Mathf.Clamp(respawnInvuln - Time.time, 0, respawnInvuln);
+           if(maxHealthPoints >= 100 && maxHealthPoints < 1000)
+            {
+                healthNumberLocation = 540;
+                print("100 health");
+            }
+           else if (maxHealthPoints >= 1000 && maxHealthPoints < 10000)
+            {
+                healthNumberLocation = 540 + 5;
+                print("1000 Health");
+            }
     }
 
     IEnumerator regenHealth()
@@ -327,7 +338,7 @@ namespace RPG.Characters
             //    string exp = experiencePoints.ToString();
             //    string expToLevel = experienceToNextLevel.ToString();
             //    string lastdamaged = lastDamaged.ToString();
-            GUI.Label(new Rect(Screen.width / 2, Screen.height - 55, 100, 20), currentHealth + "/" + maxHealth);
+            GUI.Label(new Rect(Screen.width - 545, Screen.height - 77, 100, 20), currentHealth + "/" + maxHealth);
             //    GUI.Label(new Rect(Screen.width / 3, Screen.height - 30, 100, 20), lvl);
             //    GUI.Label(new Rect(Screen.width / 2, Screen.height - 30, 100, 20), exp + "/" + expToLevel);
             //    GUI.Label(new Rect(Screen.width - 80, Screen.height - 20, 100, 20), "Last hit " + (Time.time - timeSinceLastDamaged) + "s ago");

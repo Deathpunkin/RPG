@@ -10,16 +10,18 @@ namespace RPG.Characters //TODO consider making Core
     public class Energy : MonoBehaviour
     {
         Player player;
-        [SerializeField] RawImage energyBar = null;
+        [SerializeField] Image energyOrb = null;
         [SerializeField] float maxEnergyPoints = 100f;
         [SerializeField] float energyCost = 10;
         [SerializeField] float regenPerSecond = 1f;
         public float currentEnergyPoints;
+        float energyTextLocation = 315;
 
         // Use this for initialization
         void Start()
         {
             currentEnergyPoints = maxEnergyPoints;
+            UpdateEnergyDisplay();
         }
 
         private void Update()
@@ -27,7 +29,15 @@ namespace RPG.Characters //TODO consider making Core
             if (currentEnergyPoints < maxEnergyPoints)
             {
                 AddEnergy();
-                UpdateEnergyBar();
+                UpdateEnergyDisplay();
+                if (maxEnergyPoints >= 100 && maxEnergyPoints < 1000)
+                {
+                    energyTextLocation = 315;
+                }
+                else if(maxEnergyPoints >= 1000 && maxEnergyPoints < 10000)
+                {
+                    energyTextLocation = 315 + 5;
+                }
             }
         }
 
@@ -46,15 +56,13 @@ namespace RPG.Characters //TODO consider making Core
         {
             float newEnergyPoints = currentEnergyPoints - amount;
             currentEnergyPoints = Mathf.Clamp(newEnergyPoints, 0, maxEnergyPoints);
-            UpdateEnergyBar();
+            UpdateEnergyDisplay();
         }
 
-        private void UpdateEnergyBar()
+        private void UpdateEnergyDisplay()
         {
-            float xValue = -(energyAsPercent() / 2f) - 0.5f;
-            energyBar.uvRect = new Rect(xValue, 0f, 0.5f, 1f);
+            energyOrb.fillAmount = energyAsPercent();
         }
-
         //TODO fix bar not updating proper with regen
         //IEnumerator energyRegen()
         //{
@@ -73,7 +81,7 @@ namespace RPG.Characters //TODO consider making Core
             //TODO fix strange energy numbers showing up on bar
             string currentEnergy = currentEnergyPoints.ToString("F0");
             string maxEnergy = maxEnergyPoints.ToString("F0");
-            GUI.Label(new Rect(Screen.width / 2, Screen.height - 90, 100, 20), currentEnergy + "/" + maxEnergy);
+            GUI.Label(new Rect(Screen.width - energyTextLocation, Screen.height - 77, 100, 20), currentEnergy + "/" + maxEnergy);
 
         }
     }
