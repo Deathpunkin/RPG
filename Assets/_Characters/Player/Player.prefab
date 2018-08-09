@@ -861,6 +861,7 @@ MonoBehaviour:
   SelfDamage: 104
   Exp: 107
   SkillBar1: 49
+  Revive: 106
 --- !u!114 &114056948249611540
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -895,8 +896,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 9886d59a92d4547a5a1a0ece82280483, type: 3}
   - {fileID: 8300000, guid: 06a65b24e73c143858b5facd5d6ea264, type: 3}
   abilities:
+  - {fileID: 11400000, guid: 1e795d81288929b47b296bde53be5755, type: 2}
   - {fileID: 11400000, guid: fcae164266dea1c468bb8e43fac6d5ec, type: 2}
-  - {fileID: 11400000, guid: 5bf4fafb42404684a87750adbf4ff8a1, type: 2}
   mainHandWeapon: {fileID: 11400000, guid: 40fc3b76a6314b64a84f72e9653d12fd, type: 2}
   offHandWeapon: {fileID: 11400000, guid: 40fc3b76a6314b64a84f72e9653d12fd, type: 2}
   level: 1
@@ -904,9 +905,11 @@ MonoBehaviour:
   experienceToNextLevel: 0
   maxHealthPoints: 500
   currentHealthPoints: 500
+  respawnHealth: 0
   isDead: 0
   respawnButton: {fileID: 114680414458877374, guid: 333e2305c83753e42ae69a8a546c6229,
     type: 2}
+  respawnInvulnTimer: 0
   regenHealthSpeed: 0.5
   critChance: 10
   critDamage: 20
@@ -927,7 +930,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 717eadad68d03184d8fc1b4880625050, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  energyBar: {fileID: 0}
+  energyOrb: {fileID: 0}
   maxEnergyPoints: 100
   energyCost: 10
   regenPerSecond: 1

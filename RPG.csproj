@@ -78,11 +78,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\_CameraUI\Buttons\IconChange.cs" />
     <Compile Include="Assets\_CameraUI\CameraFollow.cs" />
     <Compile Include="Assets\_CameraUI\CameraRaycaster.cs" />
     <Compile Include="Assets\_CameraUI\CameraRotate.cs" />
     <Compile Include="Assets\_CameraUI\Console.cs" />
     <Compile Include="Assets\_CameraUI\FPSCounter.cs" />
+    <Compile Include="Assets\_CameraUI\UIEnergyNumbers.cs" />
+    <Compile Include="Assets\_CameraUI\UIHealthNumbers.cs" />
     <Compile Include="Assets\_Characters\AICharacterControl.cs" />
     <Compile Include="Assets\_Characters\CrouchTriggerZone.cs" />
     <Compile Include="Assets\_Characters\Enemies\Enemy.cs" />
@@ -111,21 +114,29 @@
     <Compile Include="Assets\_Environment\Water\Scripts\WaterTile.cs" />
     <Compile Include="Assets\_Skills\Area of Effect\AreaofEffectBehaviour.cs" />
     <Compile Include="Assets\_Skills\Area of Effect\AreaofEffectConfig.cs" />
-    <Compile Include="Assets\_Skills\Healing\HealingBehaviour1.cs" />
+    <Compile Include="Assets\_Skills\Healing\HealingBehaviour.cs" />
     <Compile Include="Assets\_Skills\Healing\HealingConfig.cs" />
     <Compile Include="Assets\_Skills\PowerAttack\PowerAttackBehaviour.cs" />
     <Compile Include="Assets\_Skills\PowerAttack\PowerAttackConfig.cs" />
     <Compile Include="Assets\_Skills\SpecialAbility.cs" />
     <Compile Include="Assets\_Weapons\Ball Gun\Projectile.cs" />
     <Compile Include="Assets\_Weapons\Weapon.cs" />
+    <Compile Include="Assets\ChatBox.cs" />
     <Compile Include="Assets\Huge Mocap Library\demo\scripts\demo.cs" />
     <Compile Include="Assets\Huge Mocap Library\demo\scripts\smoothFollow.cs" />
     <Compile Include="Assets\Resources\UI\CombatFloatText\DamageFloatText.cs" />
     <Compile Include="Assets\Resources\UI\CombatFloatText\DamageTextController.cs" />
+    <Compile Include="Assets\Simple_Day_and_Night_Cycle\(EXAMPLEONLY)CharacterAssets\Characters\FirstPersonCharacter\Scripts\FirstPersonController_EXAMPLE.cs" />
+    <Compile Include="Assets\Simple_Day_and_Night_Cycle\(EXAMPLEONLY)CharacterAssets\Characters\FirstPersonCharacter\Scripts\MouseLook_EXAMPLE.cs" />
+    <Compile Include="Assets\Simple_Day_and_Night_Cycle\Scripts\DayAndNightControl.cs" />
+    <Compile Include="Assets\Simple_Day_and_Night_Cycle\Scripts\VisualClockController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Huge Mocap Library\READTHIS.txt" />
     <None Include="Assets\Huge Mocap Library\mocap animations\cmu-mocap-index-text.txt" />
+    <None Include="Assets\Simple_Day_and_Night_Cycle\(EXAMPLEONLY)CharacterAssets\Characters\FirstPersonCharacter\FirstPersonCharacterGuidelines.txt" />
+    <None Include="Assets\Simple_Day_and_Night_Cycle\ReadMe.txt" />
+    <None Include="Assets\Simple_Day_and_Night_Cycle\Scripts\DayAndNightControlBackup.txt" />
     <None Include="Assets\_Characters\ThirdPersonCharacter\ThirdPersonCharacterGuidelines.txt" />
     <None Include="Assets\_Environment\Village\FXWaterPro.shader" />
     <None Include="Assets\_Environment\Water\Shaders\FXWaterPro.shader" />

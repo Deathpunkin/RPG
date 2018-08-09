@@ -33,7 +33,7 @@ public class AreaofEffectBehaviour : MonoBehaviour, ISpecialAbility
             if (damageable != null)
             {
                 float damageToDeal = useParams.baseDamage + config.GetDamagetoEachTarget();
-                damageable.TakeDamage(damageToDeal);
+                damageable.AdjustHealth(damageToDeal);
                 print("Base Damage - " + useParams.baseDamage);
                 print("AoE Damage - " + damageToDeal);
             }

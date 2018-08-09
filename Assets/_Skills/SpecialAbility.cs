@@ -22,6 +22,7 @@ namespace RPG.Characters
 
         [Header("Special Ability General")]
         [SerializeField] Image skillIcon = null;
+        [SerializeField] GameObject skillEffect = null;
         [SerializeField] float energyCost = 10f;
         float cooldown = 3f;
         float cooldownTimer;
@@ -40,6 +41,12 @@ namespace RPG.Characters
         {
             return skillIcon;
         }
+
+        public GameObject GetSkillEffect()
+        {
+            return skillEffect;
+        }
+
 
         public float GetEnergyCost()
         {

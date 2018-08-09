@@ -15,6 +15,7 @@ namespace RPG.Characters
         //TODO sort and clean all this
         CameraRaycaster cameraRaycaster;
         [SerializeField] AnimatorOverrideController animatorOverrideController;
+        
         Animator animator;
         AudioSource audioSource;
         [SerializeField] AudioClip[] hurtSounds;
@@ -34,10 +35,10 @@ namespace RPG.Characters
 
         public float maxHealthPoints = 100f;
         public float currentHealthPoints;
+        float prevHealth;
         public float respawnHealth;
         float regenHealthDelay = 5.5f;
         float baseRegenHealthSpeed = 0.5f;
-        float healthNumberLocation = 540;
         public bool isDead = false;
         public Button respawnButton;
         float respawnInvuln = 5f;
@@ -52,7 +53,8 @@ namespace RPG.Characters
         [SerializeField] float lastAttackTime = 0f;
         public float timeSinceLastDamaged; //TODO remove public after debugging 
         [SerializeField] float highestDamage;
-        [SerializeField] float highestCrit; 
+        [SerializeField] float highestCrit;
+        Enemy enemy = null;
 
 
         public float healthAsPercentage
@@ -68,15 +70,69 @@ namespace RPG.Characters
             cameraRaycaster = FindObjectOfType<CameraRaycaster>();
             cameraRaycaster.onMouseOverEnemy += OnMouseOverEnemy;
             currentHealthPoints = maxHealthPoints;
+            prevHealth = currentHealthPoints;
             regenHealthSpeed = baseRegenHealthSpeed;
             audioSource = GetComponent<AudioSource>();
             PutWeaponInMainHand();
             PutWeaponInOffHand();
             SetupRuntimeAnimator();
             DamageTextController.Initialize();
-            abilities[0].AttachComponent(gameObject);
+            AttachInitialAbilities();
             Button respawn = respawnButton.GetComponent<Button>();
             respawnHealth = Mathf.Round(currentHealthPoints / 3);
+        }
+
+        void Update()
+        {
+            if (healthAsPercentage > Mathf.Epsilon)
+            {
+                if ((Time.time - timeSinceLastDamaged) >= regenHealthDelay && currentHealthPoints != maxHealthPoints && !isDead)
+                {
+                    print("regenerating!");
+                    StartCoroutine(regenHealth());
+                }
+                if (currentHealthPoints == maxHealthPoints && (Time.time - timeSinceLastDamaged) <= regenHealthDelay)
+                {
+                    //CancelInvoke();
+                    StopCoroutine(regenHealth());
+                    regenHealthSpeed = baseRegenHealthSpeed;
+                }
+                //Damage Math
+                damage = Mathf.Round(UnityEngine.Random.Range(mainHandWeapon.GetMinDamagePerHit(), mainHandWeapon.GetMaxDamagePerHit()));
+                critDamage = Mathf.Round(damage * critMultiplyer);
+                if (isDead)
+                {
+                    animator.SetTrigger("Dead");
+                    StopCoroutine(regenHealth());
+                    this.GetComponent<ThirdPersonUserControl>().enabled = false;
+                }
+                else
+                {
+                    animator.ResetTrigger("Dead");
+                    this.GetComponent<ThirdPersonUserControl>().enabled = true;
+                }
+                //TODO get respawn invuln working
+                respawnInvulnTimer = Mathf.Clamp(respawnInvuln - Time.time, 0, respawnInvuln);
+               ScanForAbilityKeyDown();
+            }
+        }
+        //TODO uncomment when targeting for skills works
+        private void ScanForAbilityKeyDown()
+        {
+            for (int keyIndex = 1; keyIndex < abilities.Length; keyIndex++)
+            {
+                if (Input.GetKeyDown(keyIndex.ToString()))
+                {
+                    UseAbility(keyIndex);
+                }
+            }
+        }
+        private void AttachInitialAbilities()
+        {
+            for (int abilityIndex = 0; abilityIndex < abilities.Length; abilityIndex++)
+            {
+                abilities[abilityIndex].AttachComponent(gameObject);
+            }
         }
 
         private void SetupRuntimeAnimator()
@@ -125,51 +181,13 @@ namespace RPG.Characters
         {
             var OffHands = GetComponentsInChildren<OffHand>();
             int numberOfOffHands = OffHands.Length;
-            Assert.AreNotEqual(numberOfOffHands, 0, "No main hand found on player, please add one");
-            Assert.IsFalse(numberOfOffHands > 1, "Multiple MainHand scripts on player, please remove one");
+            Assert.AreNotEqual(numberOfOffHands, 0, "No off hand found on player, please add one");
+            Assert.IsFalse(numberOfOffHands > 1, "Multiple Off Hand scripts on player, please remove one");
             return OffHands[0].gameObject;
         }
 
 
-        void Update()
-        {
-            if ((Time.time - timeSinceLastDamaged) >= regenHealthDelay && currentHealthPoints != maxHealthPoints && !isDead)
-            {
-                print("regenerating!");
-                StartCoroutine(regenHealth());
-            }
-            if (currentHealthPoints == maxHealthPoints && (Time.time - timeSinceLastDamaged) <= regenHealthDelay)
-            {
-                //CancelInvoke();
-                StopCoroutine(regenHealth());
-                regenHealthSpeed = baseRegenHealthSpeed;
-            }
-            //Damage Math
-            damage = Mathf.Round(UnityEngine.Random.Range(mainHandWeapon.GetMinDamagePerHit(), mainHandWeapon.GetMaxDamagePerHit()));
-            critDamage = Mathf.Round(damage * critMultiplyer);
-            if(isDead)
-            {
-                animator.SetTrigger("Dead");
-                StopCoroutine(regenHealth());
-                this.GetComponent<ThirdPersonUserControl>().enabled = false;
-            }
-            else
-            {
-                animator.ResetTrigger("Dead");
-                this.GetComponent<ThirdPersonUserControl>().enabled = true;
-            }
-           respawnInvulnTimer = Mathf.Clamp(respawnInvuln - Time.time, 0, respawnInvuln);
-           if(maxHealthPoints >= 100 && maxHealthPoints < 1000)
-            {
-                healthNumberLocation = 540;
-                print("100 health");
-            }
-           else if (maxHealthPoints >= 1000 && maxHealthPoints < 10000)
-            {
-                healthNumberLocation = 540 + 5;
-                print("1000 Health");
-            }
-    }
+
 
     IEnumerator regenHealth()
         {
@@ -179,23 +197,17 @@ namespace RPG.Characters
             yield return new WaitForSeconds(1);
         }
 
-        void OnMouseOverEnemy(Enemy enemy)
+        void OnMouseOverEnemy(Enemy enemyToSet)
         {
+            this.enemy = enemyToSet;
             if (Input.GetMouseButton(0) && IsTargetInRange(enemy.gameObject))
             {
-                AttackTarget(enemy);
-            }
-            else if (Input.GetKeyDown(KeyCode.Alpha1))
-            {
-                UseAbility(0, enemy);
-            }
-            else if (Input.GetKeyDown(KeyCode.Alpha2))
-            {
-                UseAbility(1, enemy);
+                transform.LookAt(enemy.transform);
+                AttackTarget();
             }
             else
             {
-                if(Input.GetMouseButtonDown(0))
+                if (Input.GetMouseButtonDown(0))
                 {
                     DamageTextController.CreateFloatingOutOfRangeText("Target out of reach.", enemy.transform);
                     //StartCoroutine(moveIntoRange());
@@ -209,7 +221,7 @@ namespace RPG.Characters
             yield return new WaitForSeconds(0);
         }
 
-        private void UseAbility(int abilityIndex, Enemy enemy)
+        private void UseAbility(int abilityIndex)
         {
             var energyComponent = GetComponent<Energy>();
             var energyCost = abilities[abilityIndex].GetEnergyCost();
@@ -240,17 +252,16 @@ namespace RPG.Characters
             return distanceToTarget <= mainHandWeapon.GetMaxAttackRange();
         }
 
-        private void AttackTarget(Enemy enemy)
+        private void AttackTarget()
         {
             if (Time.time - lastAttackTime > mainHandWeapon.GetAttackSpeed())
             {
-                transform.LookAt(enemy.transform);
                 animator.SetTrigger("Attack");
                 //mainHandWeapon.GetWeaponHitSound();
                 //mainHandWeapon.GetWeaponAudioSouce().Play
                 if (UnityEngine.Random.Range(1.0f, 100.0f) < critChance && UnityEngine.Random.Range(1, 100) > enemy.dodgechance)
                 {
-                    enemy.TakeDamage(critDamage);
+                    enemy.AdjustHealth(critDamage);
                     print("CRIT! Dealt " + critDamage);
                     if (critDamage >= highestCrit && enemy.level >= level)
                     {
@@ -272,7 +283,7 @@ namespace RPG.Characters
                             Debug.Log(enemy.transform);
                         }
                         DamageTextController.CreateFloatingDamageText(damage.ToString(), enemy.transform);
-                        enemy.TakeDamage(damage);
+                        enemy.AdjustHealth(damage);
                         print("Dealt " + damage);
                     print("Target position - " + enemy.transform.position.ToString());
                     }
@@ -285,15 +296,14 @@ namespace RPG.Characters
                 lastAttackTime = Time.time;
             }
         }
-        public void TakeDamage(float damage)
+        public void AdjustHealth(float changeAmount) //TODO change back to damage and duplicate for healing
         {
             if(respawnInvulnTimer != 0)
             {
-                damage = 0;
+                changeAmount = 0;
             }
-            bool playerDies = (currentHealthPoints - damage <= 0); //Must ask before dealing damage
-            ReduceHealth(damage);
-            timeSinceLastDamaged = Time.time;
+            bool playerDies = (currentHealthPoints - changeAmount <= 0); //Must ask before dealing damage
+            ReduceHealth(changeAmount);
             //Trigger Death
             if (playerDies)
             {
@@ -325,24 +335,30 @@ namespace RPG.Characters
         private void ReduceHealth(float damage)
         {
             currentHealthPoints = Mathf.Clamp(currentHealthPoints - damage, 0f, maxHealthPoints);
-            audioSource.clip = hurtSounds[UnityEngine.Random.Range(0, hurtSounds.Length)];
-            audioSource.Play();
+            if(currentHealthPoints < prevHealth)
+            {
+                timeSinceLastDamaged = Time.time;
+                print("Damaged!");
+                audioSource.clip = hurtSounds[UnityEngine.Random.Range(0, hurtSounds.Length)];
+                audioSource.Play();
+            }
+            prevHealth = currentHealthPoints;
         }
 
         //TODO Uncomment this after fixing exp system.
-        public void OnGUI()
-        {
-            string currentHealth = currentHealthPoints.ToString("F0");
-            string maxHealth = maxHealthPoints.ToString();
-            //    string lvl = level.ToString();
-            //    string exp = experiencePoints.ToString();
-            //    string expToLevel = experienceToNextLevel.ToString();
-            //    string lastdamaged = lastDamaged.ToString();
-            GUI.Label(new Rect(Screen.width - 545, Screen.height - 77, 100, 20), currentHealth + "/" + maxHealth);
-            //    GUI.Label(new Rect(Screen.width / 3, Screen.height - 30, 100, 20), lvl);
-            //    GUI.Label(new Rect(Screen.width / 2, Screen.height - 30, 100, 20), exp + "/" + expToLevel);
-            //    GUI.Label(new Rect(Screen.width - 80, Screen.height - 20, 100, 20), "Last hit " + (Time.time - timeSinceLastDamaged) + "s ago");
+        //public void OnGUI()
+        //{
+        //    string currentHealth = currentHealthPoints.ToString("F0");
+        //    string maxHealth = maxHealthPoints.ToString();
+        //    //    string lvl = level.ToString();
+        //    //    string exp = experiencePoints.ToString();
+        //    //    string expToLevel = experienceToNextLevel.ToString();
+        //    //    string lastdamaged = lastDamaged.ToString();
+        //    GUI.Label(new Rect(Screen.width - 545, Screen.height - 77, 100, 20), currentHealth + "/" + maxHealth);
+        //    //    GUI.Label(new Rect(Screen.width / 3, Screen.height - 30, 100, 20), lvl);
+        //    //    GUI.Label(new Rect(Screen.width / 2, Screen.height - 30, 100, 20), exp + "/" + expToLevel);
+        //    //    GUI.Label(new Rect(Screen.width - 80, Screen.height - 20, 100, 20), "Last hit " + (Time.time - timeSinceLastDamaged) + "s ago");
 
-        }
+        //}
     }
 }

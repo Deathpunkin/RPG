@@ -18,6 +18,8 @@ MonoBehaviour:
   attackAnimationOffHand: {fileID: 0}
   blockAnimationMainHand: {fileID: 0}
   blockAnimationOffHand: {fileID: 0}
+  deathAnimation: {fileID: 7400000, guid: 5e2c83d7c29bbd64cb4e8431239e7313, type: 3}
+  reviveAnimation: {fileID: 7400000, guid: 89394b0efaf3f1d418a5794775a67289, type: 3}
   gripMainHandTransform: {fileID: 4406109345298960, guid: ea935b4da7dc9134e8482ed074195b1e,
     type: 2}
   gripOffHandTransform: {fileID: 0}

@@ -10,6 +10,7 @@ namespace RPG.Characters
     {
         [Header("Power Attack Config")]
         [SerializeField] float extraDamage = 10f;
+        [SerializeField] float range = 5f;
 
         public override void AttachComponent(GameObject gameObjectToattachTo)
         {
@@ -20,6 +21,10 @@ namespace RPG.Characters
         public float GetExtraDamage()
         {
             return extraDamage;
+        }
+        public float getRange()
+        {
+            return range;
         }
     }
 }

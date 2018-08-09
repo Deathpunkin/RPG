@@ -8,8 +8,8 @@ namespace RPG.Characters
     [CreateAssetMenu(menuName = ("RPG/Special Ability/Healing"))]
     public class HealingConfig : SpecialAbility
     {
-        [Header("Power Attack Config")]
-        [SerializeField] float healthGained = -30f;
+        [Header("Healing Config")]
+        [SerializeField] float healthGained = 30;
 
         public override void AttachComponent(GameObject gameObjectToattachTo)
         {
@@ -17,6 +17,7 @@ namespace RPG.Characters
             behaviourComponent.setConfig(this);
             behaviour = behaviourComponent;
         }
+
         public float GetHealthGained()
         {
             return healthGained;

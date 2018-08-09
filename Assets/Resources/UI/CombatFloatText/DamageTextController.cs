@@ -10,6 +10,7 @@ public class DamageTextController : MonoBehaviour {
     private static DamageFloatText outOfRangeText;
     private static DamageFloatText highestCritText;
     private static DamageFloatText notEnoughEnergyText;
+    private static DamageFloatText healingText;
     private static GameObject canvas;
 
 
@@ -40,7 +41,10 @@ public class DamageTextController : MonoBehaviour {
         {
             notEnoughEnergyText = Resources.Load<DamageFloatText>("UI/CombatFloatText/NotEnoughEnergyTextParent");
         }
-
+        if (!healingText)
+        {
+            healingText = Resources.Load<DamageFloatText>("UI/CombatFloatText/HealingTextParent");
+        }
 
     }
     //TODO Fix Floating Number location.
@@ -77,6 +81,12 @@ public class DamageTextController : MonoBehaviour {
     public static void CreateFloatingNotEnoughEnergyText(string text, Transform location)
     {
         DamageFloatText instance = Instantiate(notEnoughEnergyText);
+        instance.transform.SetParent(canvas.transform, false);
+        instance.SetText(text);
+    }
+    public static void CreateFloatingHealingText(string text, Transform location)
+    {
+        DamageFloatText instance = Instantiate(healingText);
         instance.transform.SetParent(canvas.transform, false);
         instance.SetText(text);
     }

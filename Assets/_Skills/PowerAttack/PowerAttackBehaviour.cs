@@ -29,8 +29,8 @@ namespace RPG.Characters
 
         public void Use(AbilityUseParams useParams)
         {
-            float damageToDeal = useParams.baseDamage + config.GetExtraDamage();
-            useParams.target.TakeDamage(damageToDeal);
+            float damageToDeal = useParams.baseDamage + config.GetExtraDamage();         
+            useParams.target.AdjustHealth(damageToDeal);
             DamageTextController.CreateFloatingDamageText(damageToDeal.ToString(), transform);
             print("Power Attack Damage = " + damageToDeal);
             print("Player Base Damage = " + useParams.baseDamage);

@@ -11,7 +11,7 @@ namespace RPG.Characters //TODO consider making Core
     {
         Player player;
         [SerializeField] Image energyOrb = null;
-        [SerializeField] float maxEnergyPoints = 100f;
+        public float maxEnergyPoints = 100f;
         [SerializeField] float energyCost = 10;
         [SerializeField] float regenPerSecond = 1f;
         public float currentEnergyPoints;
@@ -63,26 +63,10 @@ namespace RPG.Characters //TODO consider making Core
         {
             energyOrb.fillAmount = energyAsPercent();
         }
-        //TODO fix bar not updating proper with regen
-        //IEnumerator energyRegen()
-        //{
-        //    print("regen energy!");
-        //    currentEnergyPoints = currentEnergyPoints + energyRegenSpeed;
-        //    yield return new WaitForSeconds(1);
-        //}
 
         float energyAsPercent()
         {
             return currentEnergyPoints / maxEnergyPoints;
-        }
-
-        public void OnGUI()
-        {
-            //TODO fix strange energy numbers showing up on bar
-            string currentEnergy = currentEnergyPoints.ToString("F0");
-            string maxEnergy = maxEnergyPoints.ToString("F0");
-            GUI.Label(new Rect(Screen.width - energyTextLocation, Screen.height - 77, 100, 20), currentEnergy + "/" + maxEnergy);
-
         }
     }
 }
