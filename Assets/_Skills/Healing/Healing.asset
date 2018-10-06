@@ -16,4 +16,5 @@ MonoBehaviour:
   skillEffect: {fileID: 1195630539092620, guid: c05353a300051494c96e7e863a3d8f53,
     type: 2}
   energyCost: 10
+  audioClip: {fileID: 8300000, guid: 2c33f890abb06364fa1028730f6f79c0, type: 3}
   healthGained: 30

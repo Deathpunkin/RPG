@@ -17,7 +17,7 @@ public class VisualClockController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		float currHour = 24 * controller.currentTime;
+		float currHour = 24 * controller.hour;
 		float currMin = 60 * (currHour - Mathf.Floor (currHour));
 
 		hourHand.localRotation = Quaternion.Euler (0, 0, currHour * hoursToDegrees);

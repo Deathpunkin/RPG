@@ -5,7 +5,7 @@ using RPG.Weapons;
 
 namespace RPG.Characters
 {
-    public class PowerAttackBehaviour : MonoBehaviour, ISpecialAbility
+    public class PowerAttackBehaviour : AbilityBehaviour
     {
         Weapon weapon;
         PowerAttackConfig config;
@@ -15,22 +15,10 @@ namespace RPG.Characters
             this.config = configToSet;
         }
 
-        // Use this for initialization
-        void Start()
-        {
-
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
-        }
-
-        public void Use(AbilityUseParams useParams)
+        public override void Use(AbilityUseParams useParams)
         {
             float damageToDeal = useParams.baseDamage + config.GetExtraDamage();         
-            useParams.target.AdjustHealth(damageToDeal);
+            useParams.target.TakeDamage(damageToDeal);
             DamageTextController.CreateFloatingDamageText(damageToDeal.ToString(), transform);
             print("Power Attack Damage = " + damageToDeal);
             print("Player Base Damage = " + useParams.baseDamage);

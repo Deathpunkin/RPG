@@ -32,7 +32,7 @@ namespace RPG.Weapons
                 Component damagableComponent = collision.gameObject.GetComponent(typeof(IDamageable));
                 if (damagableComponent)
                 {
-                    (damagableComponent as IDamageable).AdjustHealth(damageCaused);
+                    (damagableComponent as IDamageable).TakeDamage(damageCaused);
                     print(damagableComponent + " took " + damageCaused + " damage");
                 }
             }

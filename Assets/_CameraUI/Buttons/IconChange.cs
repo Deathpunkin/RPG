@@ -11,13 +11,13 @@ namespace RPG.CameraUI
         //TODO Change skill icon when skill in slot changes
         Image skill1;
         //Player player;
-        SpecialAbility[] abilities;
+        AbilityConfig[] abilities;
         Sprite abilityIcon;
         // Use this for initialization
         void Start()
         {
             skill1 = GetComponent<Image>();
-            abilities = FindObjectOfType<Player>().GetComponent<SpecialAbility[]>();
+            abilities = FindObjectOfType<Player>().GetComponent<AbilityConfig[]>();
             //abilityarray = player.GetComponent<SpecialAbility[]>();
             abilities[0].GetSkillIcon();
         }

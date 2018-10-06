@@ -5,11 +5,12 @@ using RPG.Weapons;
 
 namespace RPG.Characters
 {
-    public class HealingBehaviour : MonoBehaviour, ISpecialAbility
+    public class HealingBehaviour : AbilityBehaviour
     {
-        HealingConfig config;
-        Player player;
-        ParticleSystem skillEffect;
+        HealingConfig config = null;
+        Player player = null;
+        ParticleSystem skillEffect = null;
+        AudioSource audioSource = null;
 
         public void setConfig(HealingConfig configToSet)
         {
@@ -20,20 +21,17 @@ namespace RPG.Characters
         void Start()
         {
             player = GetComponent<Player>();
+            audioSource = GetComponent<AudioSource>();
         }
 
-        // Update is called once per frame
-        void Update()
-        {
-
-        }
-
-        public void Use(AbilityUseParams useParams)
+        public override void Use(AbilityUseParams useParams)
         {
             HealParticleEffect();
+            audioSource.clip = config.GetAudioClip();
+            audioSource.Play();
             if(player.currentHealthPoints != player.maxHealthPoints)
             {
-                player.AdjustHealth(-config.GetHealthGained());
+                player.Heal(config.GetHealthGained());
                 DamageTextController.CreateFloatingHealingText(config.GetHealthGained().ToString(), transform);
                 print("Healing Skill = " + -config.GetHealthGained());
             }
@@ -45,7 +43,9 @@ namespace RPG.Characters
 
         public void HealParticleEffect()
         {
-            var prefab = Instantiate(config.GetSkillEffect(), transform.position, Quaternion.Euler(-90, 0, 0));
+            var SkillEffectPrefab = config.GetSkillEffect();
+            var prefab = Instantiate(SkillEffectPrefab, transform.position, SkillEffectPrefab.transform.rotation);
+            prefab.transform.parent = transform;
             skillEffect = prefab.GetComponent<ParticleSystem>();
             skillEffect.Play();
             Destroy(prefab, skillEffect.main.duration);

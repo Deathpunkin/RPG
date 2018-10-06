@@ -22,7 +22,7 @@ namespace RPG.Characters
         [SerializeField] AudioClip[] deathSounds;
 
         // Temporarily serialized for debugging
-        [SerializeField] SpecialAbility[] abilities;
+        [SerializeField] AbilityConfig[] abilities;
 
         //Gear Slots Setup Here
         public Weapon mainHandWeapon;
@@ -37,7 +37,7 @@ namespace RPG.Characters
         public float currentHealthPoints;
         float prevHealth;
         public float respawnHealth;
-        float regenHealthDelay = 5.5f;
+        public float regenHealthDelay = 5.5f;
         float baseRegenHealthSpeed = 0.5f;
         public bool isDead = false;
         public Button respawnButton;
@@ -91,10 +91,11 @@ namespace RPG.Characters
                     print("regenerating!");
                     StartCoroutine(regenHealth());
                 }
-                if (currentHealthPoints == maxHealthPoints && (Time.time - timeSinceLastDamaged) <= regenHealthDelay)
+                else if (currentHealthPoints == maxHealthPoints && (Time.time - timeSinceLastDamaged) <= regenHealthDelay)
                 {
                     //CancelInvoke();
                     StopCoroutine(regenHealth());
+                    print("Done Regen!");
                     regenHealthSpeed = baseRegenHealthSpeed;
                 }
                 //Damage Math
@@ -112,14 +113,14 @@ namespace RPG.Characters
                     this.GetComponent<ThirdPersonUserControl>().enabled = true;
                 }
                 //TODO get respawn invuln working
-                respawnInvulnTimer = Mathf.Clamp(respawnInvuln - Time.time, 0, respawnInvuln);
+                //respawnInvulnTimer = Mathf.Clamp(respawnInvuln - Time.time, 0, respawnInvuln);
                ScanForAbilityKeyDown();
             }
         }
         //TODO uncomment when targeting for skills works
         private void ScanForAbilityKeyDown()
         {
-            for (int keyIndex = 1; keyIndex < abilities.Length; keyIndex++)
+            for (int keyIndex = 0; keyIndex < abilities.Length; keyIndex++)
             {
                 if (Input.GetKeyDown(keyIndex.ToString()))
                 {
@@ -261,7 +262,7 @@ namespace RPG.Characters
                 //mainHandWeapon.GetWeaponAudioSouce().Play
                 if (UnityEngine.Random.Range(1.0f, 100.0f) < critChance && UnityEngine.Random.Range(1, 100) > enemy.dodgechance)
                 {
-                    enemy.AdjustHealth(critDamage);
+                    enemy.TakeDamage(critDamage);
                     print("CRIT! Dealt " + critDamage);
                     if (critDamage >= highestCrit && enemy.level >= level)
                     {
@@ -283,7 +284,7 @@ namespace RPG.Characters
                             Debug.Log(enemy.transform);
                         }
                         DamageTextController.CreateFloatingDamageText(damage.ToString(), enemy.transform);
-                        enemy.AdjustHealth(damage);
+                        enemy.TakeDamage(damage);
                         print("Dealt " + damage);
                     print("Target position - " + enemy.transform.position.ToString());
                     }
@@ -291,24 +292,27 @@ namespace RPG.Characters
                 {
                     print("DODGED!");
                     DamageTextController.CreateFloatingDodgeText("Dodged!", enemy.transform);
-
                 }
                 lastAttackTime = Time.time;
             }
         }
-        public void AdjustHealth(float changeAmount) //TODO change back to damage and duplicate for healing
+        public void TakeDamage(float damage) //TODO change back to damage and duplicate for healing
         {
             if(respawnInvulnTimer != 0)
             {
-                changeAmount = 0;
+                damage = 0;
             }
-            bool playerDies = (currentHealthPoints - changeAmount <= 0); //Must ask before dealing damage
-            ReduceHealth(changeAmount);
+            ReduceHealth(damage);
             //Trigger Death
-            if (playerDies)
+            if (currentHealthPoints <= 0)
             {
                 StartCoroutine(TriggerDeath());
             }
+        }
+
+        public void Heal(float points)
+        {
+            currentHealthPoints = Mathf.Clamp(currentHealthPoints + points, 0f, maxHealthPoints);
         }
 
         public IEnumerator TriggerDeath()

@@ -5,7 +5,7 @@ using UnityEngine;
 namespace RPG.Characters
 {
     [CreateAssetMenu(menuName = ("RPG/Special Ability/AoE Attack"))]
-    public class AreaofEffectConfig : SpecialAbility
+    public class AreaofEffectConfig : AbilityConfig
     {
         [Header("AoE Config")]
         [SerializeField] float radius = 5f;

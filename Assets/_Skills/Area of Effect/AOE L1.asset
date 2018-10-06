@@ -13,6 +13,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillIcon: {fileID: 114740243434816930, guid: b7367dcdd99070d44884b154576fc92a,
     type: 2}
+  skillEffect: {fileID: 1650425242778314, guid: fae7a143f87dc834390400409b71e7f3,
+    type: 2}
   energyCost: 10
+  audioClip: {fileID: 0}
   radius: 5
   damageToEachTarget: 15

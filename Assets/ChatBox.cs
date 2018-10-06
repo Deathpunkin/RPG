@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using RPG.Core;
+using RPG.Characters;
 
 public class ChatBox : MonoBehaviour {
 
@@ -11,32 +12,115 @@ public class ChatBox : MonoBehaviour {
     public GameObject chatPanel, textObject;
     public InputField chatBox;
     public string username;
+    Player player;
+    Animator playerAnimator;
 
-    public Color playerMessage, info, command;
+    public Color playerMessage, emote, info, command, error;
 
     public DayAndNightControl dayAndNightControl;
 
     [SerializeField]
     List<Message> messageList = new List<Message>();
-
+     
 	void Start ()
     {
         dayAndNightControl = GameObject.Find("Day and Night Controller").GetComponent<DayAndNightControl>();
+        playerAnimator = player.GetComponent<Animator>();
     }
-	
-	void Update ()
+
+    void Update()
     {
-        if(chatBox.text == "/time set dawn")
+        if (chatBox.text == "/time set dawn")
         {
-            if(Input.GetKeyDown(KeyCode.Return))
+            if (Input.GetKeyDown(KeyCode.Return))
             {
                 SendMessageToChat("Time Set To Dawn.", Message.MessageType.command);
                 chatBox.text = "";
-                dayAndNightControl.currentTime = 5f;
+                dayAndNightControl.hour = 4f;
+            }
+        }
+        if (chatBox.text == "/time set sunrise")
+        {
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                SendMessageToChat("Time Set To Sunrise.", Message.MessageType.command);
+                chatBox.text = "";
+                dayAndNightControl.hour = 6f;
+            }
+        }
+        if (chatBox.text == "/time set morning")
+        {
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                SendMessageToChat("Time Set To Morning.", Message.MessageType.command);
+                chatBox.text = "";
+                dayAndNightControl.hour = 7f;
+            }
+        }
+        if (chatBox.text == "/time set noon")
+        {
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                SendMessageToChat("Time Set To Noon.", Message.MessageType.command);
+                chatBox.text = "";
+                dayAndNightControl.hour = 12f;
+            }
+        }
+        if (chatBox.text == "/time set afternoon")
+        {
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                SendMessageToChat("Time Set To Afternoon.", Message.MessageType.command);
+                chatBox.text = "";
+                dayAndNightControl.hour = 13f;
+            }
+        }
+        if (chatBox.text == "/time set sunset")
+        {
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                SendMessageToChat("Time Set To Sunset.", Message.MessageType.command);
+                chatBox.text = "";
+                dayAndNightControl.hour = 17f;
+            }
+        }
+        if (chatBox.text == "/time set dusk")
+        {
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                SendMessageToChat("Time Set To Dusk.", Message.MessageType.command);
+                chatBox.text = "";
+                dayAndNightControl.hour = 18f;
+            }
+        }
+        if (chatBox.text == "/time set night")
+        {
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                SendMessageToChat("Time Set To Night.", Message.MessageType.command);
+                chatBox.text = "";
+                dayAndNightControl.hour = 20f;
+            }
+        }
+        if (chatBox.text == "/dance")
+        {
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                SendMessageToChat(username + " dances.", Message.MessageType.emote);
+                chatBox.text = "";
+                playerAnimator.SetTrigger("Dance");
             }
         }
         else
-                if (chatBox.text != "")
+        if (chatBox.text.StartsWith("/"))
+        {
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                SendMessageToChat("Unknown Command. (" + chatBox.text + ")", Message.MessageType.error);
+                chatBox.text = "";
+            }
+        }
+        else if (chatBox.text != "")
         {
             if (Input.GetKeyDown(KeyCode.Return))
             {
@@ -50,8 +134,8 @@ public class ChatBox : MonoBehaviour {
             }
         if (!chatBox.isFocused && Input.GetKeyDown(KeyCode.Question))
         {
-            chatBox.text = "/";
             chatBox.ActivateInputField();
+            chatBox.text = "/";
         }
 
     }
@@ -83,14 +167,20 @@ public class ChatBox : MonoBehaviour {
 
         switch(messageType)
         {
-            case Message.MessageType.command:
-                color = command;
-                break;
             case Message.MessageType.playerMessage:
                 color = playerMessage;
                 break;
+            case Message.MessageType.emote:
+                color = emote;
+                break;
             case Message.MessageType.info:
                 color = info;
+                break;
+            case Message.MessageType.command:
+                color = command;
+                break;
+            case Message.MessageType.error:
+                color = error;
                 break;
         }
 
@@ -107,7 +197,9 @@ public class Message
     public enum MessageType
     {
         playerMessage,
+        emote,
         info,
-        command
+        command,
+        error
     }
 }

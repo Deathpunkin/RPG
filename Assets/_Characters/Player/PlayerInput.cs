@@ -73,7 +73,7 @@ namespace RPG.Characters //consider changing to core
                 Component damageableComponent = player;
 
 
-                (damageableComponent as IDamageable).AdjustHealth(damageCaused);
+                (damageableComponent as IDamageable).TakeDamage(damageCaused);
                 player.timeSinceLastDamaged = Time.time;
                 print("Dealt 10dmg to Self!");
                 if (player.currentHealthPoints <= 0)

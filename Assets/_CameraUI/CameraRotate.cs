@@ -27,6 +27,8 @@ namespace RPG.CameraUI
 
         public bool rightClick = false;
         private Vector2 mousePosition;
+        public float verticalScroll = 5;
+        public float horizontalScroll = 5;
 
         //checks if first person mode is on
         private bool click = false;
@@ -64,6 +66,23 @@ namespace RPG.CameraUI
                 float targetRotantionAngle = CameraArm.eulerAngles.y;
                 float cameraRotationAngle = transform.eulerAngles.y;
                 x = Mathf.LerpAngle(cameraRotationAngle, targetRotantionAngle, lerpRate * Time.deltaTime);
+            }
+
+            if (Input.GetKey(KeyCode.RightArrow))
+            {
+                x += verticalScroll;
+            }
+            if (Input.GetKey(KeyCode.LeftArrow))
+            {
+                x -= verticalScroll;
+            }
+            if (Input.GetKey(KeyCode.UpArrow))
+            {
+                y += horizontalScroll;
+            }
+            if (Input.GetKey(KeyCode.DownArrow))
+            {
+                y -= horizontalScroll;
             }
 
             y = ClampAngle(y, maxUnderAngle, maxOverAngle);
