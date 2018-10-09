@@ -1374,13 +1374,13 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 149790}
   m_LocalRotation: {x: -0, y: 0.74664384, z: -0, w: 0.6652241}
-  m_LocalPosition: {x: 2.05, y: 0, z: 5}
+  m_LocalPosition: {x: 1.91, y: -0, z: 22.19}
   m_LocalScale: {x: 0.95248115, y: 0.72510374, z: 0.67393494}
   m_Children:
+  - {fileID: 4255522213472800}
   - {fileID: 469942}
   - {fileID: 495908}
   - {fileID: 448028}
-  - {fileID: 4255522213472800}
   - {fileID: 4516338588349822}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -1816,7 +1816,7 @@ Transform:
   m_Children:
   - {fileID: 487818}
   m_Father: {fileID: 408730}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &449108
 Transform:
@@ -2032,7 +2032,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 408730}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &470102
 Transform:
@@ -2388,7 +2388,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 408730}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &495970
 Transform:
@@ -2410,7 +2410,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100098}
-  m_LocalRotation: {x: 0.53267515, y: 0.07034045, z: 0.83613265, w: -0.11041513}
+  m_LocalRotation: {x: 0.5326752, y: 0.070340455, z: 0.83613276, w: -0.110415146}
   m_LocalPosition: {x: 0.000022271464, y: -0.00006150465, z: 0.026027026}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -2497,13 +2497,14 @@ MonoBehaviour:
   m_MoveSpeedMultiplier: 0.5
   m_AnimSpeedMultiplier: 1
   m_GroundCheckDistance: 0.3
+  m_Crouching: 0
 --- !u!136 &13615390
 CapsuleCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 149790}
-  m_Material: {fileID: 13400000, guid: e52fb17f9b1e7fd48b8955f1391d3688, type: 2}
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.3
@@ -2741,7 +2742,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 408730}
-  m_RootOrder: 3
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -86.955, z: 0}
 --- !u!4 &4516338588349822
 Transform:
@@ -2798,12 +2799,14 @@ MonoBehaviour:
   attackRadius: 4
   damagePerShot: 9
   attackSpeed: 0.5
+  attackSpeedVariation: 0.1
   projectileToUse: {fileID: 1689720754101070, guid: 2dcd69e53a4f7fd4eb07fe66b2940d7f,
     type: 2}
   projectileSocket: {fileID: 1889241560012306}
   aimOffset: {x: 0, y: 1, z: 0}
   dodgechance: 10
   isProp: 0
+  lootable: 0
 --- !u!195 &195613560213886756
 NavMeshAgent:
   m_ObjectHideFlags: 1

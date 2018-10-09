@@ -11,11 +11,9 @@ namespace RPG.Characters
         [Header("Healing Config")]
         [SerializeField] float healthGained = 30;
 
-        public override void AttachComponent(GameObject gameObjectToattachTo)
+        public override AbilityBehaviour GetBehaviourComponent(GameObject objectToAttachTo)
         {
-            var behaviourComponent = gameObjectToattachTo.AddComponent<HealingBehaviour>();
-            behaviourComponent.setConfig(this);
-            behaviour = behaviourComponent;
+            return objectToAttachTo.AddComponent<HealingBehaviour>();
         }
 
         public float GetHealthGained()

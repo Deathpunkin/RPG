@@ -8,7 +8,8 @@ namespace RPG.Characters
 {
     public class Enemy : MonoBehaviour, IDamageable
     {
-
+        Animator animator;
+        ParticleSystem lootableParticle;
         public float level = 1;
         public float maxHealthPoints = 100f;
         float currentHealthPoints;
@@ -31,7 +32,9 @@ namespace RPG.Characters
         public float dodgechance = 10f;
 
         [SerializeField] bool isProp = false;
-
+        public bool lootable = false;
+        GameObject enemyUI;
+        Collider collider;
         public float healthAsPercentage
         {
             get
@@ -50,13 +53,29 @@ namespace RPG.Characters
 
             if (currentHealthPoints <= 0)
             {
-                if(isProp)
+                if (isProp)
                 {
                     return;
                 }
-                Destroy(gameObject, 0.1f);
-                StartCoroutine("awardExp");
-
+                enemyUI.SetActive(false);
+                collider.enabled = false;
+                if (lootable)
+                {
+                    CancelInvoke("SpawnProjectile");
+                    aiCharacterControl.SetTarget(transform);
+                    animator.SetTrigger("Dead");
+                    lootableParticle.Play();
+                    gameObject.tag = "Lootable";
+                    gameObject.layer = LayerMask.NameToLayer("Lootable");
+                }
+                else
+                {
+                    CancelInvoke("SpawnProjectile");
+                    aiCharacterControl.SetTarget(transform);
+                    animator.SetTrigger("Dead");
+                    Destroy(gameObject, 10f); // Adjust time Body stays around.
+                }
+               
             }
         }
 
@@ -71,13 +90,16 @@ namespace RPG.Characters
         {
             currentHealthPoints = currentHealthPoints + regenHealthspeed;
             //        regenHealthSpeed = regenHealthSpeed +1 ;
-            print("Enemy Regen!");
             yield return new WaitForSeconds(1);
         }
 
         void Start()
         {
             player = FindObjectOfType<Player>();
+            animator = GetComponent<Animator>();
+            lootableParticle = GetComponentInChildren<ParticleSystem>();
+            enemyUI = this.gameObject.transform.GetChild(0).gameObject;
+            collider = GetComponent<Collider>();
             aiCharacterControl = GetComponent<AICharacterControl>();
             currentHealthPoints = maxHealthPoints;
             DamageTextController.Initialize();
@@ -87,7 +109,7 @@ namespace RPG.Characters
         {
             Transform chasestop;
             float distanceToPlayer = Vector3.Distance(player.transform.position, transform.position);
-            if (distanceToPlayer <= attackRadius && !isAttacking)
+            if (distanceToPlayer <= attackRadius && !isAttacking && currentHealthPoints > 0)
             {
                 isAttacking = true;
                 float randomizedAttackSpeed = Random.Range(attackSpeed - attackSpeedVariation, attackSpeed + attackSpeedVariation);
@@ -101,7 +123,7 @@ namespace RPG.Characters
                 CancelInvoke();
             }
 
-            if (distanceToPlayer <= chaseRadius && distanceToPlayer >= attackRadius)
+            if (distanceToPlayer <= chaseRadius && distanceToPlayer >= attackRadius && currentHealthPoints > 0)
             {
                 aiCharacterControl.SetTarget(player.transform);
             }
@@ -120,13 +142,16 @@ namespace RPG.Characters
                     StartCoroutine("regenHealth", 5f);
                 }
             }
-
+            if (Random.Range(0, 500) == 20)
+            {
+                lootable = true;
+                print("Loot Me!");
+            }
         }
 
 
         void SpawnProjectile()
         {
-            print("EnemyFire!");
             GameObject newProjectile = Instantiate(projectileToUse, projectileSocket.transform.position, Quaternion.identity);
             Projectile projectileComponent = newProjectile.GetComponent<Projectile>();
             projectileComponent.SetDamage(damagePerShot);

@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Enemy
+  - Lootable
   layers:
   - Default
   - TransparentFX
@@ -17,7 +18,7 @@ TagManager:
   - Walkable
   - Enemy
   - Player
-  - 
+  - Lootable
   - 
   - 
   - 

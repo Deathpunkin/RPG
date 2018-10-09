@@ -27,7 +27,6 @@ namespace RPG.CameraUI
         // Update is called once per frame
         public void Update()
         {
-            print("Healthnumberupdate");
             healthNumbers.text = player.currentHealthPoints.ToString("F0") + "/" + player.maxHealthPoints.ToString("F0");
         }
     }

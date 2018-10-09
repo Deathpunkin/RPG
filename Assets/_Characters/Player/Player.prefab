@@ -34,7 +34,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 149790}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.25568783, y: 0.02000001, z: 1.4219034}
+  m_LocalPosition: {x: 0.60928345, y: 0, z: 0.0034942627}
   m_LocalScale: {x: 0.8858579, y: 0.8858579, z: 0.8858579}
   m_Children:
   - {fileID: 4687411172284512}
@@ -862,6 +862,9 @@ MonoBehaviour:
   Exp: 107
   SkillBar1: 49
   Revive: 106
+  CommandButton: 306
+  hideHud: 104
+  HUDHidden: 0
 --- !u!114 &114056948249611540
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -896,9 +899,10 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 9886d59a92d4547a5a1a0ece82280483, type: 3}
   - {fileID: 8300000, guid: 06a65b24e73c143858b5facd5d6ea264, type: 3}
   abilities:
-  - {fileID: 11400000, guid: 1e795d81288929b47b296bde53be5755, type: 2}
   - {fileID: 11400000, guid: fcae164266dea1c468bb8e43fac6d5ec, type: 2}
-  mainHandWeapon: {fileID: 11400000, guid: 40fc3b76a6314b64a84f72e9653d12fd, type: 2}
+  - {fileID: 11400000, guid: 1e795d81288929b47b296bde53be5755, type: 2}
+  mainHandWeaponConfig: {fileID: 11400000, guid: 7ac64f07787a94f40bd85f364fbf6136,
+    type: 2}
   offHandWeapon: {fileID: 11400000, guid: 40fc3b76a6314b64a84f72e9653d12fd, type: 2}
   level: 1
   experiencePoints: 0
@@ -906,6 +910,7 @@ MonoBehaviour:
   maxHealthPoints: 500
   currentHealthPoints: 500
   respawnHealth: 0
+  regenHealthDelay: 5.5
   isDead: 0
   respawnButton: {fileID: 114680414458877374, guid: 333e2305c83753e42ae69a8a546c6229,
     type: 2}

@@ -7,15 +7,9 @@ namespace RPG.Characters
 {
     public class HealingBehaviour : AbilityBehaviour
     {
-        HealingConfig config = null;
         Player player = null;
         ParticleSystem skillEffect = null;
         AudioSource audioSource = null;
-
-        public void setConfig(HealingConfig configToSet)
-        {
-            this.config = configToSet;
-        }
 
         // Use this for initialization
         void Start()
@@ -26,29 +20,19 @@ namespace RPG.Characters
 
         public override void Use(AbilityUseParams useParams)
         {
-            HealParticleEffect();
-            audioSource.clip = config.GetAudioClip();
+            PlaySkillParticleEffect();
+            audioSource.clip = config.GetRandomAbilitySound();
             audioSource.Play();
             if(player.currentHealthPoints != player.maxHealthPoints)
             {
-                player.Heal(config.GetHealthGained());
-                DamageTextController.CreateFloatingHealingText(config.GetHealthGained().ToString(), transform);
-                print("Healing Skill = " + -config.GetHealthGained());
+                player.Heal((config as HealingConfig).GetHealthGained());
+                DamageTextController.CreateFloatingHealingText((config as HealingConfig).GetHealthGained().ToString(), transform);
+                print("Healing Skill = " + -(config as HealingConfig).GetHealthGained());
             }
             else
             {
                 return;
             }
-        }
-
-        public void HealParticleEffect()
-        {
-            var SkillEffectPrefab = config.GetSkillEffect();
-            var prefab = Instantiate(SkillEffectPrefab, transform.position, SkillEffectPrefab.transform.rotation);
-            prefab.transform.parent = transform;
-            skillEffect = prefab.GetComponent<ParticleSystem>();
-            skillEffect.Play();
-            Destroy(prefab, skillEffect.main.duration);
         }
     }
 }

@@ -28,7 +28,6 @@ namespace RPG.CameraUI
         public void Update()
         {
             var energyComponent = player.GetComponent<Energy>();
-            print("Energynumberupdate");
             energyNumbers.text = energyComponent.currentEnergyPoints.ToString("F0") + "/" + energyComponent.maxEnergyPoints.ToString("F0");
         }
     }

@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 699238ea31342554ab32cd695386c7c5, type: 3}
+  m_Name: Sword
+  m_EditorClassIdentifier: 
+  weaponPrefab: {fileID: 1277290872445230, guid: 0982ce6c23f616d4bae4c222799510a6,
+    type: 2}
+  attackAnimationMainHand: {fileID: 7400000, guid: 01ce608905e9d3e48928ced7d03f19ed,
+    type: 3}
+  attackAnimationOffHand: {fileID: 0}
+  blockAnimationMainHand: {fileID: 0}
+  blockAnimationOffHand: {fileID: 0}
+  deathAnimation: {fileID: 7400000, guid: 9a26352c93a81e947b73b8e47cc931bb, type: 3}
+  reviveAnimation: {fileID: 7400000, guid: d62366db4fe49f4459c207df8581a6a3, type: 3}
+  gripMainHandTransform: {fileID: 4813102551954058, guid: a3361ab6f2f3e444280614e37ec50b63,
+    type: 2}
+  gripOffHandTransform: {fileID: 0}
+  attackSpeed: 0.5
+  maxAttackRange: 2
+  minDamagePerHit: 10
+  maxDamagePerHit: 20
+  audioSource: {fileID: 0}
+  hitSound: {fileID: 0}
+  missSound: {fileID: 0}
+  blockSound: {fileID: 0}

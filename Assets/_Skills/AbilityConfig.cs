@@ -22,16 +22,24 @@ namespace RPG.Characters
 
         [Header("Special Ability General")]
         [SerializeField] Image skillIcon = null;
-        [SerializeField] GameObject skillEffect = null;
+        [SerializeField] GameObject skillParticleEffect = null;
         [SerializeField] float energyCost = 10f;
-        [SerializeField] AudioClip audioClip = null;
+        [Header("NEED audioclip or won't compile")]
+        [SerializeField] AudioClip[] audioClips = null;
         float cooldown = 3f;
         float cooldownTimer;
         bool abilityCooldownDone = false;
 
         protected AbilityBehaviour behaviour;
 
-        abstract public void AttachComponent(GameObject gameObjectToattachTo);
+        public abstract AbilityBehaviour GetBehaviourComponent(GameObject objectToAttachTo);
+
+        public void AttachAbilityTo(GameObject objectToAttachTo)
+        {
+            AbilityBehaviour behaviourComponent = GetBehaviourComponent(objectToAttachTo);
+            behaviourComponent.setConfig(this);
+            behaviour = behaviourComponent;
+        }
 
         public void Use(AbilityUseParams useParams)
         {
@@ -43,9 +51,9 @@ namespace RPG.Characters
             return skillIcon;
         }
 
-        public GameObject GetSkillEffect()
+        public GameObject GetSkillParticleEffect()
         {
-            return skillEffect;
+            return skillParticleEffect;
         }
 
 
@@ -59,9 +67,9 @@ namespace RPG.Characters
             return cooldownTimer;
         }
         
-        public AudioClip GetAudioClip()
+        public AudioClip GetRandomAbilitySound()
         {
-            return audioClip;
+            return audioClips[Random.Range(0, audioClips.Length)];
         }
     }
 }

@@ -9,13 +9,13 @@ using RPG.Core;
 using RPG.Weapons;
 
 namespace RPG.Characters
-{   
+{
     public class Player : MonoBehaviour, IDamageable
-    { 
+    {
         //TODO sort and clean all this
         CameraRaycaster cameraRaycaster;
         [SerializeField] AnimatorOverrideController animatorOverrideController;
-        
+
         Animator animator;
         AudioSource audioSource;
         [SerializeField] AudioClip[] hurtSounds;
@@ -25,8 +25,9 @@ namespace RPG.Characters
         [SerializeField] AbilityConfig[] abilities;
 
         //Gear Slots Setup Here
-        public Weapon mainHandWeapon;
+        public Weapon mainHandWeaponConfig; //TODO Rename 'config' calls to something clearer
         public Weapon offHandWeapon;
+        GameObject mainHandWeaponObject;
 
         //Stat Setup
         public float level = 1f;
@@ -69,11 +70,12 @@ namespace RPG.Characters
         {
             cameraRaycaster = FindObjectOfType<CameraRaycaster>();
             cameraRaycaster.onMouseOverEnemy += OnMouseOverEnemy;
+            //cameraRaycaster.onMouseOverLootable += OnMouseOverLootable; //TODO Fix when Loot Works.
             currentHealthPoints = maxHealthPoints;
             prevHealth = currentHealthPoints;
             regenHealthSpeed = baseRegenHealthSpeed;
             audioSource = GetComponent<AudioSource>();
-            PutWeaponInMainHand();
+            PutWeaponInMainHand(mainHandWeaponConfig);
             PutWeaponInOffHand();
             SetupRuntimeAnimator();
             DamageTextController.Initialize();
@@ -88,22 +90,19 @@ namespace RPG.Characters
             {
                 if ((Time.time - timeSinceLastDamaged) >= regenHealthDelay && currentHealthPoints != maxHealthPoints && !isDead)
                 {
-                    print("regenerating!");
                     StartCoroutine(regenHealth());
                 }
                 else if (currentHealthPoints == maxHealthPoints && (Time.time - timeSinceLastDamaged) <= regenHealthDelay)
                 {
                     //CancelInvoke();
                     StopCoroutine(regenHealth());
-                    print("Done Regen!");
                     regenHealthSpeed = baseRegenHealthSpeed;
                 }
                 //Damage Math
-                damage = Mathf.Round(UnityEngine.Random.Range(mainHandWeapon.GetMinDamagePerHit(), mainHandWeapon.GetMaxDamagePerHit()));
+                damage = Mathf.Round(UnityEngine.Random.Range(mainHandWeaponConfig.GetMinDamagePerHit(), mainHandWeaponConfig.GetMaxDamagePerHit()));
                 critDamage = Mathf.Round(damage * critMultiplyer);
                 if (isDead)
                 {
-                    animator.SetTrigger("Dead");
                     StopCoroutine(regenHealth());
                     this.GetComponent<ThirdPersonUserControl>().enabled = false;
                 }
@@ -114,7 +113,7 @@ namespace RPG.Characters
                 }
                 //TODO get respawn invuln working
                 //respawnInvulnTimer = Mathf.Clamp(respawnInvuln - Time.time, 0, respawnInvuln);
-               ScanForAbilityKeyDown();
+                ScanForAbilityKeyDown();
             }
         }
         //TODO uncomment when targeting for skills works
@@ -132,8 +131,21 @@ namespace RPG.Characters
         {
             for (int abilityIndex = 0; abilityIndex < abilities.Length; abilityIndex++)
             {
-                abilities[abilityIndex].AttachComponent(gameObject);
+                abilities[abilityIndex].AttachAbilityTo(gameObject);
             }
+        }
+
+        public void PutWeaponInMainHand(Weapon weaponToUse)
+        {
+            mainHandWeaponConfig = weaponToUse;
+            var weaponMainHandPrefab = weaponToUse.GetWeaponPrefab();
+            GameObject mainHand = RequestMainHand();
+            Destroy(mainHandWeaponObject);
+            mainHandWeaponObject = Instantiate(weaponMainHandPrefab, mainHand.transform);
+            mainHandWeaponObject.transform.localPosition = mainHandWeaponConfig.gripMainHandTransform.localPosition;
+            mainHandWeaponObject.transform.localRotation = mainHandWeaponConfig.gripMainHandTransform.localRotation;
+            SetupRuntimeAnimator();
+
         }
 
         private void SetupRuntimeAnimator()
@@ -142,24 +154,16 @@ namespace RPG.Characters
             animator.runtimeAnimatorController = animatorOverrideController;
 
             //TODO Get OFFHAND and Block working
-            animatorOverrideController["DEFAULT MAINHAND ATTACK"] = mainHandWeapon.GetMainHandAttackAnimClip();
+            animatorOverrideController["DEFAULT MAINHAND ATTACK"] = mainHandWeaponConfig.GetMainHandAttackAnimClip();
             //animatorOverrideController["DEFAULT OFFHAND ATTACK"] = offHandWeapon.GetOffHandAttackAnimClip();
             //animatorOverrideController["DEFAULT MAINHAND BLOCK"] = mainHandWeapon.GetMainHandBlockAnimClip();
             //animatorOverrideController["DEFAULT OFFHAND BLOCK"] = offHandWeapon.GetOffHandBlockAnimClip();
-            animatorOverrideController["DEFAULT DEATH"] = mainHandWeapon.GetDeathAnimClip();
-            animatorOverrideController["DEFAULT REVIVE"] = mainHandWeapon.GetReviveAnimClip();
+            animatorOverrideController["DEFAULT DEATH"] = mainHandWeaponConfig.GetDeathAnimClip();
+            animatorOverrideController["DEFAULT REVIVE"] = mainHandWeaponConfig.GetReviveAnimClip();
 
         }
         //Weapon/Hand setup
         //MainHand
-        private void PutWeaponInMainHand()
-        {
-            var weaponMainHandPrefab = mainHandWeapon.GetWeaponPrefab();
-            GameObject mainHand = RequestMainHand();
-            var weaponMainHand = Instantiate(weaponMainHandPrefab, mainHand.transform);
-            weaponMainHand.transform.localPosition = mainHandWeapon.gripMainHandTransform.localPosition;
-            weaponMainHand.transform.localRotation = mainHandWeapon.gripMainHandTransform.localRotation;
-        }
             //OffHand
         public void PutWeaponInOffHand()
         {
@@ -194,7 +198,6 @@ namespace RPG.Characters
         {
             currentHealthPoints = currentHealthPoints + regenHealthSpeed;
             //regenHealthSpeed = regenHealthSpeed + 0.5f;
-            print("Still Regen!");
             yield return new WaitForSeconds(1);
         }
 
@@ -214,6 +217,14 @@ namespace RPG.Characters
                     //StartCoroutine(moveIntoRange());
                 }
             }
+        }
+        void OnMouseOverLootable(Vector3 lootable)
+        {
+            if (Input.GetMouseButton(0))
+            {
+                print("Lootable!");
+            }
+            return;
         }
 
         IEnumerator moveIntoRange()
@@ -250,12 +261,12 @@ namespace RPG.Characters
         private bool IsTargetInRange(GameObject target)
         {
             float distanceToTarget = (target.transform.position - transform.position).magnitude;
-            return distanceToTarget <= mainHandWeapon.GetMaxAttackRange();
+            return distanceToTarget <= mainHandWeaponConfig.GetMaxAttackRange();
         }
 
         private void AttackTarget()
         {
-            if (Time.time - lastAttackTime > mainHandWeapon.GetAttackSpeed())
+            if (Time.time - lastAttackTime > mainHandWeaponConfig.GetAttackSpeed())
             {
                 animator.SetTrigger("Attack");
                 //mainHandWeapon.GetWeaponHitSound();
@@ -319,6 +330,7 @@ namespace RPG.Characters
         {
             var energyComponent = GetComponent<Energy>();
             //Kill
+            animator.SetTrigger("Dead"); //TODO disable movement when dead
             audioSource.clip = deathSounds[UnityEngine.Random.Range(0, deathSounds.Length)];
             audioSource.Play();
             isDead = true;
@@ -342,7 +354,6 @@ namespace RPG.Characters
             if(currentHealthPoints < prevHealth)
             {
                 timeSinceLastDamaged = Time.time;
-                print("Damaged!");
                 audioSource.clip = hurtSounds[UnityEngine.Random.Range(0, hurtSounds.Length)];
                 audioSource.Play();
             }

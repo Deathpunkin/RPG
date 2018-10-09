@@ -133,6 +133,7 @@
     <Compile Include="Assets\_Skills\PowerAttack\PowerAttackConfig.cs" />
     <Compile Include="Assets\_Weapons\Ball Gun\Projectile.cs" />
     <Compile Include="Assets\_Weapons\Weapon.cs" />
+    <Compile Include="Assets\_Weapons\WeaponPickupPoint.cs" />
     <Compile Include="Assets\ChatBox.cs" />
     <Compile Include="Assets\Huge Mocap Library\demo\scripts\demo.cs" />
     <Compile Include="Assets\Huge Mocap Library\demo\scripts\smoothFollow.cs" />

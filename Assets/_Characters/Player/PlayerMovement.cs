@@ -33,6 +33,7 @@ namespace RPG.Characters
 
             cameraRaycaster.onMouseOverWalkable += OnMouseOverWalkable;
             cameraRaycaster.onMouseOverEnemy += OnMouseOverEnemy;
+            //cameraRaycaster.onMouseOverLootable += OnMouseOverLootable; //TODO Fix when Loot works
         }
 
         void OnMouseOverEnemy(Enemy enemy)
@@ -44,7 +45,10 @@ namespace RPG.Characters
                 movePoint = transform.position;
             }
         }
-
+        void OnMouseOverLootable(Vector3 lootable)
+        {
+            return;
+        }
         void OnMouseOverWalkable(Vector3 destination)
         {
             //TODO figure out why destination is mouse cursor

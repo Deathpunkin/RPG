@@ -12,13 +12,17 @@ namespace RPG.CameraUI
         int topPriorityLayerLastFrame = -1; // So get ? from start with Default layer 
         [SerializeField] Texture2D walkCursor = null;
         [SerializeField] Texture2D enemyCursor = null;
+        [SerializeField] Texture2D lootableCursor = null;
         [SerializeField] Vector2 cursorHotspot = new Vector2(0, 0);
 
         const int WALKABLE_LAYER = 8;
+        const int LOOTABLE_LAYER = 11;
 
         //New delegates
         public delegate void OnMouseOverEnemy(Enemy enemy);
         public event OnMouseOverEnemy onMouseOverEnemy;
+        public delegate void OnMouseOverLootable(GameObject lootable);
+        public event OnMouseOverLootable onMouseOverLootable;
 
         Rect screenRect;
 
@@ -53,6 +57,10 @@ namespace RPG.CameraUI
                 {
                     return;
                 }
+                //if (RaycastForLootable(ray)) //TODO Fix when Loot works
+                //{
+                //    return;
+                //}
                 if (RaycastForWalkable(ray))
                 {
                     return;
@@ -73,6 +81,20 @@ namespace RPG.CameraUI
             }
             return false;
         }
+
+        //private bool RaycastForLootable(Ray ray) //TODO Fix when Loot works
+        //{
+        //    RaycastHit hitInfo;
+        //    Physics.Raycast(ray, out hitInfo, maxRaycastDepth);
+        //    var gameObjectHit = hitInfo.collider.gameObject;
+        //    var lootableHit = gameObjectHit.GetComponent<Enemy>();
+        //    if (enemyHit)
+        //    {
+        //        Cursor.SetCursor(enemyCursor, cursorHotspot, CursorMode.Auto);
+        //        onMouseOverEnemy(enemyHit);
+        //        return true;
+        //    }
+        //}
 
         private bool RaycastForWalkable(Ray ray)
         {
