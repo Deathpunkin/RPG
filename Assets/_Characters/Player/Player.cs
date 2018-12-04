@@ -160,6 +160,7 @@ namespace RPG.Characters
             //animatorOverrideController["DEFAULT OFFHAND BLOCK"] = offHandWeapon.GetOffHandBlockAnimClip();
             animatorOverrideController["DEFAULT DEATH"] = mainHandWeaponConfig.GetDeathAnimClip();
             animatorOverrideController["DEFAULT REVIVE"] = mainHandWeaponConfig.GetReviveAnimClip();
+            //animatorOverrideController["DEFAULT DANCE"] = // TODO Implement Animation Changers.
 
         }
         //Weapon/Hand setup

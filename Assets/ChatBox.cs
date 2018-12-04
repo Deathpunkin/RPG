@@ -24,12 +24,23 @@ public class ChatBox : MonoBehaviour {
      
 	void Start ()
     {
+        player = FindObjectOfType<Player>();
         dayAndNightControl = GameObject.Find("Day and Night Controller").GetComponent<DayAndNightControl>();
         playerAnimator = player.GetComponent<Animator>();
     }
 
     void Update()
     {
+        if (chatBox.text == "/time set")
+        {
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                SendMessageToChat("Usage", Message.MessageType.info);
+                SendMessageToChat("/time set 'time of day'", Message.MessageType.info);
+                SendMessageToChat("ex: '/time set sunset'", Message.MessageType.info);
+                chatBox.text = "";
+            }
+        }
         if (chatBox.text == "/time set dawn")
         {
             if (Input.GetKeyDown(KeyCode.Return))
@@ -110,6 +121,32 @@ public class ChatBox : MonoBehaviour {
                 chatBox.text = "";
                 playerAnimator.SetTrigger("Dance");
             }
+        }
+        if(chatBox.text == "/kickball")
+        {
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                SendMessageToChat(username + " kicks a ball.", Message.MessageType.emote);
+                chatBox.text = "";
+                playerAnimator.SetTrigger("KickBall");
+            }
+        }
+        if (chatBox.text == "/?")
+        {
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                SendMessageToChat("Usable / commands", Message.MessageType.info);
+                SendMessageToChat("/dance", Message.MessageType.info);
+                SendMessageToChat("/kickball", Message.MessageType.info);
+                chatBox.text = "";
+            }
+        }
+        if (chatBox.text == "/")
+        {
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                SendMessageToChat("Use /? for list of Commands", Message.MessageType.info);
+                chatBox.text = "";            }
         }
         else
         if (chatBox.text.StartsWith("/"))

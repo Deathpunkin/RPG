@@ -296,7 +296,6 @@ GameObject:
   - component: {fileID: 136095848207731208}
   - component: {fileID: 114549125189741190}
   - component: {fileID: 114218692779276550}
-  - component: {fileID: 114354890354973008}
   - component: {fileID: 195326283630677062}
   m_Layer: 9
   m_Name: Grunt
@@ -782,24 +781,14 @@ MonoBehaviour:
   attackRadius: 4
   damagePerShot: 9
   attackSpeed: 0.5
+  attackSpeedVariation: 0.1
   projectileToUse: {fileID: 1689720754101070, guid: 2dcd69e53a4f7fd4eb07fe66b2940d7f,
     type: 2}
   projectileSocket: {fileID: 1589314876729862}
   aimOffset: {x: 0, y: 1, z: 0}
   dodgechance: 10
   isProp: 0
---- !u!114 &114354890354973008
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1771628795500130}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c5335f0882fe4d478883cc8c58ce906, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
+  lootable: 0
 --- !u!114 &114549125189741190
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -819,6 +808,7 @@ MonoBehaviour:
   m_MoveSpeedMultiplier: 0.5
   m_AnimSpeedMultiplier: 1
   m_GroundCheckDistance: 0.3
+  m_Crouching: 0
 --- !u!114 &114609447895490046
 MonoBehaviour:
   m_ObjectHideFlags: 1

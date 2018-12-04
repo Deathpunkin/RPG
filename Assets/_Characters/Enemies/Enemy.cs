@@ -26,15 +26,18 @@ namespace RPG.Characters
         [SerializeField] Vector3 aimOffset = new Vector3(0, 1f, 0);
 
         bool isAttacking = false;
-        AICharacterControl aiCharacterControl = null;
+        //AICharacterControl aiCharacterControl = null;
         Player player = null;
         float damageTaken;
         public float dodgechance = 10f;
 
         [SerializeField] bool isProp = false;
         public bool lootable = false;
+        GameObject lootMark;
         GameObject enemyUI;
-        Collider collider;
+        Rigidbody enemyRigidbody;
+        Collider enemyCollider;
+
         public float healthAsPercentage
         {
             get
@@ -58,11 +61,12 @@ namespace RPG.Characters
                     return;
                 }
                 enemyUI.SetActive(false);
-                collider.enabled = false;
+                enemyRigidbody.isKinematic = true;
+                enemyCollider.enabled = false;
                 if (lootable)
                 {
                     CancelInvoke("SpawnProjectile");
-                    aiCharacterControl.SetTarget(transform);
+                    //aiCharacterControl.SetTarget(transform);
                     animator.SetTrigger("Dead");
                     lootableParticle.Play();
                     gameObject.tag = "Lootable";
@@ -71,7 +75,7 @@ namespace RPG.Characters
                 else
                 {
                     CancelInvoke("SpawnProjectile");
-                    aiCharacterControl.SetTarget(transform);
+                    //aiCharacterControl.SetTarget(transform);
                     animator.SetTrigger("Dead");
                     Destroy(gameObject, 10f); // Adjust time Body stays around.
                 }
@@ -99,10 +103,12 @@ namespace RPG.Characters
             animator = GetComponent<Animator>();
             lootableParticle = GetComponentInChildren<ParticleSystem>();
             enemyUI = this.gameObject.transform.GetChild(0).gameObject;
-            collider = GetComponent<Collider>();
-            aiCharacterControl = GetComponent<AICharacterControl>();
+            //aiCharacterControl = GetComponent<AICharacterControl>();
             currentHealthPoints = maxHealthPoints;
             DamageTextController.Initialize();
+            lootMark = this.transform.Find("LootMark").gameObject;
+            enemyRigidbody = GetComponent<Rigidbody>();
+            enemyCollider = GetComponent<Collider>();
         }
 
         void Update()
@@ -113,7 +119,7 @@ namespace RPG.Characters
             {
                 isAttacking = true;
                 float randomizedAttackSpeed = Random.Range(attackSpeed - attackSpeedVariation, attackSpeed + attackSpeedVariation);
-                aiCharacterControl.SetTarget(transform);
+                //aiCharacterControl.SetTarget(transform);
                 InvokeRepeating("SpawnProjectile", 0f, randomizedAttackSpeed); // TODO switch to Coroutine
             }
 
@@ -125,11 +131,11 @@ namespace RPG.Characters
 
             if (distanceToPlayer <= chaseRadius && distanceToPlayer >= attackRadius && currentHealthPoints > 0)
             {
-                aiCharacterControl.SetTarget(player.transform);
+                //aiCharacterControl.SetTarget(player.transform);
             }
             else
             {
-                aiCharacterControl.SetTarget(transform);
+                //aiCharacterControl.SetTarget(transform);
             }
             if (player.healthAsPercentage <= Mathf.Epsilon)
             {
@@ -142,10 +148,16 @@ namespace RPG.Characters
                     StartCoroutine("regenHealth", 5f);
                 }
             }
-            if (Random.Range(0, 500) == 20)
+            if (Random.Range(0, 100) == 20)
             {
                 lootable = true;
-                print("Loot Me!");
+                lootMark.SetActive(true);
+                print(this.name + ": Loot Me!");
+            }
+            else if (Random.Range(0, 50) == Random.Range(0, 50))
+            {
+                lootable = false;
+                lootMark.SetActive(false);
             }
         }
 
