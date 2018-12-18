@@ -5,14 +5,15 @@ using RPG.Core;
 
 namespace RPG.Characters //consider changing to core
 {
-    [RequireComponent(typeof(ThirdPersonCharacter))]
     public class PlayerInput : MonoBehaviour
     {
-
         Player player;
-        ThirdPersonCharacter thirdPersonCharacter = null;
+        CharacterMovement character;
         [SerializeField] float damageCaused = 10;
         Canvas HUD;
+
+        [SerializeField] GameObject inventoryGameObject;
+        [SerializeField] GameObject characterPanelGameObject;
 
 
         //KeyBinds
@@ -23,6 +24,8 @@ namespace RPG.Characters //consider changing to core
         public KeyCode Revive = KeyCode.J;
         public KeyCode CommandButton = KeyCode.LeftControl;
         public KeyCode hideHud = KeyCode.H;
+        public KeyCode Inventory = KeyCode.I;
+        public KeyCode CharacterPanel = KeyCode.C;
 
         public bool HUDHidden;
 
@@ -30,7 +33,6 @@ namespace RPG.Characters //consider changing to core
         void Start()
         {
             player = FindObjectOfType<Player>();
-            thirdPersonCharacter = GetComponent<ThirdPersonCharacter>();
             HUD = FindObjectOfType<Canvas>();
             
         }
@@ -43,7 +45,18 @@ namespace RPG.Characters //consider changing to core
         // Update is called once per frame
         void Update()
         {
-            if(Input.GetKey(CommandButton))
+            if (Input.GetKeyDown(Inventory))
+            {
+                toggleInventory();
+            }
+
+            if (Input.GetKeyDown(CharacterPanel))
+            {
+                toggleCharacterPanel();
+            }
+
+
+            if (Input.GetKey(CommandButton))
             {
                 print("ctrl pressed");
                 if (Input.GetKeyDown(hideHud))
@@ -56,14 +69,14 @@ namespace RPG.Characters //consider changing to core
             ////crouching
             if (Input.GetKey(Crouch))
             {
-                thirdPersonCharacter.m_Crouching = true;
+                character.crouching = true;
             }
             else
             {
-                thirdPersonCharacter.m_Crouching = false;
+                character.crouching = false;
             }
 
-            if (thirdPersonCharacter.m_Crouching)
+            if (character.crouching)
             {
                 print("Crouching!");
             }
@@ -104,6 +117,16 @@ namespace RPG.Characters //consider changing to core
                 HUDHidden = false;
                 HUD.enabled = enabled;
             }
+        }
+
+        public void toggleInventory()
+        {
+            inventoryGameObject.SetActive(!inventoryGameObject.activeSelf);
+        }
+
+        public void toggleCharacterPanel()
+        {
+            characterPanelGameObject.SetActive(!characterPanelGameObject.activeSelf);
         }
     }
 }

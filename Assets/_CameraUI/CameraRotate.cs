@@ -30,6 +30,8 @@ namespace RPG.CameraUI
         public float verticalScroll = 5;
         public float horizontalScroll = 5;
 
+        
+
         //checks if first person mode is on
         private bool click = false;
         //stores cameras distance from player
@@ -98,7 +100,7 @@ namespace RPG.CameraUI
             Vector3 cameraTargetPosition = new Vector3(CameraArm.position.x, CameraArm.position.y + cameraTargetHeight, CameraArm.position.z);
 
             bool isCorrected = false;
-            if (Physics.Linecast(cameraTargetPosition, position, out collisionHit))
+            if (Physics.Linecast(cameraTargetPosition, position, out collisionHit)&&collisionHit.transform.tag == "Weapon")
             {
                 position = collisionHit.point;
                 correctedDistance = Vector3.Distance(cameraTargetPosition, position);

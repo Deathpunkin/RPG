@@ -40,7 +40,6 @@ GameObject:
   - component: {fileID: 124762709165073820}
   - component: {fileID: 81616353961604852}
   - component: {fileID: 114715377760247656}
-  - component: {fileID: 114237073784885210}
   - component: {fileID: 114107491892043508}
   m_Layer: 0
   m_Name: Main Camera
@@ -137,22 +136,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d02853f5d34bd8f429969ac34c466d07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  layerPriorities: 090000000800000000000000
   walkCursor: {fileID: 2800000, guid: 58b53135eb672b24090e17ec64914860, type: 3}
   enemyCursor: {fileID: 2800000, guid: 2849335661502e841b8ed019f70a66a6, type: 3}
-  cursorHotspot: {x: 0, y: 0}
---- !u!114 &114237073784885210
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1844568549886480}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f83d710eebbbca438a7ce04015996df, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  unknownCursor: {fileID: 2800000, guid: 5d08955d5ffa4074a839f89da6456d1e, type: 3}
+  lootableCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
 --- !u!114 &114715377760247656
 MonoBehaviour:
@@ -173,6 +159,8 @@ MonoBehaviour:
   maxUnderAngle: -70
   cameraTargetHeight: 1.2
   rightClick: 0
+  verticalScroll: 5
+  horizontalScroll: 5
 --- !u!114 &114795769786385486
 MonoBehaviour:
   m_ObjectHideFlags: 1

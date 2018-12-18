@@ -12,11 +12,9 @@ GameObject:
   - component: {fileID: 5426510}
   - component: {fileID: 13615390}
   - component: {fileID: 11444856}
-  - component: {fileID: 11469404}
   - component: {fileID: 114157548728675290}
   - component: {fileID: 114056948249611540}
   - component: {fileID: 114000132873086128}
-  - component: {fileID: 114603564377330586}
   - component: {fileID: 195462940592665216}
   - component: {fileID: 114300374448275058}
   - component: {fileID: 82625405121795432}
@@ -84,26 +82,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 521b611700410be45810047f0a74e899, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &11469404
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 149790}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce7a80d520cacc042b5fe14f373d8173, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_MovingTurnSpeed: 1800
-  m_StationaryTurnSpeed: 900
-  m_JumpPower: 6
-  m_GravityMultiplier: 2
-  m_RunCycleLegOffset: 0.2
-  m_MoveSpeedMultiplier: 2
-  m_AnimSpeedMultiplier: 1.2
-  m_GroundCheckDistance: 1
-  m_Crouching: 0
 --- !u!136 &13615390
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -857,6 +835,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageCaused: 10
+  inventoryGameObject: {fileID: 0}
+  characterPanelGameObject: {fileID: 0}
   Crouch: 122
   SelfDamage: 104
   Exp: 107
@@ -864,6 +844,8 @@ MonoBehaviour:
   Revive: 106
   CommandButton: 306
   hideHud: 104
+  Inventory: 105
+  CharacterPanel: 99
   HUDHidden: 0
 --- !u!114 &114056948249611540
 MonoBehaviour:
@@ -876,7 +858,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: beb75cb33cc6f884db40fe6cec105d9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkStopDistance: 1
+  moveThreshold: 1
+  movingTurnSpeed: 360
+  stationaryTurnSpeed: 180
+  jumpPower: 12
+  gravityMultiplier: 2
+  runCycleLegOffset: 0.2
+  animationSpeedMultiplier: 1
+  groundCheckDistance: 0.7
+  crouching: 0
+  stoppingDistance: 0.2
+  moveSpeedMultiplier: 0.7
 --- !u!114 &114157548728675290
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -901,12 +893,16 @@ MonoBehaviour:
   abilities:
   - {fileID: 11400000, guid: fcae164266dea1c468bb8e43fac6d5ec, type: 2}
   - {fileID: 11400000, guid: 1e795d81288929b47b296bde53be5755, type: 2}
-  mainHandWeaponConfig: {fileID: 11400000, guid: 7ac64f07787a94f40bd85f364fbf6136,
+  mainHandWeaponConfig: {fileID: 11400000, guid: feb9203def29b3f4ba076b9f213d66e6,
     type: 2}
-  offHandWeapon: {fileID: 11400000, guid: 40fc3b76a6314b64a84f72e9653d12fd, type: 2}
+  offHandWeapon: {fileID: 11400000, guid: 37febbf50f05567408a70d1a5e949edd, type: 2}
   level: 1
   experiencePoints: 0
   experienceToNextLevel: 0
+  Strength:
+    BaseValue: 0
+  Intelegence:
+    BaseValue: 0
   maxHealthPoints: 500
   currentHealthPoints: 500
   respawnHealth: 0
@@ -951,18 +947,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 104f1e52a78e6ad45b738680b5370379, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114603564377330586
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 149790}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c5335f0882fe4d478883cc8c58ce906, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
 --- !u!114 &114652183667459234
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1046,7 +1030,7 @@ NavMeshAgent:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 149790}
-  m_Enabled: 1
+  m_Enabled: 0
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 1

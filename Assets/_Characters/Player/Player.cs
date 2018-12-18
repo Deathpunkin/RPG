@@ -34,6 +34,10 @@ namespace RPG.Characters
         public float experiencePoints;
         public float experienceToNextLevel;
 
+        //Stats
+        public CharacterStat Strength;
+        public CharacterStat Intelegence;
+
         public float maxHealthPoints = 100f;
         public float currentHealthPoints;
         float prevHealth;
@@ -234,7 +238,7 @@ namespace RPG.Characters
             yield return new WaitForSeconds(0);
         }
 
-        private void UseAbility(int abilityIndex)
+        public void UseAbility(int abilityIndex) //TODO change to individual ability casts per PlayerInput assignment
         {
             var energyComponent = GetComponent<Energy>();
             var energyCost = abilities[abilityIndex].GetEnergyCost();
