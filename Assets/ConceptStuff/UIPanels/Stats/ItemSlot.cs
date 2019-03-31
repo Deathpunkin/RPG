@@ -10,6 +10,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
 
     public event Action<ItemSlot> OnPointerEnterEvent;
     public event Action<ItemSlot> OnPointerExitEvent;
+    public event Action<ItemSlot> OnDoubleClickEvent;
     public event Action<ItemSlot> OnRightClickEvent;
     public event Action<ItemSlot> OnBeginDragEvent;
     public event Action<ItemSlot> OnDragEvent;
@@ -28,7 +29,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
             _item = value;
             if (_item == null)
             {
-                image.color = disabledColor ;
+                image.color = disabledColor;
             }
             else
             {
@@ -40,11 +41,13 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
 
     public virtual void OnPointerClick(PointerEventData eventData)
     {
+        transform.parent.transform.parent.SetAsLastSibling();
+        
         if (eventData.clickCount == 2) //Double Left Click
         {
-            if (OnRightClickEvent != null)
+            if (OnDoubleClickEvent != null)
             {
-                OnRightClickEvent(this);
+                OnDoubleClickEvent(this);
 
             }
         }

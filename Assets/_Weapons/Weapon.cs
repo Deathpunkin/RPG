@@ -17,12 +17,13 @@ namespace RPG.Weapons
         [SerializeField] AnimationClip deathAnimation;
         [SerializeField] AnimationClip reviveAnimation;
         Player player;
-        public Transform gripMainHandTransform; //Where to hold if Mainhand.
-        public Transform gripOffHandTransform; //Where to hold if Offhand
+        public bool mainHand; //Where to hold if Mainhand.
+        public bool offHand; //Where to hold if Offhand
         [SerializeField] float attackSpeed = .5f;
         [SerializeField] float maxAttackRange = 2f;
         [SerializeField] float minDamagePerHit = 10f;
         [SerializeField] float maxDamagePerHit = 20f;
+        [SerializeField] DamageType damageType;
         [SerializeField] AudioSource audioSource;
         [SerializeField] AudioClip hitSound;
         [SerializeField] AudioClip missSound;
@@ -57,6 +58,11 @@ namespace RPG.Weapons
         public float GetMaxDamagePerHit()
         {
             return maxDamagePerHit;
+        }
+
+        public DamageType GetDamageType()
+        {
+            return damageType;
         }
 
         public GameObject GetWeaponPrefab()

@@ -1,6 +1,9 @@
-﻿public class EquipmentSlot : ItemSlot
+﻿using UnityEngine;
+
+public class EquipmentSlot : ItemSlot
 {
     public EquipmentType EquipmentType;
+
 
     protected override void OnValidate()
     {
@@ -14,7 +17,6 @@
         {
             return true;
         }
-
         EquippableItem equippableItem = item as EquippableItem;
         return equippableItem != null && equippableItem.EquipmentType == EquipmentType;
 

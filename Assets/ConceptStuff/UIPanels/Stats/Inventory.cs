@@ -22,7 +22,7 @@ public class Inventory : MonoBehaviour
         {
             itemSlots[i].OnPointerEnterEvent += OnPointerEnterEvent;
             itemSlots[i].OnPointerExitEvent += OnPointerExitEvent;
-            itemSlots[i].OnRightClickEvent += OnRightClickEvent;
+            itemSlots[i].OnDoubleClickEvent += OnRightClickEvent;
             itemSlots[i].OnBeginDragEvent += OnBeginDragEvent;
             itemSlots[i].OnDragEvent += OnDragEvent;
             itemSlots[i].OnEndDragEvent += OnEndDragEvent;

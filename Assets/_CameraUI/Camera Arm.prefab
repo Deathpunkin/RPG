@@ -40,6 +40,7 @@ GameObject:
   - component: {fileID: 124762709165073820}
   - component: {fileID: 81616353961604852}
   - component: {fileID: 114715377760247656}
+  - component: {fileID: 114523972081562296}
   - component: {fileID: 114107491892043508}
   m_Layer: 0
   m_Name: Main Camera
@@ -67,14 +68,14 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1042428909240682}
-  m_LocalRotation: {x: -0, y: 0.82868415, z: -0, w: 0.5597165}
+  m_LocalRotation: {x: -0, y: -0.48664004, z: -0, w: 0.8736026}
   m_LocalPosition: {x: 0, y: 1.85, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4471841387482048}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 111.92801, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -58.24, z: 0}
 --- !u!20 &20227602045895102
 Camera:
   m_ObjectHideFlags: 1
@@ -99,7 +100,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 4294959103
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -110,7 +111,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
-  m_StereoMirrorMode: 0
 --- !u!81 &81616353961604852
 AudioListener:
   m_ObjectHideFlags: 1
@@ -138,8 +138,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkCursor: {fileID: 2800000, guid: 58b53135eb672b24090e17ec64914860, type: 3}
   enemyCursor: {fileID: 2800000, guid: 2849335661502e841b8ed019f70a66a6, type: 3}
-  lootableCursor: {fileID: 0}
+  lootableCursor: {fileID: 2800000, guid: 5d08955d5ffa4074a839f89da6456d1e, type: 3}
   cursorHotspot: {x: 0, y: 0}
+--- !u!114 &114523972081562296
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1844568549886480}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114715377760247656
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -152,6 +163,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CameraArm: {fileID: 4743777113511926}
+  minimapCam: {fileID: 0}
   MaxViewDistance: 10
   MinViewDistance: 1
   ZoomRate: 30

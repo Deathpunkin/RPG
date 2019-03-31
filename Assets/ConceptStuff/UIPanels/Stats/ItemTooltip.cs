@@ -21,16 +21,24 @@ public class ItemTooltip : MonoBehaviour
         AddStat(item.IntelligenceBonus, "Intelligence");
         AddStat(item.VitalityBonus, "Vitality");
 
-        AddStat(item.StrengthPercentBonus, "Strength", isPercent: true);
-        AddStat(item.AgilityPercentBonus, "Agility", isPercent: true);
-        AddStat(item.IntelligencePercentBonus, "Intelligence", isPercent: true);
-        AddStat(item.VitalityPercentBonus, "Vitality", isPercent: true);
+        AddStat(item.StrengthPercentBonus / 100, "Strength", isPercent: true);
+        AddStat(item.AgilityPercentBonus / 100, "Agility", isPercent: true);
+        AddStat(item.IntelligencePercentBonus / 100, "Intelligence", isPercent: true);
+        AddStat(item.VitalityPercentBonus / 100, "Vitality", isPercent: true);
 
         ItemStatsText.text = sb.ToString();
 
         gameObject.SetActive(true);
+        gameObject.transform.SetAsLastSibling();
+        gameObject.transform.position = Input.mousePosition;
     }
-
+    private void Update()
+    {
+        if(isActiveAndEnabled)
+        {
+            gameObject.transform.SetAsLastSibling();
+        }
+    }
     public void HideToolTip()
     {
         gameObject.SetActive(false);

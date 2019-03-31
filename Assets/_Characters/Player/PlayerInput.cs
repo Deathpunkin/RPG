@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using RPG.Core;
 
 namespace RPG.Characters //consider changing to core
@@ -8,12 +9,17 @@ namespace RPG.Characters //consider changing to core
     public class PlayerInput : MonoBehaviour
     {
         Player player;
+        Character _character;
         CharacterMovement character;
         [SerializeField] float damageCaused = 10;
         Canvas HUD;
 
         [SerializeField] GameObject inventoryGameObject;
         [SerializeField] GameObject characterPanelGameObject;
+        [SerializeField] GameObject siblingIndexer;
+        [SerializeField] InputField inputField;
+
+        [SerializeField] int lastChildIndex;
 
 
         //KeyBinds
@@ -23,9 +29,11 @@ namespace RPG.Characters //consider changing to core
         public KeyCode SkillBar1 = KeyCode.Alpha1;
         public KeyCode Revive = KeyCode.J;
         public KeyCode CommandButton = KeyCode.LeftControl;
-        public KeyCode hideHud = KeyCode.H;
+        public KeyCode hideHud = KeyCode.O;
         public KeyCode Inventory = KeyCode.I;
-        public KeyCode CharacterPanel = KeyCode.C;
+        public KeyCode CharacterPanel = KeyCode.H;
+        public KeyCode targetNearest = KeyCode.C;
+        public KeyCode targetNext = KeyCode.Tab;
 
         public bool HUDHidden;
 
@@ -33,8 +41,10 @@ namespace RPG.Characters //consider changing to core
         void Start()
         {
             player = FindObjectOfType<Player>();
+            _character = FindObjectOfType<Character>();
             HUD = FindObjectOfType<Canvas>();
-            
+            siblingIndexer.transform.SetAsLastSibling();
+            lastChildIndex = siblingIndexer.transform.GetSiblingIndex();
         }
         public void SetDamage(float damage)
         {
@@ -45,14 +55,30 @@ namespace RPG.Characters //consider changing to core
         // Update is called once per frame
         void Update()
         {
-            if (Input.GetKeyDown(Inventory))
+            if(Input.GetKeyDown(targetNearest))
             {
-                toggleInventory();
+                _character.SetNearestTarget();
+            }
+            if(Input.GetKeyDown(targetNext))
+            {
+                _character.GetNextTarget();
+            }
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                //if ()
+                //{
+
+                //}
+            }
+            if (Input.GetKeyDown(Inventory) && !inputField.isFocused)
+            {
+                toggleInventory();                
             }
 
             if (Input.GetKeyDown(CharacterPanel))
             {
                 toggleCharacterPanel();
+                Debug.Log("Toggle Character");
             }
 
 
@@ -121,12 +147,26 @@ namespace RPG.Characters //consider changing to core
 
         public void toggleInventory()
         {
-            inventoryGameObject.SetActive(!inventoryGameObject.activeSelf);
+            if (inventoryGameObject.activeInHierarchy == true & inventoryGameObject.transform.GetSiblingIndex() != lastChildIndex)
+            {
+                inventoryGameObject.transform.SetAsLastSibling();
+            }
+            else if (inventoryGameObject.transform.GetSiblingIndex() == lastChildIndex || inventoryGameObject.activeInHierarchy == false)
+            {
+                inventoryGameObject.SetActive(!inventoryGameObject.activeSelf);
+            }
         }
 
         public void toggleCharacterPanel()
         {
-            characterPanelGameObject.SetActive(!characterPanelGameObject.activeSelf);
+            if (characterPanelGameObject.activeInHierarchy == true & characterPanelGameObject.transform.GetSiblingIndex() != lastChildIndex)
+            {
+                characterPanelGameObject.transform.SetAsLastSibling();
+            }
+            else if (characterPanelGameObject.transform.GetSiblingIndex() == lastChildIndex || characterPanelGameObject.activeInHierarchy == false)
+            {
+                characterPanelGameObject.SetActive(!characterPanelGameObject.activeSelf);
+            }
         }
     }
 }

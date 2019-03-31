@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using RPG.Characters;
+using System;
 
 public class StatTooltip : MonoBehaviour
 {
@@ -17,6 +18,8 @@ public class StatTooltip : MonoBehaviour
         StatModifiersText.text = GetStatModifiersText(stat);
 
         gameObject.SetActive(true);
+        gameObject.transform.SetAsLastSibling();
+        gameObject.transform.position = Input.mousePosition;
     }
 
     public void HideToolTip()
@@ -78,7 +81,7 @@ public class StatTooltip : MonoBehaviour
                 sb.Append(" ");
                 sb.Append(item.ItemName);
             }
-            else;
+            else
             {
                 Debug.LogError("Modifier is not an EquippableItem!");
             }

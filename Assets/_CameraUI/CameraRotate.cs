@@ -6,6 +6,7 @@ namespace RPG.CameraUI
     public class CameraRotate : MonoBehaviour
     {
         public Transform CameraArm;
+        [SerializeField] Camera minimapCam;
         private float x = 0.0f;
         private float y = 0.0f;
 
@@ -89,6 +90,7 @@ namespace RPG.CameraUI
 
             y = ClampAngle(y, maxUnderAngle, maxOverAngle);
             Quaternion rotation = Quaternion.Euler(y, x, 0);
+            Quaternion minimapRotation = Quaternion.Euler(90, x, 0);
 
             desireDistance -= Input.GetAxis("Mouse ScrollWheel") * Time.deltaTime * ZoomRate * Mathf.Abs(desireDistance);
             desireDistance = Mathf.Clamp(desireDistance, MinViewDistance, MaxViewDistance);
@@ -116,6 +118,7 @@ namespace RPG.CameraUI
             position = CameraArm.position - (rotation * Vector3.forward * currentDistance + new Vector3(0, -cameraTargetHeight, 0));
 
             transform.rotation = rotation;
+            minimapCam.transform.rotation = minimapRotation;
             transform.position = position;
 
             //CameraTarget.rotation = rotation;

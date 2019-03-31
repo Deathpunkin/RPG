@@ -22,3 +22,5 @@ MonoBehaviour:
   IntelligencePercentBonus: 0
   VitalityPercentBonus: 0
   EquipmentType: 4
+  itemPrefab: {fileID: 1439295745031824, guid: fa95abe66dca1e74b9a0efc80d0ae099, type: 2}
+  recipe: {fileID: 0}

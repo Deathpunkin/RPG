@@ -17,8 +17,10 @@ MonoBehaviour:
   AgilityBonus: 0
   IntelligenceBonus: 0
   VitalityBonus: 0
-  StrengthPercentBonus: 0
+  StrengthPercentBonus: 100
   AgilityPercentBonus: 0
   IntelligencePercentBonus: 0
   VitalityPercentBonus: 0
   EquipmentType: 0
+  itemPrefab: {fileID: 1815481589233464, guid: d9711c86b1827964bb026c1e733a5982, type: 2}
+  recipe: {fileID: 11400000, guid: 8b7b033a94e0a9f4dbdded4f45aea63a, type: 2}

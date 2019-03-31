@@ -76,6 +76,7 @@ GameObject:
   - component: {fileID: 114293865878460882}
   - component: {fileID: 114817765227030008}
   - component: {fileID: 114435701044760122}
+  - component: {fileID: 114859313806492382}
   m_Layer: 5
   m_Name: Stat Tooltip
   m_TagString: Untagged
@@ -254,6 +255,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 2
   m_VerticalFit: 2
+--- !u!114 &114859313806492382
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1664540501376914}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2aeb65f5607695a459d4849cbc7640fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  StatNameText: {fileID: 114782219163487094}
+  StatModifiersLabelText: {fileID: 114882482813462322}
+  StatModifiersText: {fileID: 114995770796490240}
 --- !u!114 &114882482813462322
 MonoBehaviour:
   m_ObjectHideFlags: 1

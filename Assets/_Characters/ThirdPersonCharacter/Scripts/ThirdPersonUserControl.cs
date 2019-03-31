@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace RPG.Characters
 {
@@ -11,7 +12,8 @@ namespace RPG.Characters
         private Vector3 camForward;             // The current forward direction of the camera
         private Vector3 move;
         private bool jump;                      // the world-relative desired move direction, calculated from the camForward and user input.
-        
+        [SerializeField] InputField inputField;
+
         private void Start()
         {
             // get the transform of the main camera
@@ -66,7 +68,10 @@ namespace RPG.Characters
 #endif
 
             // pass all parameters to the character control script
-            character.Move(move, crouch, jump);
+            if(!inputField.isFocused)
+            {
+                character.Move(move, crouch, jump);
+            }
             jump = false;
         }
     }

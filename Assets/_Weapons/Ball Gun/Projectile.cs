@@ -11,8 +11,19 @@ namespace RPG.Weapons
         public float projectileSpeed; // Note other classes can set
 
         [SerializeField] GameObject shooter; //for debug inspection
+        [SerializeField] AudioClip castSound;
+        [SerializeField] AudioClip hitSound;
+        [SerializeField] AudioSource audioSource;
         float damageCaused;
-        const float DESTROYDELAY = 0.01f;
+        float DESTROYDELAY;
+
+        private void Awake()
+        {
+           if (!audioSource)
+            {
+                audioSource = GetComponent<AudioSource>();
+            }
+        }
 
         public void SetShooter(GameObject shooter)
         {
@@ -23,7 +34,17 @@ namespace RPG.Weapons
             damageCaused = damage;
         }
 
+        public void PlayCastSound()
+        {
+            audioSource.clip = castSound;
+            audioSource.Play();
+        }
 
+        void PlayHitSound()
+        {
+            audioSource.clip = hitSound;
+            audioSource.Play();
+        }
 
         void OnCollisionEnter(Collision collision)
         {
@@ -33,11 +54,20 @@ namespace RPG.Weapons
                 if (damagableComponent)
                 {
                     (damagableComponent as IDamageable).TakeDamage(damageCaused);
+                    DamageTextController.CreateFloatingDamageText(damageCaused.ToString(), collision.gameObject.transform);
+                    PlayHitSound();
                     print(damagableComponent + " took " + damageCaused + " damage");
                 }
             }
 
-            Destroy(gameObject, DESTROYDELAY);
+            if (!hitSound)
+            {
+                Destroy(gameObject, 0.3f);
+            }
+            else
+            {
+                Destroy(gameObject, hitSound.length);
+            }
         }
     }
 }

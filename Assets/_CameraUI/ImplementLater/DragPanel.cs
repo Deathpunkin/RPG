@@ -1,43 +1,39 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine.UI;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine;
+using UnityEngine.UI;
 
-public class DragPanel : MonoBehaviour, IPointerDownHandler, IDragHandler {
+public class DragPanel : EventTrigger
+{
 
-    private Vector2 pointerOffset;
-    private RectTransform canvasRectTransform;
-    private RectTransform panelRectTransform;
-    Canvas canvas;
+    private bool dragging;
+   
 
-    void awake()
+    public void Update()
     {
-        canvas = GetComponentInParent<Canvas>();
-        if(canvas != null)
+        var rectTransform = transform.parent.GetComponent<RectTransform>();
+        float width = rectTransform.sizeDelta.x;
+        float height = rectTransform.sizeDelta.y;
+        if (dragging)
         {
-            canvasRectTransform = canvas.transform as RectTransform;
-            panelRectTransform = transform.parent as RectTransform;
+            transform.parent.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
         }
     }
 
-    public void OnPointerDown(PointerEventData data)
+    public override void OnPointerDown(PointerEventData eventData)
     {
-        panelRectTransform.SetAsLastSibling();
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(panelRectTransform, data.position, data.pressEventCamera, out pointerOffset);
-        Debug.Log(name + "Been Clicked");
+        transform.parent.SetAsLastSibling();
     }
 
-    public void OnDrag(PointerEventData data)
+    public override void OnDrag(PointerEventData eventData)
     {
-        if (panelRectTransform = null)
-        {
-            return;
-        }
-        Vector2 localPointerPosition;
-        if(RectTransformUtility.ScreenPointToLocalPointInRectangle (canvasRectTransform, data.position, data.pressEventCamera, out localPointerPosition))
-        {
-            panelRectTransform.localPosition = localPointerPosition - pointerOffset;
-        }
+        dragging = true;
+    }
+    public override void OnEndDrag(PointerEventData eventData)
+    {
+        dragging = false;
+    }
+    public override void OnPointerUp(PointerEventData eventData)
+    {
+         
     }
 }

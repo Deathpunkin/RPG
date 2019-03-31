@@ -19,9 +19,10 @@ namespace RPG.Characters
         {
             var skillParticlePrefab = config.GetSkillParticleEffect();
             var skillParticleObject = Instantiate(skillParticlePrefab, transform.position, skillParticlePrefab.transform.rotation);
-            skillParticleObject.transform.parent = transform;
+            //skillParticleObject.transform.parent = transform;
             skillParticleObject.GetComponent<ParticleSystem>().Play();
-            StartCoroutine(DestroyParticleWhenFinished(skillParticleObject)); 
+            StartCoroutine(DestroyParticleWhenFinished(skillParticleObject));
+            Debug.Log("casting: " + skillParticlePrefab.name);
         }
         IEnumerator DestroyParticleWhenFinished(GameObject skillParticlePrefab)
         {

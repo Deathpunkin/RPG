@@ -23,6 +23,7 @@ namespace RPG.Characters
 
         // Temporarily serialized for debugging
         [SerializeField] AbilityConfig[] abilities;
+        [SerializeField] Character character;
 
         //Gear Slots Setup Here
         public Weapon mainHandWeaponConfig; //TODO Rename 'config' calls to something clearer
@@ -30,9 +31,6 @@ namespace RPG.Characters
         GameObject mainHandWeaponObject;
 
         //Stat Setup
-        public float level = 1f;
-        public float experiencePoints;
-        public float experienceToNextLevel;
 
         //Stats
         public CharacterStat Strength;
@@ -72,6 +70,11 @@ namespace RPG.Characters
 
         void Start()
         {
+            if (character == null)
+            {
+                character = FindObjectOfType<Character>();
+            }
+
             cameraRaycaster = FindObjectOfType<CameraRaycaster>();
             cameraRaycaster.onMouseOverEnemy += OnMouseOverEnemy;
             //cameraRaycaster.onMouseOverLootable += OnMouseOverLootable; //TODO Fix when Loot Works.
@@ -146,8 +149,8 @@ namespace RPG.Characters
             GameObject mainHand = RequestMainHand();
             Destroy(mainHandWeaponObject);
             mainHandWeaponObject = Instantiate(weaponMainHandPrefab, mainHand.transform);
-            mainHandWeaponObject.transform.localPosition = mainHandWeaponConfig.gripMainHandTransform.localPosition;
-            mainHandWeaponObject.transform.localRotation = mainHandWeaponConfig.gripMainHandTransform.localRotation;
+            //mainHandWeaponObject.transform.localPosition = mainHandWeaponConfig.gripMainHandTransform.localPosition;
+            //mainHandWeaponObject.transform.localRotation = mainHandWeaponConfig.gripMainHandTransform.localRotation;
             SetupRuntimeAnimator();
 
         }
@@ -175,8 +178,8 @@ namespace RPG.Characters
                 var weaponOffHandPrefab = offHandWeapon.GetWeaponPrefab();
                 GameObject offHand = RequestOffHand();
                 var weaponOffHand = Instantiate(weaponOffHandPrefab, offHand.transform);
-                weaponOffHand.transform.localPosition = offHandWeapon.gripOffHandTransform.localPosition;
-                weaponOffHand.transform.localRotation = offHandWeapon.gripOffHandTransform.localRotation;
+                //weaponOffHand.transform.localPosition = offHandWeapon.gripOffHandTransform.localPosition;
+                //weaponOffHand.transform.localRotation = offHandWeapon.gripOffHandTransform.localRotation;
         }
 
         private GameObject RequestMainHand()
@@ -220,6 +223,7 @@ namespace RPG.Characters
                 {
                     DamageTextController.CreateFloatingOutOfRangeText("Target out of reach.", enemy.transform);
                     //StartCoroutine(moveIntoRange());
+                    
                 }
             }
         }
@@ -280,13 +284,13 @@ namespace RPG.Characters
                 {
                     enemy.TakeDamage(critDamage);
                     print("CRIT! Dealt " + critDamage);
-                    if (critDamage >= highestCrit && enemy.level >= level)
+                    if (critDamage >= highestCrit && enemy.GetLevel() >= character.level)
                     {
                         highestCrit = critDamage;
                         DamageTextController.CreateFloatingHighestCritDamageText(critDamage.ToString(), enemy.transform);
 
                     }
-                    if(critDamage <= highestCrit && enemy.level <= level)
+                    if(critDamage <= highestCrit && enemy.GetLevel() <= character.level)
                     {
                        DamageTextController.CreateFloatingCritDamageText(critDamage.ToString(), enemy.transform);
                     }
@@ -294,7 +298,7 @@ namespace RPG.Characters
                 }
                 else if (UnityEngine.Random.Range(1, 100) > enemy.dodgechance)
                     {
-                        if (damage >= highestDamage && enemy.level >= level)
+                        if (damage >= highestDamage && enemy.GetLevel() >= character.level)
                         {
                             highestDamage = damage;
                             Debug.Log(enemy.transform);

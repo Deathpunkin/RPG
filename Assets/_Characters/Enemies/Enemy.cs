@@ -10,9 +10,10 @@ namespace RPG.Characters
     {
         Animator animator;
         ParticleSystem lootableParticle;
-        public float level = 1;
-        public float maxHealthPoints = 100f;
-        float currentHealthPoints;
+        [SerializeField] float level = 1;
+        [SerializeField] float maxHealthPoints = 100f;
+        [SerializeField] float currentHealthPoints;
+        [SerializeField] bool isDead = false;
         float regenHealthspeed = 1f;
 
         [SerializeField] float chaseRadius = 6f;
@@ -46,7 +47,7 @@ namespace RPG.Characters
             }
         }
 
-        
+
 
         public void TakeDamage(float damage)
         {
@@ -60,6 +61,7 @@ namespace RPG.Characters
                 {
                     return;
                 }
+                isDead = true;
                 enemyUI.SetActive(false);
                 enemyRigidbody.isKinematic = true;
                 enemyCollider.enabled = false;
@@ -79,7 +81,7 @@ namespace RPG.Characters
                     animator.SetTrigger("Dead");
                     Destroy(gameObject, 10f); // Adjust time Body stays around.
                 }
-               
+
             }
         }
 
@@ -96,6 +98,36 @@ namespace RPG.Characters
             //        regenHealthSpeed = regenHealthSpeed +1 ;
             yield return new WaitForSeconds(1);
         }
+
+        public readonly static HashSet<Enemy> Pool = new HashSet<Enemy>();
+
+        private void OnEnable()
+        {
+            Enemy.Pool.Add(this);
+        }
+
+        private void OnDisable()
+        {
+            Enemy.Pool.Remove(this);
+        }
+
+        public static Enemy FindClosestEnemy(Vector3 pos)
+        {
+            Enemy result = null;
+            float dist = float.PositiveInfinity;
+            var e = Enemy.Pool.GetEnumerator();
+            while (e.MoveNext())
+            {
+                float d = (e.Current.transform.position - pos).sqrMagnitude;
+                if (d < dist)
+                {
+                    result = e.Current;
+                    dist = d;
+                }
+            }
+            return result;
+        }
+
 
         void Start()
         {
@@ -115,13 +147,13 @@ namespace RPG.Characters
         {
             Transform chasestop;
             float distanceToPlayer = Vector3.Distance(player.transform.position, transform.position);
-            if (distanceToPlayer <= attackRadius && !isAttacking && currentHealthPoints > 0)
-            {
-                isAttacking = true;
-                float randomizedAttackSpeed = Random.Range(attackSpeed - attackSpeedVariation, attackSpeed + attackSpeedVariation);
-                //aiCharacterControl.SetTarget(transform);
-                InvokeRepeating("SpawnProjectile", 0f, randomizedAttackSpeed); // TODO switch to Coroutine
-            }
+            //if (distanceToPlayer <= attackRadius && !isAttacking && currentHealthPoints > 0)
+            //{
+            //    isAttacking = true;
+            //    float randomizedAttackSpeed = Random.Range(attackSpeed - attackSpeedVariation, attackSpeed + attackSpeedVariation);
+            //    //aiCharacterControl.SetTarget(transform);
+            //    InvokeRepeating("SpawnProjectile", 0f, randomizedAttackSpeed); // TODO switch to Coroutine
+            //}
 
             if (distanceToPlayer > attackRadius)
             {
@@ -159,8 +191,24 @@ namespace RPG.Characters
                 lootable = false;
                 lootMark.SetActive(false);
             }
+            Debug.Log("EnemyCount = " + Enemy.Pool.Count);
         }
 
+        void OnTriggerEnter(Collider collider)
+        {
+            if (collider.gameObject.layer == 10)
+            {
+                Debug.Log(this.name + "  Entered Aggro Bubble!");
+                isAttacking = true;
+                float randomizedAttackSpeed = Random.Range(attackSpeed - attackSpeedVariation, attackSpeed + attackSpeedVariation);
+                //aiCharacterControl.SetTarget(transform);
+                InvokeRepeating("SpawnProjectile", 0f, randomizedAttackSpeed); // TODO switch to Coroutine
+            }
+        }
+
+        void TriggerAttack()
+        {
+        }
 
         void SpawnProjectile()
         {
@@ -172,6 +220,26 @@ namespace RPG.Characters
             Vector3 unitVectorToPlayer = (player.transform.position + aimOffset - projectileSocket.transform.position).normalized;
             float projectileSpeed = projectileComponent.projectileSpeed;
             newProjectile.GetComponent<Rigidbody>().velocity = unitVectorToPlayer * projectileSpeed;
+        }
+
+        public float GetLevel()
+        {
+            return level;
+        }
+
+        public float GetMaxHealth()
+        {
+            return maxHealthPoints;
+        }
+
+        public float GetCurrentHealth()
+        {
+            return currentHealthPoints;
+        }
+
+        public bool IsDead()
+        {
+            return isDead;
         }
 
         void OnDrawGizmos()

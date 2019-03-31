@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using UMA;
+using UMA.CharacterSystem;
 
 public enum EquipmentType
 {
@@ -26,6 +28,10 @@ public class EquippableItem : Item
     public int VitalityPercentBonus;
     [Space]
     public EquipmentType EquipmentType;
+    [Space]
+    [SerializeField] GameObject itemPrefab;
+    public UMAWardrobeRecipe recipe;
+    //public UMAWardrobeRecipe femaleRecipe;
 
     public void Equip(Character c)
     {
@@ -47,21 +53,21 @@ public class EquippableItem : Item
             c.Vitality.AddModifier(new StatModifier(VitalityBonus, StatModType.Flat, this));
         }
         //Percent
-        if (StrengthBonus != 0)
+        if (StrengthPercentBonus != 0)
         {
-            c.Strength.AddModifier(new StatModifier(StrengthBonus, StatModType.PercentMult, this));
+            c.Strength.AddModifier(new StatModifier(StrengthPercentBonus / 100, StatModType.PercentMult, this));
         }
-        if (AgilityBonus != 0)
+        if (AgilityPercentBonus != 0)
         {
-            c.Agility.AddModifier(new StatModifier(AgilityBonus, StatModType.PercentMult, this));
+            c.Agility.AddModifier(new StatModifier(AgilityPercentBonus / 100, StatModType.PercentMult, this));
         }
-        if (IntelligenceBonus != 0)
+        if (IntelligencePercentBonus != 0)
         {
-            c.Intelligence.AddModifier(new StatModifier(IntelligenceBonus, StatModType.PercentMult, this));
+            c.Intelligence.AddModifier(new StatModifier(IntelligencePercentBonus / 100, StatModType.PercentMult, this));
         }
-        if (VitalityBonus != 0)
+        if (VitalityPercentBonus != 0)
         {
-            c.Vitality.AddModifier(new StatModifier(VitalityBonus, StatModType.PercentMult, this));
+            c.Vitality.AddModifier(new StatModifier(VitalityPercentBonus / 100, StatModType.PercentMult, this));
         }
     }
 
@@ -71,5 +77,9 @@ public class EquippableItem : Item
         c.Agility.RemoveAllModifiersFromSource(this);
         c.Intelligence.RemoveAllModifiersFromSource(this);
         c.Vitality.RemoveAllModifiersFromSource(this);
+    }
+    public GameObject GetItemPrefab()
+    {
+        return itemPrefab;
     }
 }
