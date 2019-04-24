@@ -53,7 +53,7 @@ Shader "TextMeshPro/Sprite"
 			#include "UnityCG.cginc"
 			#include "UnityUI.cginc"
 
-
+			#pragma multi_compile __ UNITY_UI_CLIP_RECT
 			#pragma multi_compile __ UNITY_UI_ALPHACLIP
 			
 			struct appdata_t
@@ -97,7 +97,9 @@ Shader "TextMeshPro/Sprite"
 			{
 				half4 color = (tex2D(_MainTex, IN.texcoord) + _TextureSampleAdd) * IN.color;
 				
+				#if UNITY_UI_CLIP_RECT
 				color.a *= UnityGet2DClipping(IN.worldPosition.xy, _ClipRect);
+				#endif
 
 				#ifdef UNITY_UI_ALPHACLIP
 				clip (color.a - 0.001);

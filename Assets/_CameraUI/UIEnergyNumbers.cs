@@ -8,15 +8,15 @@ namespace RPG.CameraUI
 {
     public class UIEnergyNumbers : MonoBehaviour
     {
-        Player player;
+        Player _player;
         Text energyNumbers;
         float currentEnergyPoints;
         float maxEnergyPoints;
         // Use this for initialization
         void Start()
         {
-            player = FindObjectOfType<Player>();
-            var energyComponent = player.GetComponent<Energy>();
+            _player = FindObjectOfType<Player>();
+            var energyComponent = _player.GetComponent<Energy>();
             energyNumbers = GetComponent<Text>();
             currentEnergyPoints = energyComponent.currentEnergyPoints;
             maxEnergyPoints = energyComponent.maxEnergyPoints;
@@ -27,7 +27,7 @@ namespace RPG.CameraUI
         // Update is called once per frame
         public void Update()
         {
-            var energyComponent = player.GetComponent<Energy>();
+            var energyComponent = _player.GetComponent<Energy>();
             energyNumbers.text = energyComponent.currentEnergyPoints.ToString("F0") + "/" + energyComponent.maxEnergyPoints.ToString("F0");
         }
     }

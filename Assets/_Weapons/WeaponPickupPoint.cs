@@ -9,7 +9,7 @@ namespace RPG.Weapons
     [ExecuteInEditMode]
     public class WeaponPickupPoint : MonoBehaviour
     {
-        [SerializeField] Weapon weaponConfig;
+        //[SerializeField] Weapon weaponConfig;
         [SerializeField] AudioClip pickUpSFX;
 
         AudioSource audioSource;
@@ -33,20 +33,20 @@ namespace RPG.Weapons
             if (!Application.isPlaying)
             {
                 DestroyChildren();
-                InstantiateWeapon();
+                //InstantiateWeapon();
             }
         }
 
-        void InstantiateWeapon()
-        {
-            var weapon = weaponConfig.GetWeaponPrefab();
-            weapon.transform.position = Vector3.zero;
-            Instantiate(weapon, gameObject.transform);
-        }
-        private void OnTriggerEnter()
-        {
-           FindObjectOfType<Player>().PutWeaponInMainHand(weaponConfig);
-            audioSource.PlayOneShot(pickUpSFX);
-        }
+        //void InstantiateWeapon()
+        //{
+        //    var weapon = weaponConfig.GetWeaponPrefab();
+        //    weapon.transform.position = Vector3.zero;
+        //    Instantiate(weapon, gameObject.transform);
+        //}
+        //private void OnTriggerEnter()
+        //{
+        //   FindObjectOfType<Player>().PutWeaponInMainHand(weaponConfig);
+        //    audioSource.PlayOneShot(pickUpSFX);
+        //}
     }
 }

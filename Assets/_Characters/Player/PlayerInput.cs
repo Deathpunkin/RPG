@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using RPG.Core;
+using RPG.Characters;
 
-namespace RPG.Characters //consider changing to core
+namespace RPG.Core //decide if need to change back to characters
 {
     public class PlayerInput : MonoBehaviour
     {
-        Player player;
-        Character _character;
+        [SerializeField] Character player;
         CharacterMovement character;
         [SerializeField] float damageCaused = 10;
         Canvas HUD;
@@ -24,6 +23,7 @@ namespace RPG.Characters //consider changing to core
 
         //KeyBinds
         public KeyCode Crouch = KeyCode.Z;
+        public KeyCode interact = KeyCode.F;
         public KeyCode SelfDamage = KeyCode.L;
         public KeyCode Exp = KeyCode.K;
         public KeyCode SkillBar1 = KeyCode.Alpha1;
@@ -40,8 +40,8 @@ namespace RPG.Characters //consider changing to core
         // Use this for initialization
         void Start()
         {
-            player = FindObjectOfType<Player>();
-            _character = FindObjectOfType<Character>();
+            player = FindObjectOfType<Character>();
+            //player = FindObjectOfType<Character>();
             HUD = FindObjectOfType<Canvas>();
             siblingIndexer.transform.SetAsLastSibling();
             lastChildIndex = siblingIndexer.transform.GetSiblingIndex();
@@ -55,13 +55,17 @@ namespace RPG.Characters //consider changing to core
         // Update is called once per frame
         void Update()
         {
+            if(Input.GetKeyDown(interact))
+            {
+                Debug.Log("Interact Pressed!");
+            }
             if(Input.GetKeyDown(targetNearest))
             {
-                _character.SetNearestTarget();
+                player.SetNearestTarget();
             }
             if(Input.GetKeyDown(targetNext))
             {
-                _character.GetNextTarget();
+                player.GetNextTarget();
             }
             if (Input.GetKeyDown(KeyCode.Escape))
             {
@@ -112,10 +116,11 @@ namespace RPG.Characters //consider changing to core
                 Component damageableComponent = player;
 
 
-                (damageableComponent as IDamageable).TakeDamage(damageCaused);
+                //(damageableComponent as IDamageable).TakeDamage(damageCaused);
+                player.TakeDamage(damageCaused);
                 player.timeSinceLastDamaged = Time.time;
-                print("Dealt 10dmg to Self!");
-                if (player.currentHealthPoints <= 0)
+                print("Dealt" + damageCaused + "to Self!");
+                if (player.GetCurrentHealth() <= 0)
                 {
                     StartCoroutine(player.TriggerDeath());
                 }

@@ -7,14 +7,14 @@ namespace RPG.Characters
 {
     public class HealingBehaviour : AbilityBehaviour
     {
-        Player player = null;
+        Character player = null;
         ParticleSystem skillEffect = null;
         AudioSource audioSource = null;
 
         // Use this for initialization
         void Start()
         {
-            player = GetComponent<Player>();
+            player = GetComponent<Character>();
             audioSource = GetComponent<AudioSource>();
         }
 
@@ -23,7 +23,7 @@ namespace RPG.Characters
             PlaySkillParticleEffect();
             audioSource.clip = config.GetRandomAbilitySound();
             audioSource.Play();
-            if(player.currentHealthPoints != player.maxHealthPoints)
+            if(player.GetCurrentHealth() != player.GetMaxHealth())
             {
                 player.Heal((config as HealingConfig).GetHealthGained());
                 DamageTextController.CreateFloatingHealingText((config as HealingConfig).GetHealthGained().ToString(), transform);

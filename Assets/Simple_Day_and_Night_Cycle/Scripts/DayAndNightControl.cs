@@ -24,9 +24,12 @@ public class DayAndNightControl : MonoBehaviour
     public Light directionalLight; //the directional light in the scene we're going to work with
     public float SecondsInAFullDay = 120f; //in realtime, this is about two minutes by default. (every 1 minute/60 seconds is day in game)
     public float currentTime = 0; //at default when you press play, it will be nightTime. (0 = night, 1 = day)
+
     [Range(0, 24)]
     public float hour = 0;
+    [Range(0, 60)]
     public float minute = 0;
+    [Range(0, 60)]
     public double second = 0;
     public bool aM;
     public bool pM;

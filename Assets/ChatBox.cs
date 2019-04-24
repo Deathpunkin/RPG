@@ -12,7 +12,7 @@ public class ChatBox : MonoBehaviour {
     public GameObject chatPanel, textObject;
     public InputField chatBox;
     public string username;
-    Player player;
+    Character player;
     Animator playerAnimator;
 
     public Color playerMessage, emote, info, command, error;
@@ -24,7 +24,7 @@ public class ChatBox : MonoBehaviour {
      
 	void Start ()
     {
-        player = FindObjectOfType<Player>();
+        player = FindObjectOfType<Character>();
         dayAndNightControl = GameObject.Find("Day and Night Controller").GetComponent<DayAndNightControl>();
         playerAnimator = player.GetComponent<Animator>();
     }

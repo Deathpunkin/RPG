@@ -1137,6 +1137,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f44d235f4abb41f47852f349da586f85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  levelText: {fileID: 0}
   statDisplays:
   - {fileID: 114274135288374764}
   - {fileID: 114370774146773796}
@@ -1589,6 +1590,7 @@ MonoBehaviour:
   - {fileID: 114416389342620506}
   - {fileID: 114064548327906562}
   _player: {fileID: 0}
+  _defence: 0
   currentMainHand: {fileID: 0}
 --- !u!114 &114218939615712850
 MonoBehaviour:
@@ -2918,17 +2920,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _player: {fileID: 0}
   animatorOverrideController: {fileID: 0}
-  level: 1
-  experiencePoints: 0
+  updateStats: 0
+  hurtSounds: []
+  deathSounds: []
+  abilities: []
+  level: 0
+  levelText: {fileID: 0}
+  currentExperiencePoints: 0
   experienceToNextLevel: 0
-  Strength:
+  maxHealthPoints: 100
+  currentHealthPoints: 0
+  regenHealthSpeed: 0
+  isDead: 0
+  respawnButton: {fileID: 0}
+  respawnInvulnTimer: 0
+  strength:
     BaseValue: 0
-  Agility:
+  agility:
     BaseValue: 0
-  Intelligence:
+  intelligence:
     BaseValue: 0
-  Vitality:
+  vitality:
     BaseValue: 0
+  defence: 0
   inventory: {fileID: 114192536054901584}
   equipmentPanel: {fileID: 114204826119739562}
   statPanel: {fileID: 114022652813882932}
@@ -2940,6 +2954,14 @@ MonoBehaviour:
   attackDelay: 0
   minDamage: 0
   maxDamage: 0
+  damage: 0
+  critChance: 10
+  critDamage: 0
+  critMultiplyer: 1.5
+  lastAttackTime: 0
+  timeSinceLastDamaged: 0
+  highestDamage: 0
+  highestCrit: 0
   projector: {fileID: 0}
   groundTargeting: 0
 --- !u!114 &114868385604568500

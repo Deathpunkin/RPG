@@ -7,7 +7,7 @@ namespace RPG.CameraUI
     public class CameraFollow : MonoBehaviour
     {
 
-        GameObject player;
+        [SerializeField] GameObject player;
 
         // Use this for initialization
         void Start()

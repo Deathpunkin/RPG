@@ -8,8 +8,8 @@ namespace RPG.CameraUI
 {
     public class UIHealthNumbers : MonoBehaviour
     {
-
-        Player player;
+        Player _player;
+        Character player;
         Text healthNumbers;
         float currentHealthPoints;
         float maxHealthPoints;
@@ -17,9 +17,10 @@ namespace RPG.CameraUI
         void Start()
         {
             healthNumbers = GetComponent<Text>();
-            player = FindObjectOfType<Player>();
-            currentHealthPoints = player.currentHealthPoints;
-            maxHealthPoints = player.maxHealthPoints;
+            _player = FindObjectOfType<Player>();
+            player = _player.GetComponent<Character>();
+            currentHealthPoints = player.GetCurrentHealth();
+            maxHealthPoints = player.GetMaxHealth();
             healthNumbers.text = "Health " + currentHealthPoints + "/" + maxHealthPoints;
 
         }
@@ -27,7 +28,7 @@ namespace RPG.CameraUI
         // Update is called once per frame
         public void Update()
         {
-            healthNumbers.text = player.currentHealthPoints.ToString("F0") + "/" + player.maxHealthPoints.ToString("F0");
+            healthNumbers.text = player.GetCurrentHealth().ToString("F0") + "/" + player.GetMaxHealth().ToString("F0");
         }
     }
 }

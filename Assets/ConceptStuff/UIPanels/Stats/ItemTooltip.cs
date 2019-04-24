@@ -2,71 +2,93 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ItemTooltip : MonoBehaviour
+namespace RPG.Core
 {
-    [SerializeField] Text ItemNameText;
-    [SerializeField] Text ItemSlotText;
-    [SerializeField] Text ItemStatsText;
-
-    private StringBuilder sb = new StringBuilder();
-
-    public void ShowToolTip(EquippableItem item)
+    public class ItemTooltip : MonoBehaviour
     {
-        ItemNameText.text = item.ItemName;
-        ItemSlotText.text = item.EquipmentType.ToString();
+        [SerializeField] Text ItemNameText;
+        [SerializeField] Text ItemSlotText;
+        [SerializeField] Text ItemStatsText;
+        [SerializeField] float speed = 1;
+        [SerializeField] HSBColor mythicColor;
 
-        sb.Length = 0;
-        AddStat(item.StrengthBonus, "Strength");
-        AddStat(item.AgilityBonus, "Agility");
-        AddStat(item.IntelligenceBonus, "Intelligence");
-        AddStat(item.VitalityBonus, "Vitality");
+        private StringBuilder sb = new StringBuilder();
 
-        AddStat(item.StrengthPercentBonus / 100, "Strength", isPercent: true);
-        AddStat(item.AgilityPercentBonus / 100, "Agility", isPercent: true);
-        AddStat(item.IntelligencePercentBonus / 100, "Intelligence", isPercent: true);
-        AddStat(item.VitalityPercentBonus / 100, "Vitality", isPercent: true);
-
-        ItemStatsText.text = sb.ToString();
-
-        gameObject.SetActive(true);
-        gameObject.transform.SetAsLastSibling();
-        gameObject.transform.position = Input.mousePosition;
-    }
-    private void Update()
-    {
-        if(isActiveAndEnabled)
+        public void ShowToolTip(EquippableItem item)
         {
-            gameObject.transform.SetAsLastSibling();
-        }
-    }
-    public void HideToolTip()
-    {
-        gameObject.SetActive(false);
-    }
-
-    private void AddStat(float value, string statName, bool isPercent = false)
-    {
-        if (value != 0)
-        {
-            if (sb.Length > 0)
+            if (item.rarity == Rarity.Common)
             {
-                sb.AppendLine();
+                ItemNameText.color = Color.white;
             }
-            if (value > 0)
+            if (item.rarity == Rarity.Uncommon)
             {
-                sb.Append("+");
+                ItemNameText.color = Color.green;
             }
-            if (isPercent)
+            if (item.rarity == Rarity.Mythical)
             {
-                sb.Append(value * 100);
-                sb.Append("% ");
+                ItemNameText.color = HSBColor.ToColor(mythicColor); //Color.Lerp(Color.white, Color.black, Mathf.PingPong(Time.time, 1));
             }
             else
             {
-                sb.Append(value);
-                sb.Append(" ");
+                return;
             }
-            sb.Append(statName);
+            ItemNameText.text = item.ItemName;
+            ItemSlotText.text = item.EquipmentType.ToString();
+
+            sb.Length = 0;
+            AddStat(item.StrengthBonus, "Strength");
+            AddStat(item.AgilityBonus, "Agility");
+            AddStat(item.IntelligenceBonus, "Intelligence");
+            AddStat(item.VitalityBonus, "Vitality");
+
+            AddStat(item.StrengthPercentBonus / 100, "Strength", isPercent: true);
+            AddStat(item.AgilityPercentBonus / 100, "Agility", isPercent: true);
+            AddStat(item.IntelligencePercentBonus / 100, "Intelligence", isPercent: true);
+            AddStat(item.VitalityPercentBonus / 100, "Vitality", isPercent: true);
+
+            ItemStatsText.text = sb.ToString();
+
+            gameObject.SetActive(true);
+            gameObject.transform.SetAsLastSibling();
+            gameObject.transform.position = Input.mousePosition;
+        }
+        private void Update()
+        {
+            if (isActiveAndEnabled)
+            {
+                gameObject.transform.SetAsLastSibling();
+                mythicColor = new HSBColor(Mathf.PingPong(Time.time * speed, 1), 1, 1);
+            }
+        }
+        public void HideToolTip()
+        {
+            gameObject.SetActive(false);
+        }
+
+        private void AddStat(float value, string statName, bool isPercent = false)
+        {
+            if (value != 0)
+            {
+                if (sb.Length > 0)
+                {
+                    sb.AppendLine();
+                }
+                if (value > 0)
+                {
+                    sb.Append("+");
+                }
+                if (isPercent)
+                {
+                    sb.Append(value * 100);
+                    sb.Append("% ");
+                }
+                else
+                {
+                    sb.Append(value);
+                    sb.Append(" ");
+                }
+                sb.Append(statName);
+            }
         }
     }
 }

@@ -7,7 +7,7 @@ namespace RPG.Characters
 {
     public class PowerAttackBehaviour : AbilityBehaviour
     {
-        Weapon weapon;
+        //Weapon weapon;
 
         public override void Use(AbilityUseParams useParams)
         {

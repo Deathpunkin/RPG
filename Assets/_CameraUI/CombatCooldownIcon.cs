@@ -9,19 +9,19 @@ namespace RPG.Characters
     public class CombatCooldownIcon : MonoBehaviour
     {
         Image combatCooldown;
-        Player player;
+        Character player;
 
         // Use this for initialization
         void Start()
         {
-            player = FindObjectOfType<Player>();
+            player = FindObjectOfType<Character>();
             combatCooldown = GetComponent<Image>();
         }
 
         // Update is called once per frame
         void Update()
         {
-            combatCooldown.fillAmount = player.regenHealthDelay - (Time.time - player.timeSinceLastDamaged);
+            combatCooldown.fillAmount = player.GetRegenHealthDelay() - (Time.time - player.timeSinceLastDamaged);
         }
     }
 }

@@ -10,9 +10,11 @@ namespace RPG.Characters
     {
         Animator animator;
         ParticleSystem lootableParticle;
-        [SerializeField] float level = 1;
+        [SerializeField] float level;
         [SerializeField] float maxHealthPoints = 100f;
         [SerializeField] float currentHealthPoints;
+        [SerializeField] int baseExpReward = 100;
+        float expReward;
         [SerializeField] bool isDead = false;
         float regenHealthspeed = 1f;
 
@@ -28,7 +30,7 @@ namespace RPG.Characters
 
         bool isAttacking = false;
         //AICharacterControl aiCharacterControl = null;
-        Player player = null;
+        Character player = null;
         float damageTaken;
         public float dodgechance = 10f;
 
@@ -38,6 +40,7 @@ namespace RPG.Characters
         GameObject enemyUI;
         Rigidbody enemyRigidbody;
         Collider enemyCollider;
+        bool givenExp = false; //remove after death is fixed
 
         public float healthAsPercentage
         {
@@ -57,6 +60,31 @@ namespace RPG.Characters
 
             if (currentHealthPoints <= 0)
             {
+                if (givenExp == false)
+                {
+                    if (level - player.GetLevel() >= 10)
+                    {
+                        expReward = baseExpReward * 10;
+                        givenExp = true;
+                    }
+                    else
+                    {
+                        if (level >= player.GetLevel())
+                        {
+                            expReward = baseExpReward * (level - player.GetLevel());
+                            givenExp = true;
+                        }
+                        if (level <= player.GetLevel())
+                        {
+                            expReward = ((baseExpReward / player.GetLevel() - level));
+                            givenExp = true;
+                        }
+                    }
+                }
+                else
+                {
+                    return;
+                }
                 if (isProp)
                 {
                     return;
@@ -65,6 +93,7 @@ namespace RPG.Characters
                 enemyUI.SetActive(false);
                 enemyRigidbody.isKinematic = true;
                 enemyCollider.enabled = false;
+                player.GiveExp(expReward);
                 if (lootable)
                 {
                     CancelInvoke("SpawnProjectile");
@@ -131,7 +160,7 @@ namespace RPG.Characters
 
         void Start()
         {
-            player = FindObjectOfType<Player>();
+            player = FindObjectOfType<Character>();
             animator = GetComponent<Animator>();
             lootableParticle = GetComponentInChildren<ParticleSystem>();
             enemyUI = this.gameObject.transform.GetChild(0).gameObject;
@@ -169,7 +198,7 @@ namespace RPG.Characters
             {
                 //aiCharacterControl.SetTarget(transform);
             }
-            if (player.healthAsPercentage <= Mathf.Epsilon)
+            if (player.GetHealthAsPercentage() <= Mathf.Epsilon)
             {
                 StopAllCoroutines();
             }

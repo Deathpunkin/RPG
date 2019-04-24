@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 13615390}
   - component: {fileID: 135345994777142994}
   - component: {fileID: 11444856}
-  - component: {fileID: 114157548728675290}
   - component: {fileID: 114056948249611540}
   - component: {fileID: 114000132873086128}
   - component: {fileID: 195462940592665216}
@@ -23,6 +22,7 @@ GameObject:
   - component: {fileID: 114914383645137780}
   - component: {fileID: 114778744871590318}
   - component: {fileID: 114268878314438484}
+  - component: {fileID: 114611620946796414}
   m_Layer: 10
   m_Name: Player
   m_TagString: Player
@@ -283,6 +283,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c93abfc22cf1d2d42be971c5d98ff40b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
   damageCaused: 10
   inventoryGameObject: {fileID: 0}
   characterPanelGameObject: {fileID: 0}
@@ -290,6 +291,7 @@ MonoBehaviour:
   inputField: {fileID: 0}
   lastChildIndex: 19
   Crouch: 122
+  interact: 102
   SelfDamage: 104
   Exp: 107
   SkillBar1: 49
@@ -321,55 +323,6 @@ MonoBehaviour:
   m_AnimSpeedMultiplier: 1
   m_GroundCheckDistance: 0.1
   crouching: 0
---- !u!114 &114157548728675290
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 149790}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a9268856d129aa64a8ab4590ce181c5b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animatorOverrideController: {fileID: 22100000, guid: d1b9a8af17d213e4a9fb354eba229bd0,
-    type: 2}
-  hurtSounds:
-  - {fileID: 8300000, guid: c239f3ab8b0a645219252abc75b70d29, type: 3}
-  - {fileID: 8300000, guid: dae9f3d3c3a42413f9f0e4687bbdfc42, type: 3}
-  - {fileID: 8300000, guid: 6ce1940bfa19b454bb9d2c92082ac1aa, type: 3}
-  deathSounds:
-  - {fileID: 8300000, guid: b1ba006b9769640c39bac4c88e176f09, type: 3}
-  - {fileID: 8300000, guid: 9886d59a92d4547a5a1a0ece82280483, type: 3}
-  - {fileID: 8300000, guid: 06a65b24e73c143858b5facd5d6ea264, type: 3}
-  abilities:
-  - {fileID: 11400000, guid: fcae164266dea1c468bb8e43fac6d5ec, type: 2}
-  - {fileID: 11400000, guid: 1e795d81288929b47b296bde53be5755, type: 2}
-  character: {fileID: 114914383645137780}
-  mainHandWeaponConfig: {fileID: 11400000, guid: feb9203def29b3f4ba076b9f213d66e6,
-    type: 2}
-  offHandWeapon: {fileID: 11400000, guid: 37febbf50f05567408a70d1a5e949edd, type: 2}
-  Strength:
-    BaseValue: 0
-  Intelegence:
-    BaseValue: 0
-  maxHealthPoints: 500
-  currentHealthPoints: 500
-  respawnHealth: 0
-  regenHealthDelay: 5.5
-  isDead: 0
-  respawnButton: {fileID: 114680414458877374, guid: 333e2305c83753e42ae69a8a546c6229,
-    type: 2}
-  respawnInvulnTimer: 0
-  regenHealthSpeed: 0.5
-  critChance: 10
-  critDamage: 16
-  critMultiplyer: 1.5
-  damage: 11
-  lastAttackTime: 0
-  timeSinceLastDamaged: 0
-  highestDamage: 0
-  highestCrit: 0
 --- !u!114 &114268878314438484
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -652,6 +605,17 @@ MonoBehaviour:
   customRotation: {x: 0, y: 0, z: 0}
   previewColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   _buildCharacterEnabled: 1
+--- !u!114 &114611620946796414
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 149790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9268856d129aa64a8ab4590ce181c5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114778744871590318
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -678,17 +642,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _player: {fileID: 114611442259248408}
   animatorOverrideController: {fileID: 0}
+  updateStats: 0
+  hurtSounds: []
+  deathSounds: []
+  abilities:
+  - {fileID: 11400000, guid: 1e795d81288929b47b296bde53be5755, type: 2}
   level: 1
-  experiencePoints: 0
-  experienceToNextLevel: 0
-  Strength:
-    BaseValue: 0
-  Agility:
-    BaseValue: 0
-  Intelligence:
-    BaseValue: 0
-  Vitality:
-    BaseValue: 0
+  levelText: {fileID: 0}
+  currentExperiencePoints: 0
+  _experienceToNextLevel: 0
+  experienceToNextLevel: 300
+  maxHealthPoints: 100
+  currentHealthPoints: 100
+  regenHealthSpeed: 0
+  isDead: 0
+  respawnButton: {fileID: 0}
+  respawnInvulnTimer: 0
+  strength:
+    BaseValue: 5
+  agility:
+    BaseValue: 8
+  intelligence:
+    BaseValue: 2
+  vitality:
+    BaseValue: 25
+  defence: 0
   inventory: {fileID: 0}
   equipmentPanel: {fileID: 0}
   statPanel: {fileID: 0}
@@ -701,6 +679,14 @@ MonoBehaviour:
   attackDelay: 1
   minDamage: 10
   maxDamage: 100
+  damage: 5
+  critChance: 10
+  critDamage: 0
+  critMultiplyer: 1.5
+  lastAttackTime: 0
+  timeSinceLastDamaged: 0
+  highestDamage: 0
+  highestCrit: 0
   projector: {fileID: 119080462243267234, guid: 3ab71f2e17d408e4285f1c8929f852c3,
     type: 2}
   groundTargeting: 0

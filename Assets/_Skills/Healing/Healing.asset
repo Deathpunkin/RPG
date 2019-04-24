@@ -11,8 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbde7176d92421c4689653a25b2383de, type: 3}
   m_Name: Healing
   m_EditorClassIdentifier: 
-  skillIcon: {fileID: 114524245127647420, guid: 2fa19f67d9cc8134e843e70f07cac512,
-    type: 2}
+  skillIcon: {fileID: 0}
   skillParticleEffect: {fileID: 1195630539092620, guid: c05353a300051494c96e7e863a3d8f53,
     type: 2}
   energyCost: 10

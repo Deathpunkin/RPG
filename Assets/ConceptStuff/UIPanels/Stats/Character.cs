@@ -1,29 +1,57 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using RPG.Core;
 using RPG.Characters;
 using RPG.CameraUI;
-using RPG.Weapons;
+using RPG.Weapons; //Do I need these?
+using RPG.Armor;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UMA;
 using UMA.CharacterSystem;
 
-public class Character : MonoBehaviour
+public class Character : MonoBehaviour, IDamageable
 {
     [SerializeField] DynamicCharacterAvatar _player;
     [SerializeField] AnimatorOverrideController animatorOverrideController;
     Animator animator;
     AnimationClip castAnim;
 
+    [SerializeField] bool updateStats = false;
 
-    public float level = 1f;
-    public float experiencePoints;
-    public float experienceToNextLevel;
+    AudioSource audioSource;
+    [SerializeField] AudioClip[] hurtSounds;
+    [SerializeField] AudioClip[] deathSounds;
 
-    public CharacterStat Strength;
-    public CharacterStat Agility;
-    public CharacterStat Intelligence;
-    public CharacterStat Vitality;
+    [SerializeField] AbilityConfig[] abilities;
+    GameObject mainHandWeaponObject;
+
+
+    [SerializeField] float level;
+    [SerializeField] Text levelText;
+    [SerializeField] float currentExperiencePoints;
+    [SerializeField] float _experienceToNextLevel;
+    [SerializeField] float experienceToNextLevel = 150;
+    [SerializeField] float maxHealthPoints = 100f;
+    [SerializeField] float currentHealthPoints;
+    float prevHealth;
+    float respawnHealth;
+    float regenHealthDelay = 5.5f;
+    float baseRegenHealthSpeed = 0.5f;
+    [SerializeField] float regenHealthSpeed;
+    [SerializeField] bool isDead = false;
+    public Button respawnButton;  //TODO get respawn working
+    float respawnInvuln = 5f;
+    public float respawnInvulnTimer;
+
+    [SerializeField] CharacterStat strength;
+    [SerializeField] CharacterStat agility;
+    [SerializeField] CharacterStat intelligence;
+    [SerializeField] CharacterStat vitality;
+
+    [SerializeField] double defence;
 
     [SerializeField] Inventory inventory;
     [SerializeField] EquipmentPanel equipmentPanel;
@@ -39,6 +67,17 @@ public class Character : MonoBehaviour
     [SerializeField] float attackDelay;
     [SerializeField] float minDamage;
     [SerializeField] float maxDamage;
+    [SerializeField] float damage;
+    [SerializeField] float critChance = 10f;
+    [SerializeField] float critDamage;
+    [SerializeField] float critMultiplyer = 1.5f; // 150% extra dmg
+
+    [SerializeField] float lastAttackTime = 0f;
+    public float timeSinceLastDamaged; //TODO remove public after debugging 
+    [SerializeField] float highestDamage;
+    [SerializeField] float highestCrit;
+    Enemy enemy = null;
+
 
     CameraRaycaster cameraRaycaster;
     RaycastHit cursorHitInfo;
@@ -60,8 +99,9 @@ public class Character : MonoBehaviour
 
     private void Awake()
     {
-        statPanel.SetStats(Strength, Agility, Intelligence, Vitality);
+        statPanel.SetStats(strength, agility, intelligence, vitality);
         statPanel.UpdateStatValues();
+        statPanel.UpdateLevelNumber(level);
 
         //Setup Events:
         //RightClick
@@ -87,30 +127,25 @@ public class Character : MonoBehaviour
         equipmentPanel.OnDropEvent += Drop;
         cameraRaycaster = FindObjectOfType<CameraRaycaster>();
         cameraRaycaster.onMouseOverEnemy += OnMouseOverEnemy;
-        animator = GetComponent<Animator>();
+        //cameraRaycaster.onMouseOverLootable += OnMouseOverLootable; //TODO Fix when Loot Works.
+        currentHealthPoints = maxHealthPoints;
+        prevHealth = currentHealthPoints;
+        regenHealthSpeed = baseRegenHealthSpeed;
+        audioSource = GetComponent<AudioSource>();
+        SetupRuntimeAnimator();
+        DamageTextController.Initialize();
+        AttachInitialAbilities();
+        //Button respawn = respawnButton.GetComponent<Button>();
+        respawnHealth = Mathf.Round(currentHealthPoints / 3);
 
+
+        animator = GetComponent<Animator>();
     }
 
-    //private void Start()
-    //{
-    //    // new event created
-    //    AnimationEvent instantiateProjectile;
-    //    instantiateProjectile = new AnimationEvent();
-
-    //    // put some parameters on the AnimationEvent
-    //    //  - call the function called PrintEvent()
-    //    //  - the animation on this object lasts 2 seconds
-    //    //    and the new animation created here is
-    //    //    set up to happen 1.3s into the animation
-    //    //instantiateProjectile.intParameter = 12345;
-    //    instantiateProjectile.time = 0.08f;
-    //    instantiateProjectile.functionName = "InstantiateProjectile";
-
-    //    // get the animation clip and add the AnimationEvent
-    //    castAnim = animator.runtimeAnimatorController.animationClips[29];
-    //    castAnim.AddEvent(instantiateProjectile);
-
-    //}
+    private void Start()
+    {
+        _experienceToNextLevel = experienceToNextLevel;
+    }
 
     void FixedUpdate()
     {
@@ -118,11 +153,15 @@ public class Character : MonoBehaviour
         //do stuff with that enemy
     }
 
-    private void Update()
-    { 
+    public void Update()
+    {
+        if (currentExperiencePoints >= experienceToNextLevel)
+        {
+            LevelUp();
+        }
         if (currentTarget != null)
         {
-            if(Input.GetKeyDown(KeyCode.Alpha1))
+            if (Input.GetKeyDown(KeyCode.Alpha1))
             {
                 transform.LookAt(currentTarget.transform);
                 //Attack();
@@ -150,24 +189,228 @@ public class Character : MonoBehaviour
                 Destroy(projector);
             }
         }
+        if (strength.Value != 0)
+        {
+            defence = Math.Round(strength.Value / 2);
+        }
+        //defence +=
+        levelText.text = level.ToString();
+
+        if (updateStats)
+        {
+            statPanel.UpdateStatValues();
+        }
+        if (GetHealthAsPercentage() > Mathf.Epsilon)
+        {
+            if ((Time.time - timeSinceLastDamaged) >= regenHealthDelay && currentHealthPoints != maxHealthPoints && !isDead)
+            {
+                StartCoroutine(regenHealth());
+            }
+            else if (currentHealthPoints == maxHealthPoints && (Time.time - timeSinceLastDamaged) <= regenHealthDelay)
+            {
+                //CancelInvoke();
+                StopCoroutine(regenHealth());
+                regenHealthSpeed = baseRegenHealthSpeed;
+            }
+            //Damage Math
+            //damage = Mathf.Round(UnityEngine.Random.Range(mainHandWeaponConfig.GetMinDamagePerHit(), mainHandWeaponConfig.GetMaxDamagePerHit()));
+            critDamage = Mathf.Round(damage * critMultiplyer);
+            if (isDead)
+            {
+                StopCoroutine(regenHealth());
+                this.GetComponent<ThirdPersonUserControl>().enabled = false;
+            }
+            else
+            {
+                animator.ResetTrigger("Dead");
+                this.GetComponent<ThirdPersonUserControl>().enabled = true;
+            }
+            //TODO get respawn invuln working
+            //respawnInvulnTimer = Mathf.Clamp(respawnInvuln - Time.time, 0, respawnInvuln);
+            ScanForAbilityKeyDown();
+        }
+    }
+    IEnumerator regenHealth()
+    {
+        currentHealthPoints = currentHealthPoints + regenHealthSpeed;
+        //regenHealthSpeed = regenHealthSpeed + 0.5f;
+        yield return new WaitForSeconds(1);
     }
 
-    //void Attack()
-    //{
-    //    Transform leftHand = _player.umaData.skeleton.GetBoneGameObject(UMASkeleton.StringToHash("LeftHand")).transform;
-    //    Vector3 aimoffset = new Vector3(0, 1f, 0);
+    private void SetupRuntimeAnimator()
+    {
+        animator = GetComponent<Animator>();
+        animator.runtimeAnimatorController = animatorOverrideController;
+    }
+        private void ScanForAbilityKeyDown()
+    {
+        for (int keyIndex = 0; keyIndex < abilities.Length; keyIndex++)
+        {
+            if (Input.GetKeyDown(keyIndex.ToString()))
+            {
+                UseAbility(keyIndex);
+            }
+        }
+    }
+    private void AttachInitialAbilities()
+    {
+        for (int abilityIndex = 0; abilityIndex < abilities.Length; abilityIndex++)
+        {
+            abilities[abilityIndex].AttachAbilityTo(gameObject);
+        }
+    }
+    void OnMouseOverEnemy(Enemy enemyToSet)
+    {
+        this.enemy = enemyToSet;
+        if (Input.GetMouseButton(0) /*&& IsTargetInRange(enemy.gameObject)*/)
+        {
+            currentTarget = enemyToSet;
+            transform.LookAt(enemy.transform);
+            animator.SetTrigger("LeftHandCast");
+            //AttackTarget();
+        }
+        else
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                DamageTextController.CreateFloatingOutOfRangeText("Target out of reach.", enemy.transform);
+                //StartCoroutine(moveIntoRange());
 
-    //    float damage = Mathf.Round(UnityEngine.Random.Range(minDamage, maxDamage));
-    //    GameObject _castProjectile = Instantiate(castProjectile, leftHand.position, Quaternion.identity);
-    //    Projectile projectileComponent = _castProjectile.GetComponent<Projectile>();
-    //    projectileComponent.SetDamage(damage);
-    //    projectileComponent.SetShooter(gameObject);
+            }
+        }
+    }
+    IEnumerator moveIntoRange()
+    {
+        print("Make me Move to Target");
+        yield return new WaitForSeconds(0);
+    }
 
-    //    Vector3 unitVectorToTarget = (currentTarget.transform.position + aimoffset - leftHand.position).normalized;
-    //    float projectileSpeed = projectileComponent.projectileSpeed;
-    //    _castProjectile.GetComponent<Rigidbody>().velocity = unitVectorToTarget * projectileSpeed;
-    //    Debug.Log("Aaaand Pew!");
-    //}
+    void OnMouseOverLootable(Vector3 lootable)
+    {
+        if (Input.GetMouseButton(0))
+        {
+            print("Lootable!");
+        }
+        return;
+    }
+    public void UseAbility(int abilityIndex) //TODO change to individual ability casts per PlayerInput assignment
+    {
+        var energyComponent = GetComponent<Energy>();
+        var energyCost = abilities[abilityIndex].GetEnergyCost();
+        if (energyComponent.IsEnergyAvailable(energyCost))
+        {
+            energyComponent.ConsumeEnergy(energyCost);
+            if (UnityEngine.Random.Range(1.0f, 100.0f) < critChance && UnityEngine.Random.Range(1, 100) > enemy.dodgechance)
+            {
+                var abilityParams = new AbilityUseParams(enemy, critDamage);
+                abilities[abilityIndex].Use(abilityParams);
+            }
+            else if (UnityEngine.Random.Range(1, 100) > enemy.dodgechance)
+            {
+                var abilityParams = new AbilityUseParams(enemy, damage);
+                abilities[abilityIndex].Use(abilityParams);
+            }
+        }
+        else
+        {
+            DamageTextController.CreateFloatingNotEnoughEnergyText("Not Enough Energy.", transform);
+        }
+
+    }
+    private void AttackTarget()
+    {
+        if (Time.time - lastAttackTime > 3)
+        {
+            animator.SetTrigger("Attack");
+            //mainHandWeapon.GetWeaponHitSound();
+            //mainHandWeapon.GetWeaponAudioSouce().Play
+            if (UnityEngine.Random.Range(1.0f, 100.0f) < critChance && UnityEngine.Random.Range(1, 100) > enemy.dodgechance)
+            {
+                enemy.TakeDamage(critDamage);
+                print("CRIT! Dealt " + critDamage);
+                if (critDamage >= highestCrit && enemy.GetLevel() >= GetLevel())
+                {
+                    highestCrit = critDamage;
+                    DamageTextController.CreateFloatingHighestCritDamageText(critDamage.ToString(), enemy.transform);
+
+                }
+                if (critDamage <= highestCrit && enemy.GetLevel() <= GetLevel())
+                {
+                    DamageTextController.CreateFloatingCritDamageText(critDamage.ToString(), enemy.transform);
+                }
+
+            }
+            else if (UnityEngine.Random.Range(1, 100) > enemy.dodgechance)
+            {
+                if (damage >= highestDamage && enemy.GetLevel() >= GetLevel())
+                {
+                    highestDamage = damage;
+                    Debug.Log(enemy.transform);
+                }
+                DamageTextController.CreateFloatingDamageText(damage.ToString(), enemy.transform);
+                enemy.TakeDamage(damage);
+                print("Dealt " + damage);
+                print("Target position - " + enemy.transform.position.ToString());
+            }
+            else
+            {
+                print("DODGED!");
+                DamageTextController.CreateFloatingDodgeText("Dodged!", enemy.transform);
+            }
+            lastAttackTime = Time.time;
+        }
+    }
+    public void TakeDamage(float damage) //TODO change back to damage and duplicate for healing
+    {
+        if (respawnInvulnTimer != 0)
+        {
+            damage = 0;
+        }
+        ReduceHealth(damage);
+        //Trigger Death
+        if (currentHealthPoints <= 0)
+        {
+            StartCoroutine(TriggerDeath());
+        }
+    }
+
+    public void Heal(float points)
+    {
+        currentHealthPoints = Mathf.Clamp(currentHealthPoints + points, 0f, maxHealthPoints);
+    }
+    public IEnumerator TriggerDeath()
+    {
+        var energyComponent = GetComponent<Energy>();
+        //Kill
+        animator.SetTrigger("Dead"); //TODO disable movement when dead
+        audioSource.clip = deathSounds[UnityEngine.Random.Range(0, deathSounds.Length)];
+        audioSource.Play();
+        isDead = true;
+        //Drain Energy
+        respawnButton.onClick.AddListener(Respawn);
+        //TODO get button to Respawn, or wait for revive working
+        yield return new WaitForSecondsRealtime(audioSource.clip.length);
+
+    }
+    public void Respawn()
+    {
+        isDead = false;
+        currentHealthPoints = respawnHealth;
+        timeSinceLastDamaged = Time.time;
+        respawnInvuln = +5f;
+    }
+    private void ReduceHealth(float damage)
+    {
+        currentHealthPoints = Mathf.Clamp(currentHealthPoints - damage, 0f, maxHealthPoints);
+        if (currentHealthPoints < prevHealth)
+        {
+            timeSinceLastDamaged = Time.time;
+            audioSource.clip = hurtSounds[UnityEngine.Random.Range(0, hurtSounds.Length)];
+            audioSource.Play();
+        }
+        prevHealth = currentHealthPoints;
+    }
+
 
     private void Equip(ItemSlot itemSlot)
     {
@@ -267,6 +510,39 @@ public class Character : MonoBehaviour
         }
     }
 
+    public void GiveExp(float exp)
+    {
+        currentExperiencePoints += exp;
+        Debug.Log("Exp Gained: " + exp);
+    }
+    public float GetExpAsPercentage()
+    {
+        float expPercent = (currentExperiencePoints / experienceToNextLevel) * 100;
+            return expPercent ;
+    }
+    public float GetExpAsDecimal()
+    {
+        float expDecimal = (currentExperiencePoints / experienceToNextLevel);
+        return expDecimal;
+    }
+    private void LevelUp()
+    {
+        level += 1;
+        currentExperiencePoints -= _experienceToNextLevel;
+        experienceToNextLevel = (experienceToNextLevel * 2);
+        _experienceToNextLevel = experienceToNextLevel;
+        statPanel.UpdateLevelNumber(level);
+        Debug.Log("Level Up!");
+    }
+    public void AddToInventory(Item item)
+    {
+        inventory.AddItem(item);
+    }
+    public void AddToInventory(Item item, int amount)
+    {
+        inventory.AddItem(item, amount);
+    }
+
     public void Equip(EquippableItem item)
     {
         if (inventory.RemoveItem(item))
@@ -303,19 +579,71 @@ public class Character : MonoBehaviour
     {
         
     }
-    void OnMouseOverEnemy(Enemy enemyToSet)
-    {
-        if (Input.GetMouseButton(0))
-        {
-            this.currentTarget = enemyToSet;
-        }
-    }
+    //void OnMouseOverEnemy(Enemy enemyToSet)
+    //{
+    //    if (Input.GetMouseButton(0))
+    //    {
+    //        this.currentTarget = enemyToSet;
+    //    }
+    //}
 
     public void SetNearestTarget()
     {
         currentTarget = nearestTarget;
     }
 
+    public void GetNextTarget()
+    {
+        int current;
+        for (int i = 0; i < Enemy.Pool.Count(); ++i)
+        {
+            if (Enemy.Pool.Count() == currentTarget.GetHashCode())
+            {
+                current = currentTarget.GetHashCode();
+            }
+        }
+        Debug.Log("Current Target Hash: " + currentTarget.GetHashCode());
+        //current = (current + 1) % Enemy.Pool.Count();
+        //currentTarget = Enemy.Pool<current>;
+    }
+
+    //Getters
+    public float GetExp()
+    {
+        return currentExperiencePoints;
+    }
+    public float GetExpToLevel()
+    {
+        return experienceToNextLevel;
+    }
+    public float GetLevel()
+    {
+        return level;
+    }
+    public float GetTargetLevel()
+    {
+        return currentTarget.GetLevel();
+    }
+    public float GetHealthAsPercentage()
+    {
+        return currentHealthPoints / maxHealthPoints;
+    }
+    public CharacterStat GetStrength()
+    {
+        return strength;
+    }
+    public CharacterStat GetAgility()
+    {
+        return agility;
+    }
+    public CharacterStat GetIntelligence()
+    {
+        return intelligence;
+    }
+    public CharacterStat GetVitality()
+    {
+        return vitality;
+    }
     public Enemy GetTarget()
     {
         return currentTarget;
@@ -336,27 +664,29 @@ public class Character : MonoBehaviour
         return castProjectile;
     }
 
-    public void GetNextTarget()
+    public float GetCurrentHealth()
     {
-        int current;
-        for (int i = 0; i < Enemy.Pool.Count(); ++i)
-        {
-            if (Enemy.Pool.Count() == currentTarget.GetHashCode())
-            {
-                current = currentTarget.GetHashCode();
-            }
-        }
-        Debug.Log("Current Target Hash: " + currentTarget.GetHashCode());
-        //current = (current + 1) % Enemy.Pool.Count();
-        //currentTarget = Enemy.Pool<current>;
+        return currentHealthPoints;
     }
 
-    public float GetTargetLevel()
+    public float GetMaxHealth()
     {
-        return currentTarget.GetLevel();
+        return maxHealthPoints;
     }
-    //public Text GetTargetLevel()
-    //{
-    //    return currentTarget.level
-    //}
+
+    public float GetRegenHealthDelay()
+    {
+        return regenHealthDelay;
+    }
+
+    public AbilityConfig GetAbilities(int i)
+    {
+        return abilities[i];
+    }
+
+    public Image GetAbilityIcon(int i)
+    {
+        return abilities[i].GetSkillIcon();
+    }
+
 }

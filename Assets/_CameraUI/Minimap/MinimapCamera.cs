@@ -6,6 +6,14 @@ public class MinimapCamera : MonoBehaviour {
 
     [SerializeField] Transform player;
 
+    private void Start()
+    {
+        if (!player)
+        {
+            player = FindObjectOfType<Character>().transform;
+        }
+    }
+
     void LateUpdate () {
 
         Vector3 newPosition = player.position;

@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using RPG.Characters;
 
 public class StatPanel : MonoBehaviour
 {
+    [SerializeField] Text levelText;
     [SerializeField] StatDisplay[] statDisplays;
     [SerializeField] string[] statNames;
 
@@ -51,4 +53,8 @@ public class StatPanel : MonoBehaviour
         }
     }
 
+    public void UpdateLevelNumber(float level)
+    {
+        levelText.text = level.ToString();
+    }
 }

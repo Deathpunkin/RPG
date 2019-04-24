@@ -13,14 +13,12 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectGenerator>VSTU</UnityProjectGenerator>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2017.2.0p4</UnityVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -214,11 +212,11 @@
     <Reference Include="UnityEngine.SpatialTracking">
       <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnitySpatialTracking/RuntimeEditor/UnityEngine.SpatialTracking.dll</HintPath>
     </Reference>
-    <Reference Include="TextMeshPro-2017.1-Editor">
-      <HintPath>Assets/TextMesh Pro/Plugins/Editor DLL/TextMeshPro-2017.1-Editor.dll</HintPath>
+    <Reference Include="TextMeshPro-2017.2-Editor">
+      <HintPath>Assets/TextMesh Pro/Plugins/Editor DLL/TextMeshPro-2017.2-Editor.dll</HintPath>
     </Reference>
-    <Reference Include="TextMeshPro-2017.1-Runtime">
-      <HintPath>Assets/TextMesh Pro/Plugins/Editor DLL/TextMeshPro-2017.1-Runtime.dll</HintPath>
+    <Reference Include="TextMeshPro-2017.2-Runtime">
+      <HintPath>Assets/TextMesh Pro/Plugins/Editor DLL/TextMeshPro-2017.2-Runtime.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.Analytics">
       <HintPath>C:/Users/death/AppData/LocalLow/Unity/cache/packages/packages.unity.com/com.unity.analytics@1.0.1/UnityEngine.Analytics.dll</HintPath>
@@ -226,6 +224,12 @@
     <Reference Include="UnityEngine.Purchasing">
       <HintPath>C:/Users/death/AppData/LocalLow/Unity/cache/packages/packages.unity.com/com.unity.purchasing@1.0.1/UnityEngine.Purchasing.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="RPG.Plugins.csproj">
+      <Project>{D96DA320-22F7-390E-F703-034DB0A85C09}</Project>
+      <Name>RPG.Plugins</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\_CameraUI\Buttons\IconChange.cs" />
@@ -249,6 +253,7 @@
     <Compile Include="Assets\_Characters\Energy.cs" />
     <Compile Include="Assets\_Characters\MainHand.cs" />
     <Compile Include="Assets\_Characters\OffHand.cs" />
+    <Compile Include="Assets\_Characters\Player\ExpBar.cs" />
     <Compile Include="Assets\_Characters\Player\Player.cs" />
     <Compile Include="Assets\_Characters\Player\PlayerHealthBar.cs" />
     <Compile Include="Assets\_Characters\Player\PlayerInput.cs" />
@@ -272,16 +277,24 @@
     <Compile Include="Assets\_Skills\Healing\HealingConfig.cs" />
     <Compile Include="Assets\_Skills\PowerAttack\PowerAttackBehaviour.cs" />
     <Compile Include="Assets\_Skills\PowerAttack\PowerAttackConfig.cs" />
+    <Compile Include="Assets\_Skills\SkillBar.cs" />
+    <Compile Include="Assets\_Skills\SkillSlot.cs" />
     <Compile Include="Assets\_Weapons\Ball Gun\Projectile.cs" />
-    <Compile Include="Assets\_Weapons\Weapon.cs" />
-    <Compile Include="Assets\_Weapons\Sword.cs" />
-    <Compile Include="Assets\_Weapons\Staff.cs" />
+    <Compile Include="Assets\_Weapons\WeaponOld.cs" />
     <Compile Include="Assets\_Weapons\WeaponPickupPoint.cs" />
     <Compile Include="Assets\ChatBox.cs" />
     <Compile Include="Assets\ConceptStuff\AnimationEvents.cs" />
     <Compile Include="Assets\ConceptStuff\CosmeticItem.cs" />
     <Compile Include="Assets\ConceptStuff\EnemySpawner.cs" />
-    <Compile Include="Assets\ConceptStuff\DamageType.cs" />
+    <Compile Include="Assets\ConceptStuff\Gear\Armor\Armor.cs" />
+    <Compile Include="Assets\ConceptStuff\Gear\Armor\ArmorSlot.cs" />
+    <Compile Include="Assets\ConceptStuff\Gear\Armor\ArmorType.cs" />
+    <Compile Include="Assets\ConceptStuff\Gear\Armor\ChestArmor.cs" />
+    <Compile Include="Assets\ConceptStuff\Gear\GiveItem.cs" />
+    <Compile Include="Assets\ConceptStuff\Gear\Weapons\DamageType.cs" />
+    <Compile Include="Assets\ConceptStuff\Gear\Weapons\Staff.cs" />
+    <Compile Include="Assets\ConceptStuff\Gear\Weapons\Sword.cs" />
+    <Compile Include="Assets\ConceptStuff\Gear\Weapons\Weapon.cs" />
     <Compile Include="Assets\ConceptStuff\TargetPanel.cs" />
     <Compile Include="Assets\ConceptStuff\UIPanels\Skills\SkillPanel.cs" />
     <Compile Include="Assets\ConceptStuff\UIPanels\Skills\SkillPanelSlot.cs" />

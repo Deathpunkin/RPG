@@ -29,15 +29,15 @@ public class TargetPanel : MonoBehaviour {
 	void Update () {
         if (player.GetTarget() != null)
         {
-            if(player.GetTargetLevel() > player.level + dangerLevelDif)
+            if(player.GetTargetLevel() > player.GetLevel() + dangerLevelDif)
             {
                 targetName.color = danger;
             }
-            if(player.GetTargetLevel() < player.level + warningLevelDifMax && player.GetTargetLevel() > player.level + warningLevelDifMin)
+            if(player.GetTargetLevel() < player.GetLevel() + warningLevelDifMax && player.GetTargetLevel() > player.GetLevel() + warningLevelDifMin)
             {
                 targetName.color = warning;
             }
-            if(player.GetTargetLevel() <= player.level + 2)
+            if(player.GetTargetLevel() <= player.GetLevel() + 2)
             {
                 targetName.color = Color.white;
             }
