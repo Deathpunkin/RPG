@@ -7,7 +7,7 @@ using RPG.Characters;
 public class SkillBar : MonoBehaviour {
 
     Player _player;
-    Character player;
+    [SerializeField] Character player;
     [SerializeField] SkillSlot[] skillSlots;
     [SerializeField] Image[] skillIcons;
 

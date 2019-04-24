@@ -29,7 +29,7 @@ public class Character : MonoBehaviour, IDamageable
     GameObject mainHandWeaponObject;
 
 
-    [SerializeField] float level;
+    [SerializeField] int level;
     [SerializeField] Text levelText;
     [SerializeField] float currentExperiencePoints;
     [SerializeField] float _experienceToNextLevel;
@@ -170,23 +170,44 @@ public class Character : MonoBehaviour, IDamageable
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            groundTargeting = true;
-            Vector3 mousePos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 500f);
+            Projector _projector = FindObjectOfType<Projector>();
+            if(_projector != null)
+            {
+                Destroy(_projector.gameObject);
+            }
 
-            Vector3 worldPos;
-            Ray ray = Camera.main.ScreenPointToRay(mousePos);
+            groundTargeting = true;
+
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
-            Physics.Raycast(ray, out hit, 1000f);
-            worldPos = hit.point;
-            Instantiate(projector, worldPos, Quaternion.Euler(90, 0, 0));
+            if (Physics.Raycast(ray, out hit/*, QueryTriggerInteraction.Ignore*/)) //TODO get ignore raycast working
+            {
+                float hitY = hit.point.y;
+                float hitX = hit.point.x;
+                float hitZ = hit.point.z;
+                Instantiate(projector, new Vector3(hitX, hitY + 5, hitZ), Quaternion.Euler(90, 0, 0));
+            }
+            Debug.Log("Ray hit: " + hit.collider.name);
         }
         if (groundTargeting)
         {
+            Projector _projector = FindObjectOfType<Projector>();
+
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit))
+            {
+                float hitY = hit.point.y;
+                float hitX = hit.point.x;
+                float hitZ = hit.point.z;
+
+                _projector.transform.position = new Vector3(hitX, hitY + 5, hitZ);
+            }
             //projector.transform.position = Input.mousePosition;
             if(Input.GetKeyDown(KeyCode.Escape))
             {
                 groundTargeting = false;
-                Destroy(projector);
+                Destroy(_projector.gameObject);
             }
         }
         if (strength.Value != 0)
@@ -510,7 +531,7 @@ public class Character : MonoBehaviour, IDamageable
         }
     }
 
-    public void GiveExp(float exp)
+    public void GiveExp(int exp)
     {
         currentExperiencePoints += exp;
         Debug.Log("Exp Gained: " + exp);
@@ -616,7 +637,7 @@ public class Character : MonoBehaviour, IDamageable
     {
         return experienceToNextLevel;
     }
-    public float GetLevel()
+    public int GetLevel()
     {
         return level;
     }

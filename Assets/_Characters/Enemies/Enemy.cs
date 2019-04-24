@@ -10,11 +10,11 @@ namespace RPG.Characters
     {
         Animator animator;
         ParticleSystem lootableParticle;
-        [SerializeField] float level;
+        [SerializeField] int level;
         [SerializeField] float maxHealthPoints = 100f;
         [SerializeField] float currentHealthPoints;
         [SerializeField] int baseExpReward = 100;
-        float expReward;
+        int expReward;
         [SerializeField] bool isDead = false;
         float regenHealthspeed = 1f;
 

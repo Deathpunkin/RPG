@@ -4717,6 +4717,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54498d6a2dc4476458bdd87715faea41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
   skillSlots:
   - {fileID: 114352427484138964}
   - {fileID: 114303063980318784}
